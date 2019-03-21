@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/bart_blue"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp">
+
+        <include
+            layout="@layout/layout_trip_selection" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
