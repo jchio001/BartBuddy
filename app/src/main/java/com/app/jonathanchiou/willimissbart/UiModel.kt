@@ -15,9 +15,12 @@ fun <T> Observable<Response<T>>.toUiModelObservable(): Observable<UiModel<T>> {
             if (it.isSuccessful) {
                 UiModel(
                     state = State.DONE,
+                    statusCode = it.code(),
                     data = it.body())
             } else {
-                UiModel(state = State.ERROR)
+                UiModel(
+                    state = State.ERROR,
+                    statusCode = it.code())
             }
         }
         .onErrorReturn {
@@ -25,9 +28,11 @@ fun <T> Observable<Response<T>>.toUiModelObservable(): Observable<UiModel<T>> {
                 state = State.ERROR,
                 error = it)
         }
-        .startWith(UiModel(state = State.PENDING))
+        .startWith(
+            UiModel(state = State.PENDING))
 }
 
 data class UiModel<T>(val state: State,
+                      val statusCode: Int? = null,
                       val data: T? = null,
                       val error: Throwable? = null)

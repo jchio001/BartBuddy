@@ -22,10 +22,11 @@ class StationsViewModel(application: Application): AndroidViewModel(application)
                     .toUiModelObservable()
                     .map {
                         if (it.state == State.DONE) {
-                            UiModel(it.state,
-                                    it.data!!.root.stations.stations)
+                            UiModel(
+                                state = it.state,
+                                data = it.data!!.root.stations.stations)
                         } else {
-                            UiModel(it.state)
+                            UiModel(state = it.state)
                         }
                     }
                     .subscribeOn(Schedulers.io())
