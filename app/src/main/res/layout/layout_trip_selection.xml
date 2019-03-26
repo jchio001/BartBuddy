@@ -13,6 +13,7 @@
     tools:background="@color/bart_blue">
 
     <TextView
+        android:id="@+id/origin_station_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_background"
@@ -23,6 +24,7 @@
         android:textColorHint="@color/hint_white"/>
 
     <TextView
+        android:id="@+id/destination_station_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
