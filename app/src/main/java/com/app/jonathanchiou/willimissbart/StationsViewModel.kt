@@ -13,24 +13,12 @@ class StationsViewModel(application: Application): AndroidViewModel(application)
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
+    private val stationsManager = StationsManager.get()
+
     init {
         stationsRequestSubject
             .switchMap {
-                ApiClient.INSTANCE
-                    .bartService
-                    .getStations()
-                    .toUiModelObservable()
-                    .map {
-                        if (it.state == State.DONE) {
-                            UiModel(
-                                state = it.state,
-                                data = it.data!!.root.stations.stations)
-                        } else {
-                            UiModel(state = it.state)
-                        }
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                stationsManager.getStations()
             }
             .subscribe(stationsLiveData::postValue)
     }

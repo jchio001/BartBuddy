@@ -2,6 +2,7 @@ package com.app.jonathanchiou.willimissbart
 
 import io.reactivex.Observable
 import retrofit2.Response
+import java.net.HttpURLConnection
 
 enum class State {
     ERROR,
@@ -9,7 +10,18 @@ enum class State {
     DONE,
 }
 
-fun <T> Observable<Response<T>>.toUiModelObservable(): Observable<UiModel<T>> {
+fun <T> Observable<T>.modelToUiModelStream(): Observable<UiModel<T>> {
+    return this.
+        map {
+            UiModel(
+                state = State.DONE,
+                statusCode = HttpURLConnection.HTTP_OK,
+                data = it)
+        }
+        .handlePendingAndError()
+}
+
+fun <T> Observable<Response<T>>.responseToUiModelStream(): Observable<UiModel<T>> {
     return this
         .map {
             if (it.isSuccessful) {
@@ -23,7 +35,12 @@ fun <T> Observable<Response<T>>.toUiModelObservable(): Observable<UiModel<T>> {
                     statusCode = it.code())
             }
         }
-        .onErrorReturn {
+        .handlePendingAndError()
+}
+
+private fun <T> Observable<UiModel<T>>.handlePendingAndError(): Observable<UiModel<T>> {
+    return this.
+        onErrorReturn {
             UiModel(
                 state = State.ERROR,
                 error = it)

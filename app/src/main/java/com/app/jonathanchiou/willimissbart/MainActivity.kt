@@ -10,6 +10,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
+        StationsManager.initialize(this)
+
         supportFragmentManager
             .beginTransaction()
             .add(R.id.parent, TripSelectionFragment())
