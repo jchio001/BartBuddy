@@ -1,19 +1,15 @@
 package com.app.jonathanchiou.willimissbart
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import androidx.core.util.Consumer
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.app.jonathanchiou.willimissbart.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 
 class StationSelectionActivity : AppCompatActivity() {
 
@@ -27,7 +23,7 @@ class StationSelectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_station_selection)
         ButterKnife.bind(this)
 
-        selectionType = intent!!.getStringExtra(STATION_SELECTION_TYPE)!!
+        selectionType = intent!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!
 
         val stationsViewModel = ViewModelProviders.of(this)
             .get(StationsViewModel::class.java)
@@ -62,14 +58,5 @@ class StationSelectionActivity : AppCompatActivity() {
                 }
             })
         stationsViewModel.requestStations()
-    }
-
-    companion object {
-        const val STATION_SELECTION_TYPE = "station_selection_type"
-
-        const val ORIGIN_SELECTION = "origin"
-        const val DESTINATION_SELECTION = "destination"
-
-        const val SELECTED_STATION_KEY = "selected_station"
     }
 }

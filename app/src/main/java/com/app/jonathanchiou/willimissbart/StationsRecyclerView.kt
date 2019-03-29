@@ -7,6 +7,8 @@ import android.util.AttributeSet
 import androidx.core.util.Consumer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.jonathanchiou.willimissbart.TripManager.Companion.SELECTED_STATION_KEY
+import com.app.jonathanchiou.willimissbart.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 
 class StationsRecyclerView(context: Context, attributeSet: AttributeSet):
     RecyclerView(context, attributeSet) {
@@ -18,8 +20,8 @@ class StationsRecyclerView(context: Context, attributeSet: AttributeSet):
     init {
         stationsAdapter.onClickListener = Consumer { station ->
             val intent = Intent()
-            intent.putExtra(StationSelectionActivity.STATION_SELECTION_TYPE, selectionType)
-            intent.putExtra(StationSelectionActivity.SELECTED_STATION_KEY, station)
+            intent.putExtra(STATION_SELECTION_TYPE_KEY, selectionType)
+            intent.putExtra(SELECTED_STATION_KEY, station)
 
             (context as Activity).also {
                 it.setResult(Activity.RESULT_OK, intent)

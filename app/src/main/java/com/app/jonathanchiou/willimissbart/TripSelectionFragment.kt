@@ -1,8 +1,8 @@
 package com.app.jonathanchiou.willimissbart
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +11,7 @@ import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-
-import com.app.jonathanchiou.willimissbart.StationSelectionActivity.Companion.STATION_SELECTION_TYPE
-import com.app.jonathanchiou.willimissbart.StationSelectionActivity.Companion.ORIGIN_SELECTION
-import com.app.jonathanchiou.willimissbart.StationSelectionActivity.Companion.DESTINATION_SELECTION
-import com.app.jonathanchiou.willimissbart.StationSelectionActivity.Companion.SELECTED_STATION_KEY
+import com.app.jonathanchiou.willimissbart.TripManager.StationListener
 
 class TripSelectionFragment: Fragment() {
 
@@ -24,6 +20,8 @@ class TripSelectionFragment: Fragment() {
 
     @BindView(R.id.destination_station_textview)
     lateinit var destinationStationTextView: TextView
+
+    lateinit var tripManager: TripManager
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -35,33 +33,27 @@ class TripSelectionFragment: Fragment() {
                                savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
+
+        tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(context),
+                                  arguments)
+        tripManager.setStationListener(object: StationListener {
+            override fun onTripStationChanged(stationType: StationType, station: Station) {
+                (if (stationType == StationType.ORIGIN) originStationTextView
+                else destinationStationTextView)
+                    .text = station.abbr
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == STATIONS_SELECTION_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val selectionType = data!!.getStringExtra(STATION_SELECTION_TYPE)
-                val station = data.getParcelableExtra<Station>(SELECTED_STATION_KEY)
-
-                (if (selectionType == ORIGIN_SELECTION) originStationTextView
-                else destinationStationTextView).text = station.name
-            }
-        }
+        tripManager.onStationSelectionResult(requestCode, resultCode, data)
     }
 
     @OnClick(R.id.origin_station_textview, R.id.destination_station_textview)
     fun onStationTextViewClicked(view: View) {
-        val intent = Intent(context, StationSelectionActivity::class.java)
-        intent.putExtra(
-            STATION_SELECTION_TYPE,
-            if (view.id == R.id.origin_station_textview) ORIGIN_SELECTION
-            else DESTINATION_SELECTION)
-
-        startActivityForResult(intent, STATIONS_SELECTION_CODE)
-    }
-
-    companion object {
-        const val STATIONS_SELECTION_CODE = 73
+        tripManager.updateStation(this,
+                                  if (view.id == R.id.origin_station_textview) StationType.ORIGIN
+                                  else StationType.DESTINATION)
     }
 }
