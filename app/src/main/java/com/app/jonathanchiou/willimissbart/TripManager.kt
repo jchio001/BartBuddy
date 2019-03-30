@@ -47,8 +47,10 @@ class TripManager(private val sharedPreferences: SharedPreferences,
         val placeholder = originAbbreviation
         originAbbreviation = destinationAbbreviation
         destinationAbbreviation = placeholder
-        stationListener?.onTripStationChanged(StationType.ORIGIN, originAbbreviation)
-        stationListener?.onTripStationChanged(StationType.DESTINATION, destinationAbbreviation)
+        stationListener?.also {
+            it.onTripStationChanged(StationType.ORIGIN, originAbbreviation)
+            it.onTripStationChanged(StationType.DESTINATION, destinationAbbreviation)
+        }
     }
 
     fun onStationSelectionResult(requestCode: Int,

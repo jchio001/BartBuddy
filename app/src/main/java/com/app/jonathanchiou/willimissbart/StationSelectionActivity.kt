@@ -1,8 +1,10 @@
 package com.app.jonathanchiou.willimissbart
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -22,6 +24,8 @@ class StationSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_station_selection)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         ButterKnife.bind(this)
 
         selectionType = intent!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!
@@ -76,5 +80,15 @@ class StationSelectionActivity : AppCompatActivity() {
                 }
             })
         stationsViewModel.requestStations()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
