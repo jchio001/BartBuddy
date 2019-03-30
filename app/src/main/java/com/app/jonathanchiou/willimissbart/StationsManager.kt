@@ -11,8 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class StationsManager(
     private val sharedPreferences: SharedPreferences,
-    private val apiClient: ApiClient
-) {
+    private val apiClient: ApiClient) {
 
     private var stations: List<Station>? = null
 
@@ -40,12 +39,18 @@ class StationsManager(
                     .doOnNext {
                         // Confirmed that this is not happening on the UI thread by logging the current thread's name.
                         if (it.state == State.DONE) {
-                            sharedPreferences.edit()
+                            val stations = it.data!!
+
+                            sharedPreferences
+                                .edit()
                                 .putString(
                                     CACHED_STATIONS_KEY,
                                     apiClient.moshi
                                         .adapter<List<Station>>(stationsListType)
-                                        .toJson(it.data!!))
+                                        .toJson(stations))
+                                .apply()
+
+                            this.stations = stations
                         }
                     }
                     .subscribeOn(Schedulers.io())
@@ -55,6 +60,9 @@ class StationsManager(
                     apiClient.moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStationsJson)!!
                 }
                     .modelToUiModelStream()
+                    .doOnNext {
+                        this.stations = it.data!!
+                    }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }
