@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import butterknife.BindView
@@ -53,6 +54,23 @@ class StationSelectionActivity : AppCompatActivity() {
                             stationsRecyclerView.stationsAdapter.setStations(it.data!!)
 
                             container.addView(stationsRecyclerView)
+                        }
+                    }
+                    State.ERROR -> {
+                        if (container.childCount == 0
+                            || container.getChildAt(0).id != R.id.layout_stations_failed) {
+                            container.removeAllViews()
+
+                            val failedStationsLayout = LayoutInflater.from(this)
+                                .inflate(R.layout.layout_stations_failed,
+                                         container,
+                                         false)
+                            failedStationsLayout.findViewById<TextView>(R.id.refresh_textview)
+                                .setOnClickListener {
+                                    stationsViewModel.requestStations()
+                                }
+
+                            container.addView(failedStationsLayout)
                         }
                     }
                 }

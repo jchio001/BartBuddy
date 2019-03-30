@@ -24,6 +24,10 @@ class StationsViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun requestStations() {
-        stationsRequestSubject.onNext(Any())
+        stationsLiveData.value.also {
+            if (it == null || it.state == State.ERROR) {
+                stationsRequestSubject.onNext(Any())
+            }
+        }
     }
 }
