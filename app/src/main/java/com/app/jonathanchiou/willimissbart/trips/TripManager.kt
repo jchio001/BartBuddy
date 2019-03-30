@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.app.jonathanchiou.willimissbart.stations.Station
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 enum class StationType {
     ORIGIN,
@@ -65,6 +66,18 @@ class TripManager(private val sharedPreferences: SharedPreferences,
                     STATION_SELECTION_TYPE_KEY))
                 val station = data.getParcelableExtra<Station>(SELECTED_STATION_KEY)
                 stationListener?.onTripStationChanged(stationType, station.abbr)
+            }
+        }
+    }
+
+    // TODO: Test this method.
+    fun displayTripsFragment(fragment: Fragment, containerId: Int) {
+        if (originAbbreviation != null && destinationAbbreviation != null ) {
+            fragment.fragmentManager!!.also {
+                it.popBackStack()
+                it.beginTransaction()
+                    .replace(containerId, TripsFragment())
+                    .commit()
             }
         }
     }

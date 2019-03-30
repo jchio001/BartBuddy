@@ -65,4 +65,9 @@ class TripSelectionFragment: Fragment() {
     fun onSwapIconClicked() {
         tripManager.swapTripStations()
     }
+
+    @OnClick(R.id.submit_trip_button)
+    fun submitTripButton() {
+        tripManager.displayTripsFragment(this, R.id.parent)
+    }
 }
