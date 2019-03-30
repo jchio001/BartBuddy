@@ -37,10 +37,10 @@ class TripSelectionFragment: Fragment() {
         tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(context),
                                   arguments)
         tripManager.setStationListener(object: StationListener {
-            override fun onTripStationChanged(stationType: StationType, station: Station) {
+            override fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?) {
                 (if (stationType == StationType.ORIGIN) originStationTextView
                 else destinationStationTextView)
-                    .text = station.abbr
+                    .text = stationAbbreviation
             }
         })
     }
@@ -55,5 +55,10 @@ class TripSelectionFragment: Fragment() {
         tripManager.updateStation(this,
                                   if (view.id == R.id.origin_station_textview) StationType.ORIGIN
                                   else StationType.DESTINATION)
+    }
+
+    @OnClick(R.id.swap_icon)
+    fun onSwapIconClicked() {
+        tripManager.swapTripStations()
     }
 }

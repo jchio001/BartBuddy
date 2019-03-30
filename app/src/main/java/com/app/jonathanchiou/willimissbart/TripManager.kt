@@ -15,7 +15,7 @@ class TripManager(private val sharedPreferences: SharedPreferences,
                   bundle: Bundle?) {
 
     interface StationListener {
-        fun onTripStationChanged(stationType: StationType, station: Station)
+        fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?)
     }
 
     var originAbbreviation: String? = null
@@ -43,6 +43,14 @@ class TripManager(private val sharedPreferences: SharedPreferences,
         fragment.startActivityForResult(intent, STATIONS_SELECTION_CODE)
     }
 
+    fun swapTripStations() {
+        val placeholder = originAbbreviation
+        originAbbreviation = destinationAbbreviation
+        destinationAbbreviation = placeholder
+        stationListener?.onTripStationChanged(StationType.ORIGIN, originAbbreviation)
+        stationListener?.onTripStationChanged(StationType.DESTINATION, destinationAbbreviation)
+    }
+
     fun onStationSelectionResult(requestCode: Int,
                                  resultCode: Int,
                                  data: Intent?) {
@@ -50,7 +58,7 @@ class TripManager(private val sharedPreferences: SharedPreferences,
             if (resultCode == Activity.RESULT_OK) {
                 val stationType = StationType.valueOf(data!!.getStringExtra(STATION_SELECTION_TYPE_KEY))
                 val station = data.getParcelableExtra<Station>(SELECTED_STATION_KEY)
-                stationListener?.onTripStationChanged(stationType, station)
+                stationListener?.onTripStationChanged(stationType, station.abbr)
             }
         }
     }

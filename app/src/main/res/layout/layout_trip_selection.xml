@@ -8,38 +8,58 @@
     android:orientation="vertical"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:background="@color/bart_blue">
 
-    <TextView
-        android:id="@+id/origin_station_textview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:hint="@string/origin_station"
-        android:padding="6dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@color/hint_white"/>
+        android:paddingLeft="16dp"
+        android:paddingRight="12dp">
 
-    <TextView
-        android:id="@+id/destination_station_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_background"
-        android:hint="@string/destination_station"
-        android:padding="6dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@color/hint_white"/>
+        <TextView
+            android:id="@+id/origin_station_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/swap_icon"
+            android:background="@drawable/rounded_background"
+            android:hint="@string/origin_station"
+            android:padding="6dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/hint_white"/>
+
+        <TextView
+            android:id="@+id/destination_station_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/origin_station_textview"
+            android:layout_toLeftOf="@+id/swap_icon"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rounded_background"
+            android:hint="@string/destination_station"
+            android:padding="6dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/hint_white"/>
+
+        <ImageView
+            android:id="@+id/swap_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="4dp"
+            android:src="@drawable/ic_swap_vertical"/>
+
+    </RelativeLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_gravity="end"
+        android:layout_marginRight="16dp"
         app:cardCornerRadius="4dp"
         app:contentPaddingTop="8dp"
         app:contentPaddingBottom="8dp"
