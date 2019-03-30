@@ -1,11 +1,11 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.stations
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.util.Log
+import com.app.jonathanchiou.willimissbart.api.ApiClient
+import com.app.jonathanchiou.willimissbart.utils.models.*
 import com.squareup.moshi.Types
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +23,10 @@ class StationsManager(
     fun getStations(): Observable<UiModel<List<Station>>> {
         if (stations == null) {
             return Observable.fromCallable {
-                Optional(sharedPreferences.getString(CACHED_STATIONS_KEY, null))
+                Optional(
+                    sharedPreferences.getString(
+                        CACHED_STATIONS_KEY,
+                        null))
             }
                 // Makes SharedPreferences fetching asynchronous!
                 .subscribeOn(Schedulers.computation())
@@ -91,10 +94,11 @@ class StationsManager(
 
         fun initialize(context: Context) {
             if (INSTANCE == null) {
-                INSTANCE = StationsManager(
-                    PreferenceManager.getDefaultSharedPreferences(context),
-                    ApiClient.INSTANCE
-                )
+                INSTANCE =
+                    StationsManager(
+                        PreferenceManager.getDefaultSharedPreferences(context),
+                        ApiClient.INSTANCE
+                    )
             }
         }
 

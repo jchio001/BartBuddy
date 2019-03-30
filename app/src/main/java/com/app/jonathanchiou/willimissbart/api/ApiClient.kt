@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.api
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi

@@ -1,10 +1,12 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.trips
 
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.app.jonathanchiou.willimissbart.stations.Station
+import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
 
 enum class StationType {
     ORIGIN,
@@ -40,7 +42,8 @@ class TripManager(private val sharedPreferences: SharedPreferences,
     fun updateStation(fragment: Fragment, stationType: StationType) {
         val intent = Intent(fragment.context, StationSelectionActivity::class.java)
         intent.putExtra(STATION_SELECTION_TYPE_KEY, stationType.toString())
-        fragment.startActivityForResult(intent, STATIONS_SELECTION_CODE)
+        fragment.startActivityForResult(intent,
+                                        STATIONS_SELECTION_CODE)
     }
 
     fun swapTripStations() {
@@ -58,7 +61,8 @@ class TripManager(private val sharedPreferences: SharedPreferences,
                                  data: Intent?) {
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val stationType = StationType.valueOf(data!!.getStringExtra(STATION_SELECTION_TYPE_KEY))
+                val stationType = StationType.valueOf(data!!.getStringExtra(
+                    STATION_SELECTION_TYPE_KEY))
                 val station = data.getParcelableExtra<Station>(SELECTED_STATION_KEY)
                 stationListener?.onTripStationChanged(stationType, station.abbr)
             }

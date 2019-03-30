@@ -1,10 +1,10 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.stations
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import io.reactivex.subjects.PublishSubject
 
 class StationsViewModel(application: Application): AndroidViewModel(application) {

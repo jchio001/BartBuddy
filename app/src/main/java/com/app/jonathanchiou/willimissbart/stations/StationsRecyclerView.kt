@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.stations
 
 import android.app.Activity
 import android.content.Context
@@ -7,8 +7,8 @@ import android.util.AttributeSet
 import androidx.core.util.Consumer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.jonathanchiou.willimissbart.TripManager.Companion.SELECTED_STATION_KEY
-import com.app.jonathanchiou.willimissbart.TripManager.Companion.STATION_SELECTION_TYPE_KEY
+import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.SELECTED_STATION_KEY
+import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 
 class StationsRecyclerView(context: Context, attributeSet: AttributeSet):
     RecyclerView(context, attributeSet) {

@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.trips
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.app.jonathanchiou.willimissbart.TripManager.StationListener
+import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
 
 class TripSelectionFragment: Fragment() {
 
@@ -34,8 +35,9 @@ class TripSelectionFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
 
-        tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(context),
-                                  arguments)
+        tripManager = TripManager(
+            PreferenceManager.getDefaultSharedPreferences(context),
+            arguments)
         tripManager.setStationListener(object: StationListener {
             override fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?) {
                 (if (stationType == StationType.ORIGIN) originStationTextView
@@ -50,7 +52,9 @@ class TripSelectionFragment: Fragment() {
         tripManager.onStationSelectionResult(requestCode, resultCode, data)
     }
 
-    @OnClick(R.id.origin_station_textview, R.id.destination_station_textview)
+    @OnClick(
+        R.id.origin_station_textview,
+        R.id.destination_station_textview)
     fun onStationTextViewClicked(view: View) {
         tripManager.updateStation(this,
                                   if (view.id == R.id.origin_station_textview) StationType.ORIGIN

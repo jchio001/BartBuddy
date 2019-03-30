@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.utils.models
 
 import io.reactivex.Observable
 import retrofit2.Response

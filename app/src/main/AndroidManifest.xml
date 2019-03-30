@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".StationSelectionActivity"
+            android:name=".stations.StationSelectionActivity"
             android:label="@string/select_station"/>
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart
+package com.app.jonathanchiou.willimissbart.stations
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.app.jonathanchiou.willimissbart.TripManager.Companion.STATION_SELECTION_TYPE_KEY
+import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 
 class StationSelectionActivity : AppCompatActivity() {
 
@@ -41,9 +43,10 @@ class StationSelectionActivity : AppCompatActivity() {
                             container.removeAllViews()
                             container.addView(
                                 LayoutInflater.from(this)
-                                    .inflate(R.layout.layout_progress_bar,
-                                             container,
-                                             false))
+                                    .inflate(
+                                        R.layout.layout_progress_bar,
+                                        container,
+                                        false))
                         }
                     }
                     State.DONE -> {
@@ -51,9 +54,10 @@ class StationSelectionActivity : AppCompatActivity() {
                             container.removeAllViews()
 
                             val stationsRecyclerView = LayoutInflater.from(this)
-                                .inflate(R.layout.layout_stations_recyclerview,
-                                         container,
-                                         false) as StationsRecyclerView
+                                .inflate(
+                                    R.layout.layout_stations_recyclerview,
+                                    container,
+                                    false) as StationsRecyclerView
                             stationsRecyclerView.selectionType = selectionType
                             stationsRecyclerView.stationsAdapter.setStations(it.data!!)
 
@@ -62,13 +66,15 @@ class StationSelectionActivity : AppCompatActivity() {
                     }
                     State.ERROR -> {
                         if (container.childCount == 0
-                            || container.getChildAt(0).id != R.id.layout_stations_failed) {
+                            || container.getChildAt(0).id != R.id.layout_stations_failed
+                        ) {
                             container.removeAllViews()
 
                             val failedStationsLayout = LayoutInflater.from(this)
-                                .inflate(R.layout.layout_stations_failed,
-                                         container,
-                                         false)
+                                .inflate(
+                                    R.layout.layout_stations_failed,
+                                    container,
+                                    false)
                             failedStationsLayout.findViewById<TextView>(R.id.refresh_textview)
                                 .setOnClickListener {
                                     stationsViewModel.requestStations()
