@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
 import com.squareup.moshi.Types
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -21,51 +22,58 @@ class StationsManager(
 
     fun getStations(): Observable<UiModel<List<Station>>> {
         if (stations == null) {
-            val cachedStationsJson = sharedPreferences.getString(CACHED_STATIONS_KEY, null)
-            if (cachedStationsJson == null) {
-                return apiClient
-                    .bartService
-                    .getStations()
-                    .responseToUiModelStream()
-                    .map {
-                        if (it.state == State.DONE) {
-                            UiModel(
-                                state = it.state,
-                                data = it.data!!.root.stations.stations)
-                        } else {
-                            UiModel(state = it.state)
-                        }
-                    }
-                    .doOnNext {
-                        // Confirmed that this is not happening on the UI thread by logging the current thread's name.
-                        if (it.state == State.DONE) {
-                            val stations = it.data!!
-
-                            sharedPreferences
-                                .edit()
-                                .putString(
-                                    CACHED_STATIONS_KEY,
-                                    apiClient.moshi
-                                        .adapter<List<Station>>(stationsListType)
-                                        .toJson(stations))
-                                .apply()
-
-                            this.stations = stations
-                        }
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-            } else {
-                return Observable.fromCallable {
-                    apiClient.moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStationsJson)!!
-                }
-                    .modelToUiModelStream()
-                    .doOnNext {
-                        this.stations = it.data!!
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+            return Observable.fromCallable {
+                Optional(sharedPreferences.getString(CACHED_STATIONS_KEY, null))
             }
+                // Makes SharedPreferences fetching asynchronous!
+                .subscribeOn(Schedulers.computation())
+                .flatMap { cachedStations ->
+                    if (cachedStations.value == null) {
+                        apiClient
+                            .bartService
+                            .getStations()
+                            .responseToUiModelStream()
+                            .map {
+                                if (it.state == State.DONE) {
+                                    UiModel(
+                                        state = it.state,
+                                        data = it.data!!.root.stations.stations)
+                                } else {
+                                    UiModel(state = it.state)
+                                }
+                            }
+                            .doOnNext {
+                                // Confirmed that this is not happening on the UI thread by logging the current
+                                // thread's name.
+                                if (it.state == State.DONE) {
+                                    val stations = it.data!!
+
+                                    sharedPreferences
+                                        .edit()
+                                        .putString(
+                                            CACHED_STATIONS_KEY,
+                                            apiClient.moshi
+                                                .adapter<List<Station>>(stationsListType)
+                                                .toJson(stations))
+                                        .apply()
+
+                                    this.stations = stations
+                                }
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                    } else {
+                        Observable.fromCallable {
+                            apiClient.moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStations.value)!!
+                        }
+                            .modelToUiModelStream()
+                            .doOnNext {
+                                this.stations = it.data!!
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                    }
+                }
         } else {
             return Observable.just(
                 UiModel(
