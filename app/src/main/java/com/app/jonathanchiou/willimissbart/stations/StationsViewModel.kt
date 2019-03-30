@@ -9,25 +9,13 @@ import io.reactivex.subjects.PublishSubject
 
 class StationsViewModel(application: Application): AndroidViewModel(application) {
 
-    val stationsLiveData =  MutableLiveData<UiModel<List<Station>>>()
-
-    private val stationsRequestSubject = PublishSubject.create<Any>()
-
     private val stationsManager = StationsManager.get()
 
-    init {
-        stationsRequestSubject
-            .switchMap {
-                stationsManager.getStations()
-            }
-            .subscribe(stationsLiveData::postValue)
+    fun getStationsLiveData(): MutableLiveData<UiModel<List<Station>>> {
+        return stationsManager.stationsLiveData
     }
 
     fun requestStations() {
-        stationsLiveData.value.also {
-            if (it == null || it.state == State.ERROR) {
-                stationsRequestSubject.onNext(Any())
-            }
-        }
+        stationsManager.requestStations()
     }
 }

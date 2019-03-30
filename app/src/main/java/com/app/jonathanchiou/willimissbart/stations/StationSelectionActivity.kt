@@ -35,7 +35,7 @@ class StationSelectionActivity : AppCompatActivity() {
         val stationsViewModel = ViewModelProviders.of(this)
             .get(StationsViewModel::class.java)
         stationsViewModel
-            .stationsLiveData
+            .getStationsLiveData()
             .observe(this, Observer {
                 when (it.state) {
                     State.PENDING -> {
