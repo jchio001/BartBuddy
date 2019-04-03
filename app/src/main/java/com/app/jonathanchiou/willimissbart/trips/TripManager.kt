@@ -13,8 +13,7 @@ enum class StationType {
     DESTINATION
 }
 
-class TripManager(private val sharedPreferences: SharedPreferences,
-                  bundle: Bundle?) {
+class TripManager(private val sharedPreferences: SharedPreferences) {
 
     interface StationListener {
         fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?)
@@ -29,9 +28,9 @@ class TripManager(private val sharedPreferences: SharedPreferences,
     private var stationListener: StationListener? = null
 
     init {
-        bundle?.also {
-            originAbbreviation = it.getString(TRIP_ORIGIN_ABBREVIATION_KEY)
-            destinationAbbreviation = it.getString(TRIP_DESTINATION_ABBREVIATION_KEY)
+        sharedPreferences.also {
+            originAbbreviation = it.getString(TRIP_ORIGIN_ABBREVIATION_KEY, null)
+            destinationAbbreviation = it.getString(TRIP_DESTINATION_ABBREVIATION_KEY, null)
         }
     }
 
