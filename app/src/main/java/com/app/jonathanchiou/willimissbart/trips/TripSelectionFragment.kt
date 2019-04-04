@@ -24,6 +24,13 @@ class TripSelectionFragment: Fragment() {
 
     lateinit var tripManager: TripManager
 
+    private val stationListener = object: StationListener {
+        override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
+            originStationTextView.text = originAbbreviation
+            destinationStationTextView.text = destinationAbbreviation
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -36,18 +43,17 @@ class TripSelectionFragment: Fragment() {
         ButterKnife.bind(this, view)
 
         tripManager = (activity as MainActivity).tripManager
-        tripManager.setStationListener(object: StationListener {
-            override fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?) {
-                (if (stationType == StationType.ORIGIN) originStationTextView
-                else destinationStationTextView)
-                    .text = stationAbbreviation
-            }
-        })
+        tripManager.addListener(stationListener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         tripManager.onStationSelectionResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        tripManager.removeListener(stationListener)
     }
 
     @OnClick(

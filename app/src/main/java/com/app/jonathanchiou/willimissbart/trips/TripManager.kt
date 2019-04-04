@@ -15,7 +15,7 @@ enum class StationType {
 class TripManager(private val sharedPreferences: SharedPreferences) {
 
     interface StationListener {
-        fun onTripStationChanged(stationType: StationType, stationAbbreviation: String?)
+        fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?)
     }
 
     var originAbbreviation: String? = null
@@ -24,7 +24,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     var destinationAbbreviation: String? = null
         private set
 
-    private var stationListener: StationListener? = null
+    private var stationListeners = HashSet<StationListener>(2)
 
     init {
         sharedPreferences.also {
@@ -33,8 +33,15 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
         }
     }
 
-    fun setStationListener(stationListener: StationListener) {
-        this.stationListener = stationListener
+    fun addListener(stationListener: StationListener) {
+        if (!stationListeners.contains(stationListener)) {
+            stationListeners.add(stationListener)
+            stationListener.onTripStationChanged(originAbbreviation, destinationAbbreviation)
+        }
+    }
+
+    fun removeListener(stationListener: StationListener) {
+        stationListeners.remove(stationListener)
     }
 
     fun updateStation(fragment: Fragment, stationType: StationType) {
@@ -48,9 +55,11 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
         val placeholder = originAbbreviation
         originAbbreviation = destinationAbbreviation
         destinationAbbreviation = placeholder
-        stationListener?.also {
-            it.onTripStationChanged(StationType.ORIGIN, originAbbreviation)
-            it.onTripStationChanged(StationType.DESTINATION, destinationAbbreviation)
+
+        for (stationListener in stationListeners) {
+            stationListener.also {
+                it.onTripStationChanged(originAbbreviation, destinationAbbreviation)
+            }
         }
     }
 
@@ -69,7 +78,11 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
                          destinationAbbreviation = it
                      }
 
-                     stationListener?.onTripStationChanged(stationType, it)
+                     for (stationListener in stationListeners) {
+                         stationListener.also {
+                             it.onTripStationChanged(originAbbreviation, destinationAbbreviation)
+                         }
+                     }
                  }
             }
         }
