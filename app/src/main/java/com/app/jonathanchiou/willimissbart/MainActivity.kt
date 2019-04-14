@@ -5,7 +5,7 @@ import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
-import com.app.jonathanchiou.willimissbart.trips.TripsFragment
+import com.app.jonathanchiou.willimissbart.trips.TripFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         if (tripManager.originAbbreviation != null && tripManager.destinationAbbreviation != null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.parent, TripsFragment())
+                .add(R.id.parent, TripFragment())
                 .commit()
         } else {
             supportFragmentManager

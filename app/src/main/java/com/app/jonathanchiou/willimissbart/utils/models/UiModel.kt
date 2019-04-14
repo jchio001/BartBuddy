@@ -21,6 +21,23 @@ fun <T> Observable<T>.modelToUiModelStream(): Observable<UiModel<T>> {
         .handlePendingAndError()
 }
 
+fun <T> Observable<Response<T>>.responseToTerminalUiModel(): Observable<UiModel<T>> {
+    return this
+        .map {
+            if (it.isSuccessful) {
+                UiModel(
+                    state = State.DONE,
+                    statusCode = it.code(),
+                    data = it.body())
+            } else {
+                UiModel(
+                    state = State.ERROR,
+                    statusCode = it.code())
+            }
+        }
+        .handleError()
+}
+
 fun <T> Observable<Response<T>>.responseToUiModelStream(): Observable<UiModel<T>> {
     return this
         .map {
@@ -47,6 +64,15 @@ private fun <T> Observable<UiModel<T>>.handlePendingAndError(): Observable<UiMod
         }
         .startWith(
             UiModel(state = State.PENDING))
+}
+
+private fun <T> Observable<UiModel<T>>.handleError(): Observable<UiModel<T>> {
+    return this.
+        onErrorReturn {
+            UiModel(
+                state = State.ERROR,
+                error = it)
+        }
 }
 
 data class UiModel<T>(val state: State,

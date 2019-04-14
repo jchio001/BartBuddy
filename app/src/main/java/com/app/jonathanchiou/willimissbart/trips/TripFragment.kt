@@ -13,7 +13,7 @@ import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
 
-class TripsFragment: Fragment() {
+class TripFragment: Fragment() {
 
     @BindView(R.id.trips_recyclerview)
     lateinit var tripsRecyclerView: RecyclerView

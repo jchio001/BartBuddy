@@ -99,7 +99,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
             fragment.fragmentManager!!.also {
                 it.popBackStack()
                 it.beginTransaction()
-                    .replace(containerId, TripsFragment())
+                    .replace(containerId, TripFragment())
                     .commit()
             }
         }
