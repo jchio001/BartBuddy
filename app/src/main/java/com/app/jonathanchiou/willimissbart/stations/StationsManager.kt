@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathanchiou.willimissbart.api.ApiClient
+import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.utils.models.*
 import com.squareup.moshi.Types
 import io.reactivex.Observable

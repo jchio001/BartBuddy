@@ -1,9 +1,9 @@
 package com.app.jonathanchiou.willimissbart.api
 
 import com.app.jonathanchiou.willimissbart.BuildConfig
-import com.app.jonathanchiou.willimissbart.stations.StationsRoot
-import com.app.jonathanchiou.willimissbart.trips.DeparturesRoot
-import com.app.jonathanchiou.willimissbart.trips.EtdRoot
+import com.app.jonathanchiou.willimissbart.stations.models.api.StationsRoot
+import com.app.jonathanchiou.willimissbart.trips.models.api.DeparturesRoot
+import com.app.jonathanchiou.willimissbart.trips.models.api.EtdRoot
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.stations
+package com.app.jonathanchiou.willimissbart.stations.models.api
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

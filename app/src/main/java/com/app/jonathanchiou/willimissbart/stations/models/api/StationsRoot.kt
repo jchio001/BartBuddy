@@ -1,5 +1,6 @@
-package com.app.jonathanchiou.willimissbart.stations
+package com.app.jonathanchiou.willimissbart.stations.models.api
 
+import com.app.jonathanchiou.willimissbart.stations.models.api.Stations
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

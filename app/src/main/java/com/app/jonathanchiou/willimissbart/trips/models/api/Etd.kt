@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.trips
+package com.app.jonathanchiou.willimissbart.trips.models.api
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

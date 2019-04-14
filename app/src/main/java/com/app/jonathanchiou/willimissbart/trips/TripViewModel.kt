@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathanchiou.willimissbart.api.ApiClient
 import com.app.jonathanchiou.willimissbart.api.BartResponseWrapper
+import com.app.jonathanchiou.willimissbart.trips.models.api.EtdRoot
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.responseToTerminalUiModel
