@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 
 class StationViewHolder(itemView: View): ViewHolder(itemView) {
 

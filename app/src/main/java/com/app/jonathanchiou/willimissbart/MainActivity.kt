@@ -3,9 +3,9 @@ package com.app.jonathanchiou.willimissbart
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import com.app.jonathanchiou.willimissbart.trips.TripFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
-import com.app.jonathanchiou.willimissbart.trips.TripFragment
 
 class MainActivity : AppCompatActivity() {
 
