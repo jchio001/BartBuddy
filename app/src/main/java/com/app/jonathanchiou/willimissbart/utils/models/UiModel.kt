@@ -10,6 +10,14 @@ enum class State {
     DONE,
 }
 
+inline fun <T, V> Response<T>.mapResponse(mapFunc: (T) -> V): Response<V> {
+    return if (this.isSuccessful) {
+        Response.success(mapFunc(this.body()!!))
+    } else {
+        Response.error(this.code(), this.errorBody())
+    }
+}
+
 fun <T> Observable<T>.modelToUiModelStream(): Observable<UiModel<T>> {
     return this.
         map {

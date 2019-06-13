@@ -4,95 +4,45 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathanchiou.willimissbart.api.ApiClient
-import com.app.jonathanchiou.willimissbart.api.BartResponseWrapper
-import com.app.jonathanchiou.willimissbart.trips.models.api.EtdRoot
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
-import com.app.jonathanchiou.willimissbart.utils.models.responseToTerminalUiModel
-import io.reactivex.Observable
+import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
+import com.app.jonathanchiou.willimissbart.utils.models.responseToUiModelStream
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import retrofit2.Response
 
 class TripRequestEvent(val originAbbreviation: String,
                        val destinationAbbreviation: String)
 
-class TripEtdPair(val originResponse: Response<BartResponseWrapper<EtdRoot>>,
-                  val destinationResponse: Response<BartResponseWrapper<EtdRoot>>)
-
-// TODO: Make sure this spaghetti ball works.
 class TripViewModel(application: Application): AndroidViewModel(application) {
 
-    val tripLiveData = MutableLiveData<UiModel<RealTimeTrip>>()
+    val realTimeTripLiveData = MutableLiveData<UiModel<List<Trip>>>()
 
     private val tripEventSubject = PublishSubject.create<TripRequestEvent>()
 
+    private val disposable: Disposable
+
     init {
-        tripEventSubject
+        disposable = tripEventSubject
             .switchMap { tripRequestEvent ->
-                ApiClient.INSTANCE.bartService.let { bartService ->
-                   bartService.getDepartures(
-                       tripRequestEvent.originAbbreviation,
-                       tripRequestEvent.destinationAbbreviation)
-                       .subscribeOn(Schedulers.io())
-                       .flatMap {
-                           Observable
-                               .zip(
-                                   bartService.getRealTimeEstimates(tripRequestEvent.originAbbreviation),
-                                   bartService.getRealTimeEstimates(tripRequestEvent.destinationAbbreviation),
-                                   object: BiFunction<
-                                       Response<BartResponseWrapper<EtdRoot>>,
-                                       Response<BartResponseWrapper<EtdRoot>>,
-                                       Response<TripEtdPair>> {
-
-                                       // Assuming that if both calls fail, they fail for the same reason!
-                                       override fun apply(t1: Response<BartResponseWrapper<EtdRoot>>,
-                                                          t2: Response<BartResponseWrapper<EtdRoot>>):
-                                           Response<TripEtdPair> {
-                                           if (t1.isSuccessful && t2.isSuccessful) {
-                                               return Response
-                                                   .success(
-                                                       TripEtdPair(t1, t2))
-                                           } else {
-                                              return Response.error(t1.code(), t1.errorBody())
-                                           }
-                                       }
-                                   })
-                               .responseToTerminalUiModel()
-                       }
-                       .map { tripEtdPairUiModel ->
-                           if (tripEtdPairUiModel.state == State.DONE) {
-                               val realTimeTrip = tripEtdPairUiModel.data!!.let {
-                                   RealTimeTrip(
-                                       originAbbreviation = tripRequestEvent.originAbbreviation,
-                                       destinationAbbreviation = tripRequestEvent.destinationAbbreviation,
-                                       originEtds = it.originResponse.body()!!.root.etdStation[0].etds,
-                                       destinationEtds = it.destinationResponse.body()!!.root.etdStation[0].etds)
-                               }
-
-                               return@map UiModel(
-                                   state = State.DONE,
-                                   data = realTimeTrip,
-                                   statusCode = tripEtdPairUiModel.statusCode)
-                           } else {
-                               tripEtdPairUiModel.let {
-                                   UiModel<RealTimeTrip>(
-                                       state = it.state,
-                                       statusCode = it.statusCode,
-                                       error = it.error)
-                               }
-                           }
-                       }
-                       .subscribeOn(Schedulers.io())
-                       .observeOn(AndroidSchedulers.mainThread())
-                       .startWith(
-                           UiModel(
-                               state = State.PENDING))
-                }
+                ApiClient.INSTANCE.bartService.getDepartures(
+                    tripRequestEvent.originAbbreviation,
+                    tripRequestEvent.destinationAbbreviation)
+                    .map { wrappedTripResponse ->
+                       wrappedTripResponse.mapResponse { it.root.schedule.request.trips }
+                    }
+                    .responseToUiModelStream()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
             }
-            .subscribe(tripLiveData::postValue)
+            .subscribe(realTimeTripLiveData::postValue)
+    }
+
+    fun requestTrip(originAbbreviation: String,
+                    destinationAbbreviation: String) {
+        tripEventSubject.onNext(
+            TripRequestEvent(originAbbreviation, destinationAbbreviation))
     }
 }

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Leg(@Json(name = "@originAbbreviation")
+data class Leg(@Json(name = "@origin")
                val origin: String,
                @Json(name = "@destination")
                val destination: String,
