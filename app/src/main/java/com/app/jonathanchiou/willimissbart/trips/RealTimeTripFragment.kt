@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,8 +36,8 @@ class RealTimeTripViewModelFactory(private val bartService: BartService):
 
 class RealTimeTripFragment: Fragment() {
 
-    @BindView(R.id.trips_recyclerview)
-    lateinit var tripsRecyclerView: RecyclerView
+    @BindView(R.id.container)
+    lateinit var container: FrameLayout
 
     @BindView(R.id.trips_origin_textview)
     lateinit var tripsOriginTextView: TextView
@@ -61,15 +62,12 @@ class RealTimeTripFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_trips, container, false)
+        return inflater.inflate(R.layout.fragment_real_time_trips, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
-
-        tripsRecyclerView.adapter = realTimeTripAdapter
-        tripsRecyclerView.layoutManager = LinearLayoutManager(context)
 
         realTimeTripViewModel = ViewModelProviders
             .of(this,
@@ -80,6 +78,18 @@ class RealTimeTripFragment: Fragment() {
         realTimeTripViewModel.realTimeTripLiveData
             .observe(viewLifecycleOwner, Observer {
                 if (it.state == State.DONE) {
+                    if (container.childCount == 0
+                        || container.getChildAt(0).id != R.id.recyclerview) {
+                        val recyclerView = LayoutInflater.from(context)
+                            .inflate(R.layout.layout_model_recyclerview, container, false)
+                            as RecyclerView
+                        recyclerView.adapter = realTimeTripAdapter
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+
+                        container.removeAllViews()
+                        container.addView(recyclerView)
+                    }
+
                     realTimeTripAdapter.setTrips(it.data!!)
                 }
             })

@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trips_recyclerview"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/trips_summary_layout"
-        android:layout_alignParentTop="true"/>
+        android:layout_above="@+id/trips_summary_layout"/>
 
     <LinearLayout
         android:id="@+id/trips_summary_layout"
