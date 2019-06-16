@@ -7,4 +7,6 @@ import com.squareup.moshi.JsonClass
 data class Estimate(@Json(name = "minutes")
                     val minutes: Int,
                     @Json(name= "platform")
-                    val platform: Int)
+                    val platform: Int,
+                    @Json(name = "hexcolor")
+                    val hexColor: String)

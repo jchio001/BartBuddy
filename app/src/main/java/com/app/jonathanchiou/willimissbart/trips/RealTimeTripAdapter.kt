@@ -1,5 +1,6 @@
 package com.app.jonathanchiou.willimissbart.trips
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 
 class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+    @BindView(R.id.train_color_indicator)
+    lateinit var trainColorIndicator: View
 
     @BindView(R.id.destination_textview)
     lateinit var departureTimeTextView: TextView
@@ -43,9 +47,14 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        realTimeTrips[position].originEtds[0].let {
-            holder.departureTimeTextView.text = "To ${it.destination}"
-            holder.timeUntilArrivalTextView.text = "${it.estimates[0].minutes} min"
+        realTimeTrips[position].originEtds[0].also {etd ->
+            holder.departureTimeTextView.text = "To ${etd.destination}"
+            etd.estimates[0].also {
+                holder.timeUntilArrivalTextView.text = "${it.minutes} min"
+                holder.trainColorIndicator
+                    .setBackgroundColor(
+                        Color.parseColor(it.hexColor))
+            }
         }
     }
 }
