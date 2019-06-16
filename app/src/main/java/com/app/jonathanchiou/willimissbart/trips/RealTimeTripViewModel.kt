@@ -1,9 +1,8 @@
 package com.app.jonathanchiou.willimissbart.trips
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.app.jonathanchiou.willimissbart.api.ApiClient
+import androidx.lifecycle.ViewModel
+import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
@@ -16,7 +15,7 @@ import io.reactivex.subjects.PublishSubject
 class TripRequestEvent(val originAbbreviation: String,
                        val destinationAbbreviation: String)
 
-class TripViewModel(application: Application): AndroidViewModel(application) {
+class RealTimeTripViewModel(bartService: BartService): ViewModel() {
 
     val realTimeTripLiveData = MutableLiveData<UiModel<List<Trip>>>()
 
@@ -27,7 +26,7 @@ class TripViewModel(application: Application): AndroidViewModel(application) {
     init {
         disposable = tripEventSubject
             .switchMap { tripRequestEvent ->
-                ApiClient.INSTANCE.bartService.getDepartures(
+                bartService.getDepartures(
                     tripRequestEvent.originAbbreviation,
                     tripRequestEvent.destinationAbbreviation)
                     .map { wrappedTripResponse ->

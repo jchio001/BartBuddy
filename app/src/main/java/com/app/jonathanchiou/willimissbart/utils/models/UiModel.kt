@@ -86,4 +86,27 @@ private fun <T> Observable<UiModel<T>>.handleError(): Observable<UiModel<T>> {
 data class UiModel<T>(val state: State,
                       val statusCode: Int? = null,
                       val data: T? = null,
-                      val error: Throwable? = null)
+                      val error: Throwable? = null) {
+
+    companion object {
+
+        fun <T> zip(vararg uiModels: UiModel<T>): UiModel<List<T>> {
+            val modelList = ArrayList<T>(uiModels.size)
+            var lowestState = State.DONE
+
+            for (uiModel in uiModels) {
+                uiModel.state.let {
+                    if (it.ordinal < lowestState.ordinal) {
+                        lowestState = it
+                    }
+                }
+
+                uiModel.data?.also { modelList.add(it) }
+            }
+
+            return UiModel(
+                state = lowestState,
+                data = if (lowestState == State.DONE) modelList else null)
+        }
+    }
+}

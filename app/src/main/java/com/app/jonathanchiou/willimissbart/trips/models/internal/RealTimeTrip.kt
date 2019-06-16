@@ -4,5 +4,4 @@ import com.app.jonathanchiou.willimissbart.trips.models.api.Etd
 
 data class RealTimeTrip(val originAbbreviation: String,
                         val destinationAbbreviation: String,
-                        val originEtds: List<Etd>,
-                        val destinationEtds: List<Etd>)
+                        val originEtds: List<Etd>)

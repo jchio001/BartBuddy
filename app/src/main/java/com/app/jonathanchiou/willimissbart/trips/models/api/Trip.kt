@@ -9,4 +9,6 @@ data class Trip(@Json(name = "@origin")
                 @Json(name = "@destination")
                 val destination: String,
                 @Json(name = "leg")
-                val legs: List<Leg>)
+                val legs: List<Leg>,
+                @Json(name = "@origTimeMin")
+                val originDepartureTime: String)
