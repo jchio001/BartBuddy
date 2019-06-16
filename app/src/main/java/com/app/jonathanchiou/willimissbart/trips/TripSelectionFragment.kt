@@ -61,9 +61,10 @@ class TripSelectionFragment: Fragment() {
         R.id.origin_station_textview,
         R.id.destination_station_textview)
     fun onStationTextViewClicked(view: View) {
-        tripManager.updateStation(this,
-                                  if (view.id == R.id.origin_station_textview) StationType.ORIGIN
-                                  else StationType.DESTINATION)
+        tripManager.updateStation(
+            this,
+            if (view.id == R.id.origin_station_textview) StationType.ORIGIN
+            else StationType.DESTINATION)
     }
 
     @OnClick(R.id.swap_icon)
