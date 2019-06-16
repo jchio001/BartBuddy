@@ -34,7 +34,17 @@ class RealTimeTripClient(private val bartService: BartService) {
         return Observable
             .zip(etdObservables) { objects ->
                 UiModel.zip(
-                    objects.map { it as UiModel<RealTimeTrip> })
+                    objects
+                        .map { it as UiModel<RealTimeTrip> })
+                    .let { realTimeTripUiModel ->
+                        if (realTimeTripUiModel.data != null ) {
+                            realTimeTripUiModel.copy(
+                                data = realTimeTripUiModel.data
+                                    .filter { it.originEtds.isNotEmpty() })
+                        } else {
+                            realTimeTripUiModel
+                        }
+                    }
             }
     }
 }

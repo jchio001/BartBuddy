@@ -15,7 +15,7 @@ interface BartService {
     fun getStations(): Observable<Response<BartResponseWrapper<StationsRoot>>>
 
     // Link to the documentation since this endpoint's a mess: https://api.bart.gov/docs/sched/depart.aspx
-    @GET("sched.aspx?cmd=depart&date=now&b=0&a=0&json=y&key=${BuildConfig.BART_API_KEY}")
+    @GET("sched.aspx?cmd=depart&date=now&b=0&a=2&json=y&key=${BuildConfig.BART_API_KEY}")
     fun getDepartures(@Query("orig") orig: String,
                       @Query("dest") dest: String): Observable<Response<BartResponseWrapper<DeparturesRoot>>>
 

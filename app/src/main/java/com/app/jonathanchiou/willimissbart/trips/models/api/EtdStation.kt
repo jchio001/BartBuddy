@@ -9,4 +9,4 @@ data class EtdStation(@Json(name = "name")
                       @Json(name = "abbr")
                       val abbr: String,
                       @Json(name = "etd")
-                      val etds: List<Etd>)
+                      val etds: List<Etd> = ArrayList())
