@@ -50,7 +50,8 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
         realTimeTrips[position].originEtds[0].also {etd ->
             holder.departureTimeTextView.text = "To ${etd.destination}"
             etd.estimates[0].also {
-                holder.timeUntilArrivalTextView.text = "${it.minutes} min"
+                holder.timeUntilArrivalTextView.text =
+                    if (it.minutes != 0) "${it.minutes} min" else "Leaving..."
                 holder.trainColorIndicator
                     .setBackgroundColor(
                         Color.parseColor(it.hexColor))
