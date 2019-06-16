@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -39,12 +40,6 @@ class RealTimeTripFragment: Fragment() {
     @BindView(R.id.container)
     lateinit var container: FrameLayout
 
-    @BindView(R.id.trips_origin_textview)
-    lateinit var tripsOriginTextView: TextView
-
-    @BindView(R.id.trips_destination_textview)
-    lateinit var tripsDestinationTextView: TextView
-
     lateinit var tripManager: TripManager
 
     lateinit var realTimeTripViewModel: RealTimeTripViewModel
@@ -53,8 +48,8 @@ class RealTimeTripFragment: Fragment() {
 
     private val stationListener = object: StationListener {
         override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
-            tripsOriginTextView.text = originAbbreviation
-            tripsDestinationTextView.text = destinationAbbreviation
+            (activity as AppCompatActivity).supportActionBar?.title =
+                "$originAbbreviation to $destinationAbbreviation"
             realTimeTripViewModel.requestTrip(originAbbreviation!!, destinationAbbreviation!!)
         }
     }
