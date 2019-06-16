@@ -9,12 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
+import com.app.jonathanchiou.willimissbart.utils.models.State
 
 class RealTimeTripFragment: Fragment() {
 
@@ -30,6 +32,8 @@ class RealTimeTripFragment: Fragment() {
     lateinit var tripManager: TripManager
 
     lateinit var realTimeTripViewModel: TripViewModel
+
+    val realTimeTripAdapter = RealTimeTripAdapter()
 
     private val stationListener = object: StationListener {
         override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
@@ -49,10 +53,15 @@ class RealTimeTripFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
 
+        tripsRecyclerView.adapter = realTimeTripAdapter
+        tripsRecyclerView.layoutManager = LinearLayoutManager(context)
+
         realTimeTripViewModel = ViewModelProviders.of(this).get(TripViewModel::class.java)
         realTimeTripViewModel.realTimeTripLiveData
             .observe(viewLifecycleOwner, Observer {
-                Log.i("Pizza", it.state.toString())
+                if (it.state == State.DONE) {
+                    realTimeTripAdapter.setTrips(it.data!!)
+                }
             })
 
         tripManager = (activity as MainActivity).tripManager
