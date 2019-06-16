@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.api.ApiClient
@@ -37,6 +39,12 @@ class RealTimeTripViewModelFactory(private val bartService: BartService):
 
 class RealTimeTripFragment: Fragment() {
 
+    @BindView(R.id.edit_icon)
+    lateinit var editIcon: ImageView
+
+    @BindView(R.id.trip_information_textview)
+    lateinit var tripInformationTextView: TextView
+
     @BindView(R.id.container)
     lateinit var container: FrameLayout
 
@@ -48,8 +56,7 @@ class RealTimeTripFragment: Fragment() {
 
     private val stationListener = object: StationListener {
         override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
-            (activity as AppCompatActivity).supportActionBar?.title =
-                "$originAbbreviation to $destinationAbbreviation"
+            tripInformationTextView.text = "$originAbbreviation to $destinationAbbreviation"
             realTimeTripViewModel.requestTrip(originAbbreviation!!, destinationAbbreviation!!)
         }
     }
@@ -108,6 +115,20 @@ class RealTimeTripFragment: Fragment() {
             tripManager.addListener(stationListener)
         } else {
             tripManager.removeListener(stationListener)
+        }
+    }
+
+    @OnClick(R.id.edit_icon)
+    fun onEditIconClicked() {
+        val tripSelectionFragment = TripSelectionFragment()
+
+        fragmentManager!!.also {
+         it.beginTransaction()
+             .hide(it.fragments[0])
+             .add(R.id.parent, tripSelectionFragment)
+             .show(tripSelectionFragment)
+             .addToBackStack("TripSelectionFragment")
+             .commit()
         }
     }
 }
