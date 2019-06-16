@@ -3,15 +3,14 @@ package com.app.jonathanchiou.willimissbart.trips
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
-import com.app.jonathanchiou.willimissbart.utils.models.responseToTerminalUiModel
+import com.app.jonathanchiou.willimissbart.utils.models.toTerminalUiModelStream
 import io.reactivex.Observable
 
 class RealTimeTripClient(private val bartService: BartService) {
 
-    fun getEtdsForTrips(vararg trips: Trip): Observable<UiModel<List<RealTimeTrip>>> {
+    fun getEtdsForTrips(trips: List<Trip>): Observable<UiModel<List<RealTimeTrip>>> {
         val etdObservables = trips
             .map { trip ->
                 bartService.getRealTimeEstimates(trip.legs[0].origin)
@@ -22,18 +21,20 @@ class RealTimeTripClient(private val bartService: BartService) {
                                 trip.destination,
                                 etdRootWrapper.root.etdStations[0].etds
                                     .filter {
-                                        it.destination == trip.destination
+                                        it.destination.contains(trip.legs[0].trainHeadStation)
                                     }
                             )
                         }
                     }
-                    .responseToTerminalUiModel()
+                    .toTerminalUiModelStream()
             }
 
+
+
         return Observable
-            .zip(etdObservables) {
-                UiModel.zip(*it as Array<UiModel<RealTimeTrip>>)
+            .zip(etdObservables) { objects ->
+                UiModel.zip(
+                    objects.map { it as UiModel<RealTimeTrip> })
             }
-            .startWith(UiModel(state = State.PENDING))
     }
 }

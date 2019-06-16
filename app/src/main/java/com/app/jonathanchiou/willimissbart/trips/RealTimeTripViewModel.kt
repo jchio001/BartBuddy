@@ -3,10 +3,11 @@ package com.app.jonathanchiou.willimissbart.trips
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
-import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
-import com.app.jonathanchiou.willimissbart.utils.models.responseToUiModelStream
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -17,11 +18,13 @@ class TripRequestEvent(val originAbbreviation: String,
 
 class RealTimeTripViewModel(bartService: BartService): ViewModel() {
 
-    val realTimeTripLiveData = MutableLiveData<UiModel<List<Trip>>>()
+    val realTimeTripLiveData = MutableLiveData<UiModel<List<RealTimeTrip>>>()
 
     private val tripEventSubject = PublishSubject.create<TripRequestEvent>()
 
     private val disposable: Disposable
+
+    private val realTimeTripClient = RealTimeTripClient(bartService)
 
     init {
         disposable = tripEventSubject
@@ -30,9 +33,20 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                     tripRequestEvent.originAbbreviation,
                     tripRequestEvent.destinationAbbreviation)
                     .map { wrappedTripResponse ->
-                       wrappedTripResponse.mapResponse { it.root.schedule.request.trips }
+                       wrappedTripResponse.mapResponse {
+                           it.root.schedule.request.trips }
                     }
-                    .responseToUiModelStream()
+                    .flatMap {
+                        if (it.isSuccessful) {
+                            realTimeTripClient.getEtdsForTrips(it.body()!!)
+                        } else {
+                            Observable.just(
+                                UiModel(
+                                state = State.ERROR,
+                                statusCode = it.code()))
+                        }
+                    }
+                    .startWith(UiModel(state = State.PENDING))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }

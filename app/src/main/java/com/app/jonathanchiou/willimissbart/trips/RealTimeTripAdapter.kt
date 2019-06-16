@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 
 class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    @BindView(R.id.departure_time_textview)
+    @BindView(R.id.destination_textview)
     lateinit var departureTimeTextView: TextView
+
+    @BindView(R.id.time_until_arrival_textview)
+    lateinit var timeUntilArrivalTextView: TextView
 
     init {
         ButterKnife.bind(this, itemView)
@@ -22,9 +25,9 @@ class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
 class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
 
-    private var trips: List<Trip> = ArrayList()
-    fun setTrips(trips: List<Trip>) {
-        this.trips = trips
+    private var realTimeTrips: List<RealTimeTrip> = ArrayList()
+    fun setTrips(realTimeTrips: List<RealTimeTrip>) {
+        this.realTimeTrips = realTimeTrips
         notifyDataSetChanged()
     }
 
@@ -36,12 +39,13 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return trips.size
+        return realTimeTrips.size
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        holder.let {
-            it.departureTimeTextView.text = trips[position].originDepartureTime
+        realTimeTrips[position].originEtds[0].let {
+            holder.departureTimeTextView.text = "To ${it.destination}"
+            holder.timeUntilArrivalTextView.text = "${it.estimates[0].minutes} min"
         }
     }
 }

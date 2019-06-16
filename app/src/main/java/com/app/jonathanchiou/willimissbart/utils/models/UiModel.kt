@@ -29,7 +29,7 @@ fun <T> Observable<T>.modelToUiModelStream(): Observable<UiModel<T>> {
         .handlePendingAndError()
 }
 
-fun <T> Observable<Response<T>>.responseToTerminalUiModel(): Observable<UiModel<T>> {
+fun <T> Observable<Response<T>>.toTerminalUiModelStream(): Observable<UiModel<T>> {
     return this
         .map {
             if (it.isSuccessful) {
@@ -90,7 +90,7 @@ data class UiModel<T>(val state: State,
 
     companion object {
 
-        fun <T> zip(vararg uiModels: UiModel<T>): UiModel<List<T>> {
+        fun <T> zip(uiModels: List<UiModel<T>>): UiModel<List<T>> {
             val modelList = ArrayList<T>(uiModels.size)
             var lowestState = State.DONE
 
