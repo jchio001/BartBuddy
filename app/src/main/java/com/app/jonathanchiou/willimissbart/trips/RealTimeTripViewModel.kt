@@ -55,7 +55,10 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
 
     fun requestTrip(originAbbreviation: String,
                     destinationAbbreviation: String) {
-        tripEventSubject.onNext(
-            TripRequestEvent(originAbbreviation, destinationAbbreviation))
+        realTimeTripLiveData.value.also {
+            if (it == null || it.state == State.ERROR) {
+                tripEventSubject.onNext(TripRequestEvent(originAbbreviation, destinationAbbreviation))
+            }
+        }
     }
 }
