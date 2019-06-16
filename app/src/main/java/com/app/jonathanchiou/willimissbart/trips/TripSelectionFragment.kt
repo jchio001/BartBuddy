@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -14,8 +15,26 @@ import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
+import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
+import com.google.android.material.snackbar.Snackbar
+
+fun View.showSnackbar(color: Int) {
+    Snackbar
+        .make(
+            this,
+            R.string.stations_unchanged_error,
+            Snackbar.LENGTH_SHORT)
+        .setActionTextColor(ContextCompat.getColor(context!!, android.R.color.white))
+        .also {
+            it.view.setBackgroundColor(ContextCompat.getColor(context!!, color))
+        }
+        .show()
+}
 
 class TripSelectionFragment: Fragment() {
+
+    @BindView(R.id.coordinator_container)
+    lateinit var coordinatorContainer: CoordinatorLayout
 
     @BindView(R.id.origin_station_textview)
     lateinit var originStationTextView: TextView
@@ -26,9 +45,17 @@ class TripSelectionFragment: Fragment() {
     lateinit var tripManager: TripManager
 
     private val stationListener = object: StationListener {
+
         override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
             originStationTextView.text = originAbbreviation
             destinationStationTextView.text = destinationAbbreviation
+        }
+    }
+
+    private val tripUnchangedListener = object: TripUnchangedListener {
+
+        override fun onTripUnchanged() {
+            coordinatorContainer.showSnackbar(R.color.colorPrimary)
         }
     }
 
@@ -45,6 +72,7 @@ class TripSelectionFragment: Fragment() {
 
         tripManager = (activity as MainActivity).tripManager
         tripManager.addListener(stationListener)
+        tripManager.tripUnchangedListener = tripUnchangedListener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -14,9 +14,16 @@ enum class StationType {
 
 class TripManager(private val sharedPreferences: SharedPreferences) {
 
+    interface TripUnchangedListener {
+        fun onTripUnchanged()
+    }
+
     interface StationListener {
         fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?)
     }
+
+    private var previousOriginAbbreviation: String? = null
+    private var previousDestinationAbbreviation: String? = null
 
     var originAbbreviation: String? = null
         private set
@@ -26,10 +33,17 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
 
     private var stationListeners = HashSet<StationListener>(2)
 
+    var tripUnchangedListener: TripUnchangedListener? = null
+
     init {
         sharedPreferences.also {
-            originAbbreviation = it.getString(TRIP_ORIGIN_ABBREVIATION_KEY, null)
-            destinationAbbreviation = it.getString(TRIP_DESTINATION_ABBREVIATION_KEY, null)
+            previousOriginAbbreviation =
+                it.getString(TRIP_ORIGIN_ABBREVIATION_KEY, null)
+            previousDestinationAbbreviation =
+                it.getString(TRIP_DESTINATION_ABBREVIATION_KEY, null)
+
+            originAbbreviation = previousOriginAbbreviation
+            destinationAbbreviation = previousDestinationAbbreviation
         }
     }
 
@@ -89,12 +103,18 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     }
 
     fun displayTripsFragment(fragment: Fragment, containerId: Int) {
-        if (originAbbreviation != null && destinationAbbreviation != null) {
+        if (originAbbreviation != null && destinationAbbreviation != null
+            && (previousOriginAbbreviation != originAbbreviation
+                || previousDestinationAbbreviation != previousDestinationAbbreviation)) {
+
             sharedPreferences
                 .edit()
                 .putString(TRIP_ORIGIN_ABBREVIATION_KEY, originAbbreviation)
                 .putString(TRIP_DESTINATION_ABBREVIATION_KEY, destinationAbbreviation)
                 .apply()
+
+            previousOriginAbbreviation = originAbbreviation
+            previousDestinationAbbreviation = destinationAbbreviation
 
             fragment.fragmentManager!!.also {
                 it.popBackStack()
@@ -102,6 +122,11 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
                     .replace(containerId, RealTimeTripFragment())
                     .commit()
             }
+        }
+
+        if (previousOriginAbbreviation == originAbbreviation
+            && previousDestinationAbbreviation == destinationAbbreviation) {
+            tripUnchangedListener?.onTripUnchanged()
         }
     }
 

@@ -4,7 +4,8 @@
     <string name="origin_station">Origin Station</string>
     <string name="destination_station">Destination Station</string>
     <string name="navigate">Navigate</string>
-    <string name="refresh">REFRESH</string>
+    <string name="refresh">REFRESH</string>Stations unchanged.
+    <string name="stations_unchanged_error">Please select new stations.</string>
 
     <string name="select_station">Select a station</string>
 
