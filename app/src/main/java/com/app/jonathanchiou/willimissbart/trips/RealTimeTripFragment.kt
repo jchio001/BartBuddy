@@ -77,7 +77,16 @@ class RealTimeTripFragment: Fragment() {
             .get(RealTimeTripViewModel::class.java)
         realTimeTripViewModel.realTimeTripLiveData
             .observe(viewLifecycleOwner, Observer {
-                if (it.state == State.DONE) {
+                if (it.state == State.PENDING) {
+                    if (container.childCount== 0
+                        || container.getChildAt(0).id != R.id.recyclerview) {
+                        val progressBar = LayoutInflater.from(context)
+                            .inflate(R.layout.layout_progress_bar, container, false)
+
+                        container.removeAllViews()
+                        container.addView(progressBar)
+                    }
+                } else if (it.state == State.DONE) {
                     if (container.childCount == 0
                         || container.getChildAt(0).id != R.id.recyclerview) {
                         val recyclerView = LayoutInflater.from(context)
