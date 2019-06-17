@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/trips"
+        android:icon="@drawable/ic_walk"
+        android:title="@string/trip"/>
+
+    <item
+        android:id="@+id/return_trips"
+        android:icon="@drawable/ic_walk_backwards"
+        android:title="@string/return_trip"/>
+
+</menu>
