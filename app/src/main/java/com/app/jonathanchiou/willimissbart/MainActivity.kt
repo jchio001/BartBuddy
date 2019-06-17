@@ -28,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
 
-        supportActionBar?.hide()
+        supportActionBar?.also {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.drawable.ic_edit)
+        }
 
         StationsManager.initialize(this)
 
