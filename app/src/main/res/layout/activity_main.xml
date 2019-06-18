@@ -12,15 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigationview"/>
-    
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+
+    <com.app.jonathanchiou.willimissbart.bottomnav.BottomNavigationView
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        app:menu="@menu/bottom_nav_menu"/>
+        android:background="@color/bart_blue"/>
     
 </RelativeLayout>

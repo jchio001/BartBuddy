@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.app.jonathanchiou.willimissbart.BottomNavigationViewManager.FragmentFactory
+import com.app.jonathanchiou.willimissbart.bottomnav.BottomNavigationView
+import com.app.jonathanchiou.willimissbart.bottomnav.FragmentFactory
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
 
     lateinit var tripManager: TripManager
-
-    lateinit var bottomNavigationViewManager: BottomNavigationViewManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,20 +35,19 @@ class MainActivity : AppCompatActivity() {
 
         tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(this))
 
-        bottomNavigationViewManager = BottomNavigationViewManager(
-            bottomNavigationView,
+        bottomNavigationView.setFragmentManager(
             supportFragmentManager,
             R.id.parent,
             object: FragmentFactory {
 
-                override fun createFragment(itemId: Int): Fragment {
+                override fun create(index: Int): Fragment {
                     return RealTimeTripFragment()
                 }
             }
         )
 
         if (tripManager.originAbbreviation != null && tripManager.destinationAbbreviation != null) {
-            bottomNavigationViewManager.setSelectedItem(R.id.trips)
+            bottomNavigationView.setSelection(0)
         } else {
             supportFragmentManager
                 .beginTransaction()
@@ -77,8 +74,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (!bottomNavigationViewManager.onBackPressed()) {
+        if (supportFragmentManager.backStackEntryCount <= 1) {
             finish()
+        } else {
+            super.onBackPressed()
         }
     }
 }
