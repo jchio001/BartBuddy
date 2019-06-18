@@ -2,7 +2,6 @@ package com.app.jonathanchiou.willimissbart.bottomnav
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.LinearLayout
@@ -51,14 +50,28 @@ class BottomNavigationView(context: Context,
 
     fun setSelection(index: Int) {
         val indexTag = index.toString()
+        var createdFragment = false
 
-        val fragment = fragmentManager.findFragmentByTag(indexTag)
-            ?: fragmentFactory.create(index)
+        val fragment = fragmentManager.findFragmentByTag(indexTag) ?: let {
+            createdFragment = true
+            fragmentFactory.create(index)
+        }
 
         if (!fragment.isVisible) {
             fragmentManager
                 .beginTransaction()
-                .replace(containerId, fragment, indexTag)
+                .let { fragmentTransaction ->
+                    fragmentManager.findFragmentById(containerId)?.let(fragmentTransaction::hide)
+                        ?: fragmentTransaction
+                }
+                .let {
+                    if (createdFragment) {
+                        it.add(containerId, fragment, indexTag)
+                    } else {
+                        it
+                    }
+                }
+                .show(fragment)
                 .addToBackStack(null)
                 .commit()
         }
