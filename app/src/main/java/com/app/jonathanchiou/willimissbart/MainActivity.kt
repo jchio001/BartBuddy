@@ -13,6 +13,7 @@ import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
+import com.app.jonathanchiou.willimissbart.trips.createRealTimeTripFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             object: FragmentFactory {
 
                 override fun create(index: Int): Fragment {
-                    return RealTimeTripFragment()
+                    return createRealTimeTripFragment(index == 1)
                 }
             }
         )

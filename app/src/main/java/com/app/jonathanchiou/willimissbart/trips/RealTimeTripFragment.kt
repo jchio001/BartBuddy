@@ -1,13 +1,10 @@
 package com.app.jonathanchiou.willimissbart.trips
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.api.ApiClient
@@ -38,6 +34,19 @@ class RealTimeTripViewModelFactory(private val bartService: BartService):
     }
 }
 
+
+fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
+    val realTimeTripFragment = RealTimeTripFragment()
+
+    if (isReturnTrip) {
+        realTimeTripFragment.arguments = Bundle().also {
+            it.putBoolean(RealTimeTripFragment.IS_RETURN_TRIP_KEY, true)
+        }
+    }
+
+    return realTimeTripFragment
+}
+
 class RealTimeTripFragment: Fragment() {
 
     @BindView(R.id.container)
@@ -47,13 +56,18 @@ class RealTimeTripFragment: Fragment() {
 
     lateinit var realTimeTripViewModel: RealTimeTripViewModel
 
-    val realTimeTripAdapter = RealTimeTripAdapter()
+    private val realTimeTripAdapter = RealTimeTripAdapter()
+
+    private var isReturnTrip = false
 
     private val stationListener = object: StationListener {
         override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
+            val actualOriginAbbreviation = if (!isReturnTrip) originAbbreviation else destinationAbbreviation
+            val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
+
             (context as AppCompatActivity).supportActionBar?.title =
-                "$originAbbreviation to $destinationAbbreviation"
-            realTimeTripViewModel.requestTrip(originAbbreviation!!, destinationAbbreviation!!)
+                "$actualOriginAbbreviation to $actualDestinationAbbreviation"
+            realTimeTripViewModel.requestTrip(actualOriginAbbreviation!!, actualDestinationAbbreviation!!)
         }
     }
 
@@ -66,6 +80,10 @@ class RealTimeTripFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
+
+        arguments?.also {
+            isReturnTrip = it.getBoolean(IS_RETURN_TRIP_KEY, false)
+        }
 
         realTimeTripViewModel = ViewModelProviders
             .of(this,
@@ -121,5 +139,10 @@ class RealTimeTripFragment: Fragment() {
         } else {
             tripManager.removeListener(stationListener)
         }
+    }
+
+    companion object {
+
+        const val IS_RETURN_TRIP_KEY = "is_return_trip"
     }
 }
