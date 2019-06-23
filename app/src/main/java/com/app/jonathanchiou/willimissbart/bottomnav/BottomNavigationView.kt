@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.app.jonathanchiou.willimissbart.R
+import java.util.*
 
 interface FragmentFactory {
     fun create(index: Int): Fragment
@@ -21,8 +22,9 @@ class BottomNavigationView(context: Context,
 
     private lateinit var fragmentManager: FragmentManager
     private lateinit var fragmentFactory: FragmentFactory
+    private val insertionStack = LinkedList<String>()
 
-    var containerId = 0
+    private var containerId = 0
 
     init {
         View.inflate(context, R.layout.bottom_navigation_view, this)
@@ -50,30 +52,48 @@ class BottomNavigationView(context: Context,
 
     fun setSelection(index: Int) {
         val indexTag = index.toString()
-        var createdFragment = false
 
         val fragment = fragmentManager.findFragmentByTag(indexTag) ?: let {
-            createdFragment = true
-            fragmentFactory.create(index)
-        }
+            val freshFragment = fragmentFactory.create(index)
 
-        if (!fragment.isVisible) {
             fragmentManager
                 .beginTransaction()
-                .let { fragmentTransaction ->
-                    fragmentManager.findFragmentById(containerId)?.let(fragmentTransaction::hide)
-                        ?: fragmentTransaction
-                }
+                .add(containerId, freshFragment, indexTag)
+                .commit()
+
+            freshFragment
+        }
+
+        if (insertionStack.contains(indexTag)) {
+            while (insertionStack.last != indexTag) {
+                insertionStack.removeLast()
+                fragmentManager.popBackStack()
+            }
+        } else {
+            fragmentManager
+                .beginTransaction()
                 .let {
-                    if (createdFragment) {
-                        it.add(containerId, fragment, indexTag)
-                    } else {
-                        it
+                    if (!insertionStack.isEmpty()) {
+                        it.hide(fragmentManager.findFragmentByTag(insertionStack.last)!!)
                     }
+
+                    it
                 }
                 .show(fragment)
                 .addToBackStack(null)
                 .commit()
+
+            insertionStack.add(indexTag)
+        }
+    }
+
+    fun onBackPressed(): Boolean {
+        return if (fragmentManager.backStackEntryCount <= 1) {
+            false
+        } else {
+            fragmentManager.popBackStack()
+            insertionStack.pop()
+            true
         }
     }
 }
