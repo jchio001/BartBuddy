@@ -10,7 +10,7 @@ class StationsViewModel(application: Application): AndroidViewModel(application)
 
     private val stationsManager = StationsManager.get()
 
-    fun getStationsLiveData(): MutableLiveData<UiModel<List<Station>>> {
+    fun getStationsLiveData(): MutableLiveData<UiModel<Void, List<Station>>> {
         return stationsManager.stationsLiveData
     }
 

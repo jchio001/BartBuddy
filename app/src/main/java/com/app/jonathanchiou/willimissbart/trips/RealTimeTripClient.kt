@@ -10,7 +10,8 @@ import io.reactivex.Observable
 
 class RealTimeTripClient(private val bartService: BartService) {
 
-    fun getEtdsForTrips(trips: List<Trip>): Observable<UiModel<List<RealTimeTrip>>> {
+    fun getEtdsForTrips(tripRequestEvent: TripRequestEvent,
+                        trips: List<Trip>): Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
         val etdObservables = trips
             .map { trip ->
                 bartService.getRealTimeEstimates(trip.legs[0].origin)
@@ -26,16 +27,12 @@ class RealTimeTripClient(private val bartService: BartService) {
                             )
                         }
                     }
-                    .toTerminalUiModelStream()
+                    .toTerminalUiModelStream(query = tripRequestEvent)
             }
-
-
 
         return Observable
             .zip(etdObservables) { objects ->
-                UiModel.zip(
-                    objects
-                        .map { it as UiModel<RealTimeTrip> })
+                UiModel.zip(objects.map { it as UiModel<TripRequestEvent, RealTimeTrip> })
                     .let { realTimeTripUiModel ->
                         if (realTimeTripUiModel.data != null ) {
                             realTimeTripUiModel.copy(

@@ -97,7 +97,7 @@ class RealTimeTripFragment: Fragment() {
             .observe(viewLifecycleOwner, Observer {
                 if (it.state == State.PENDING) {
                     if (container.childCount == 0
-                        || container.getChildAt(0).id != R.id.recyclerview) {
+                        || container.getChildAt(0).id != R.id.layout_progress_bar) {
                         val progressBar = LayoutInflater.from(context)
                             .inflate(R.layout.layout_progress_bar, container, false)
 

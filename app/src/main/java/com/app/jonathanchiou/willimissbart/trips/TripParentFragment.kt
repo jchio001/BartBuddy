@@ -55,6 +55,12 @@ class TripParentFragment: BackStackConsumingFragment() {
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        for (fragment in childFragmentManager.fragments) {
+            fragment.onHiddenChanged(hidden)
+        }
+    }
+
     @OnClick(R.id.edit_icon)
     fun onEditIconClicked() {
         fragmentManager!!
@@ -64,5 +70,9 @@ class TripParentFragment: BackStackConsumingFragment() {
             .show(TripSelectionFragment())
             .addToBackStack(null)
             .commit()
+    }
+
+    companion object {
+        const val BACKSTACK_TAG = "trip_parent_fragment"
     }
 }

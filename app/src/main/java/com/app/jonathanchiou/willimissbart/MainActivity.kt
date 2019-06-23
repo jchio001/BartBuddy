@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
         if (tripManager.originAbbreviation != null && tripManager.destinationAbbreviation != null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.parent, TripParentFragment())
+                .add(R.id.parent, TripParentFragment(), TripParentFragment.BACKSTACK_TAG)
                 .commit()
         } else {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.parent, TripSelectionFragment())
+                .add(R.id.parent, TripSelectionFragment(), TripSelectionFragment.BACKSTACK_TAG)
                 .commit()
         }
     }

@@ -17,7 +17,7 @@ class StationsManager(
     private val sharedPreferences: SharedPreferences,
     private val apiClient: ApiClient) {
 
-    val stationsLiveData =  MutableLiveData<UiModel<List<Station>>>()
+    val stationsLiveData =  MutableLiveData<UiModel<Void, List<Station>>>()
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
@@ -40,16 +40,10 @@ class StationsManager(
                             apiClient
                                 .bartService
                                 .getStations()
-                                .responseToUiModelStream()
-                                .map {
-                                    if (it.state == State.DONE) {
-                                        UiModel(
-                                            state = it.state,
-                                            data = it.data!!.root.stations.stations)
-                                    } else {
-                                        UiModel(state = it.state)
-                                    }
+                                .map { response ->
+                                    response.mapResponse { it.root.stations.stations }
                                 }
+                                .responseToUiModelStream<Void, List<Station>>()
                                 .doOnNext {
                                     // Confirmed that this is not happening on the UI thread by logging the current
                                     // thread's name.
@@ -72,7 +66,7 @@ class StationsManager(
                             Observable.fromCallable {
                                 apiClient.moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStations.value)!!
                             }
-                                .modelToUiModelStream()
+                                .modelToUiModelStream<Void, List<Station>>()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                         }

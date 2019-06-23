@@ -109,4 +109,9 @@ class TripSelectionFragment: BackStackConsumingFragment() {
     fun submitTripButton() {
         tripManager.displayTripsFragment(this, R.id.parent)
     }
+
+    companion object {
+
+        const val BACKSTACK_TAG = "trip_selection_fragment"
+    }
 }

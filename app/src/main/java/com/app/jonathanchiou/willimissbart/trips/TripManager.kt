@@ -31,7 +31,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     var destinationAbbreviation: String? = null
         private set
 
-    private var stationListeners = HashSet<StationListener>(2)
+    private var stationListeners = HashSet<StationListener>(3, 1.0f)
 
     var tripUnchangedListener: TripUnchangedListener? = null
 
@@ -117,7 +117,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
             previousDestinationAbbreviation = destinationAbbreviation
 
             fragment.fragmentManager!!.also {
-                val tripParentFragment = it.findFragmentByTag("trip_parent_fragment") ?: RealTimeTripFragment()
+                val tripParentFragment = it.findFragmentByTag(TripParentFragment.BACKSTACK_TAG) ?: TripParentFragment()
 
                 it.popBackStack()
                 it.beginTransaction()

@@ -18,7 +18,7 @@ class TripRequestEvent(val originAbbreviation: String,
 
 class RealTimeTripViewModel(bartService: BartService): ViewModel() {
 
-    val realTimeTripLiveData = MutableLiveData<UiModel<List<RealTimeTrip>>>()
+    val realTimeTripLiveData = MutableLiveData<UiModel<TripRequestEvent, List<RealTimeTrip>>>()
 
     private val tripEventSubject = PublishSubject.create<TripRequestEvent>()
 
@@ -38,7 +38,7 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                     }
                     .flatMap {
                         if (it.isSuccessful) {
-                            realTimeTripClient.getEtdsForTrips(it.body()!!)
+                            realTimeTripClient.getEtdsForTrips(tripRequestEvent, it.body()!!)
                         } else {
                             Observable.just(
                                 UiModel(
@@ -56,7 +56,9 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
     fun requestTrip(originAbbreviation: String,
                     destinationAbbreviation: String) {
         realTimeTripLiveData.value.also {
-            if (it == null || it.state == State.ERROR) {
+            if (it == null || it.state == State.ERROR
+                || it.query!!.originAbbreviation != originAbbreviation
+                || it.query.destinationAbbreviation != destinationAbbreviation) {
                 tripEventSubject.onNext(TripRequestEvent(originAbbreviation, destinationAbbreviation))
             }
         }

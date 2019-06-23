@@ -18,52 +18,60 @@ inline fun <T, V> Response<T>.mapResponse(mapFunc: (T) -> V): Response<V> {
     }
 }
 
-fun <T> Observable<T>.modelToUiModelStream(): Observable<UiModel<T>> {
+fun <QUERY, RESULT> Observable<RESULT>.modelToUiModelStream(query: QUERY? = null): Observable<UiModel<QUERY, RESULT>> {
     return this.
         map {
             UiModel(
                 state = State.DONE,
+                query = query,
                 statusCode = HttpURLConnection.HTTP_OK,
                 data = it)
         }
         .handlePendingAndError()
 }
 
-fun <T> Observable<Response<T>>.toTerminalUiModelStream(): Observable<UiModel<T>> {
+fun <QUERY, RESULT> Observable<Response<RESULT>>.toTerminalUiModelStream(query: QUERY? = null):
+    Observable<UiModel<QUERY, RESULT>> {
     return this
         .map {
             if (it.isSuccessful) {
                 UiModel(
                     state = State.DONE,
+                    query = query,
                     statusCode = it.code(),
                     data = it.body())
             } else {
                 UiModel(
                     state = State.ERROR,
+                    query = query,
                     statusCode = it.code())
             }
         }
         .handleError()
 }
 
-fun <T> Observable<Response<T>>.responseToUiModelStream(): Observable<UiModel<T>> {
+fun <QUERY, RESULT> Observable<Response<RESULT>>.responseToUiModelStream(query: QUERY? = null):
+    Observable<UiModel<QUERY, RESULT>> {
     return this
         .map {
             if (it.isSuccessful) {
                 UiModel(
                     state = State.DONE,
+                    query = query,
                     statusCode = it.code(),
                     data = it.body())
             } else {
                 UiModel(
                     state = State.ERROR,
+                    query = query,
                     statusCode = it.code())
             }
         }
         .handlePendingAndError()
 }
 
-private fun <T> Observable<UiModel<T>>.handlePendingAndError(): Observable<UiModel<T>> {
+private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndError():
+    Observable<UiModel<QUERY, RESULT>> {
     return this.
         onErrorReturn {
             UiModel(
@@ -74,7 +82,7 @@ private fun <T> Observable<UiModel<T>>.handlePendingAndError(): Observable<UiMod
             UiModel(state = State.PENDING))
 }
 
-private fun <T> Observable<UiModel<T>>.handleError(): Observable<UiModel<T>> {
+private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handleError(): Observable<UiModel<QUERY, RESULT>> {
     return this.
         onErrorReturn {
             UiModel(
@@ -83,15 +91,16 @@ private fun <T> Observable<UiModel<T>>.handleError(): Observable<UiModel<T>> {
         }
 }
 
-data class UiModel<T>(val state: State,
-                      val statusCode: Int? = null,
-                      val data: T? = null,
-                      val error: Throwable? = null) {
+data class UiModel<QUERY, RESULT>(val state: State,
+                                  val query: QUERY? = null,
+                                  val statusCode: Int? = null,
+                                  val data: RESULT? = null,
+                                  val error: Throwable? = null) {
 
     companion object {
 
-        fun <T> zip(uiModels: List<UiModel<T>>): UiModel<List<T>> {
-            val modelList = ArrayList<T>(uiModels.size)
+        fun <QUERY, RESULT> zip(uiModels: List<UiModel<QUERY, RESULT>>): UiModel<QUERY, List<RESULT>> {
+            val modelList = ArrayList<RESULT>(uiModels.size)
             var lowestState = State.DONE
 
             for (uiModel in uiModels) {
@@ -106,6 +115,7 @@ data class UiModel<T>(val state: State,
 
             return UiModel(
                 state = lowestState,
+                query = uiModels[0].query,
                 data = if (lowestState == State.DONE) modelList else null)
         }
     }
