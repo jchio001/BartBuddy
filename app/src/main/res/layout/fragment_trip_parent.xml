@@ -50,7 +50,7 @@
         android:layout_above="@+id/bottom_navigationview"
         android:layout_below="@+id/action_bar"/>
 
-    <com.app.jonathanchiou.willimissbart.bottomnav.BottomNavigationView
+    <com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigationView
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
         android:layout_height="52dp"

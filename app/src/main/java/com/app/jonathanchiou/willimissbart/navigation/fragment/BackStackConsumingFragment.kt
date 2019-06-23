@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.fragment
+package com.app.jonathanchiou.willimissbart.navigation.fragment
 
 import androidx.fragment.app.Fragment
 

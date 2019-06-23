@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.bottomnav
+package com.app.jonathanchiou.willimissbart.navigation.bottomnav
 
 import android.content.Context
 import android.util.AttributeSet

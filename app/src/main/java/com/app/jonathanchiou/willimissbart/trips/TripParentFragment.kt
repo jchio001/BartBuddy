@@ -10,9 +10,9 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.bottomnav.BottomNavigationView
-import com.app.jonathanchiou.willimissbart.bottomnav.FragmentFactory
-import com.app.jonathanchiou.willimissbart.fragment.BackStackConsumingFragment
+import com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigationView
+import com.app.jonathanchiou.willimissbart.navigation.bottomnav.FragmentFactory
+import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 
 class TripParentFragment: BackStackConsumingFragment() {
 

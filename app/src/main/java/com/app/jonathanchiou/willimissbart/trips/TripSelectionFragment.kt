@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.fragment.BackStackConsumingFragment
+import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
 import com.google.android.material.snackbar.Snackbar
