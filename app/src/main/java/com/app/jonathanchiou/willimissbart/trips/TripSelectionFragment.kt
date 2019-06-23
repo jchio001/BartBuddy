@@ -14,6 +14,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +32,7 @@ fun View.showSnackbar(color: Int) {
         .show()
 }
 
-class TripSelectionFragment: Fragment() {
+class TripSelectionFragment: BackStackConsumingFragment() {
 
     @BindView(R.id.coordinator_container)
     lateinit var coordinatorContainer: CoordinatorLayout
@@ -83,6 +84,10 @@ class TripSelectionFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         tripManager.removeListener(stationListener)
+    }
+
+    override fun onBackPressed(): Boolean {
+        return false
     }
 
     @OnClick(

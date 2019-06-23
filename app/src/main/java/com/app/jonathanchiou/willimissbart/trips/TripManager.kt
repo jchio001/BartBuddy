@@ -117,9 +117,11 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
             previousDestinationAbbreviation = destinationAbbreviation
 
             fragment.fragmentManager!!.also {
+                val tripParentFragment = it.findFragmentByTag("trip_parent_fragment") ?: RealTimeTripFragment()
+
                 it.popBackStack()
                 it.beginTransaction()
-                    .replace(containerId, RealTimeTripFragment())
+                    .replace(containerId, tripParentFragment)
                     .commit()
             }
         }
