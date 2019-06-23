@@ -1,5 +1,6 @@
 package com.app.jonathanchiou.willimissbart.utils.models
 
+import com.app.jonathanchiou.willimissbart.utils.GulpException
 import io.reactivex.Observable
 import retrofit2.Response
 import java.net.HttpURLConnection
@@ -104,7 +105,9 @@ data class UiModel<QUERY, RESULT>(val state: State,
 
         fun <QUERY, RESULT> zip(uiModels: List<UiModel<QUERY, RESULT>>): UiModel<QUERY, List<RESULT>> {
             val modelList = ArrayList<RESULT>(uiModels.size)
+            val throwables = ArrayList<Throwable?>(uiModels.size)
             var lowestState = State.DONE
+            var exceptionThrown = false
 
             for (uiModel in uiModels) {
                 uiModel.state.let {
@@ -114,12 +117,20 @@ data class UiModel<QUERY, RESULT>(val state: State,
                 }
 
                 uiModel.data?.also { modelList.add(it) }
+                uiModel.error.also {
+                    if (it != null) {
+                        exceptionThrown = true
+                    }
+
+                    throwables.add(uiModel.error)
+                }
             }
 
             return UiModel(
                 state = lowestState,
                 query = uiModels[0].query,
-                data = if (lowestState == State.DONE) modelList else null)
+                data = if (lowestState == State.DONE) modelList else null,
+                error = if (exceptionThrown) GulpException(throwables) else null)
         }
     }
 }
