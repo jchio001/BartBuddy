@@ -15,11 +15,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="0sp"
+                android:layout_height="0sp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_walk"/>
 
@@ -28,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/trip"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"/>
+                android:textSize="0sp"/>
 
         </LinearLayout>
 
@@ -43,11 +45,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="0sp"
+                android:layout_height="0sp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_walk_backwards"/>
 
@@ -56,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/return_trip"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"/>
+                android:textSize="0sp"/>
 
         </LinearLayout>
 

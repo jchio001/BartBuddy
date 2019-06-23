@@ -53,7 +53,7 @@
     <com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigationView
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/bart_blue"/>
 

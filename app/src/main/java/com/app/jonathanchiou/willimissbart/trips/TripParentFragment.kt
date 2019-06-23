@@ -50,7 +50,7 @@ class TripParentFragment: BackStackConsumingFragment() {
         if (childFragmentManager.backStackEntryCount <= 1) {
             return false
         } else {
-            childFragmentManager.popBackStack()
+            bottomNavigationView.onBackPressed()
             return true
         }
     }
