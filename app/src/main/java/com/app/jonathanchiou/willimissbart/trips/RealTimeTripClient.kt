@@ -4,7 +4,7 @@ import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
-import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
+import com.app.jonathanchiou.willimissbart.utils.models.mapBody
 import com.app.jonathanchiou.willimissbart.utils.models.toTerminalUiModelStream
 import io.reactivex.Observable
 
@@ -15,17 +15,15 @@ class RealTimeTripClient(private val bartService: BartService) {
         val etdObservables = trips
             .map { trip ->
                 bartService.getRealTimeEstimates(trip.legs[0].origin)
-                    .map { response ->
-                        response.mapResponse { etdRootWrapper ->
-                            RealTimeTrip(
-                                trip.origin,
-                                trip.destination,
-                                etdRootWrapper.root.etdStations[0].etds
-                                    .filter {
-                                        it.destination.contains(trip.legs[0].trainHeadStation)
-                                    }
-                            )
-                        }
+                    .mapBody { etdRootWrapper ->
+                        RealTimeTrip(
+                            trip.origin,
+                            trip.destination,
+                            etdRootWrapper.root.etdStations[0].etds
+                                .filter {
+                                    it.destination.contains(trip.legs[0].trainHeadStation)
+                                }
+                        )
                     }
                     .toTerminalUiModelStream(query = tripRequestEvent)
             }

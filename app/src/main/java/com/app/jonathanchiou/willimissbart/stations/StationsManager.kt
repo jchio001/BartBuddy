@@ -40,9 +40,7 @@ class StationsManager(
                             apiClient
                                 .bartService
                                 .getStations()
-                                .map { response ->
-                                    response.mapResponse { it.root.stations.stations }
-                                }
+                                .mapBody { it.root.stations.stations }
                                 .responseToUiModelStream<Void, List<Station>>()
                                 .doOnNext {
                                     // Confirmed that this is not happening on the UI thread by logging the current

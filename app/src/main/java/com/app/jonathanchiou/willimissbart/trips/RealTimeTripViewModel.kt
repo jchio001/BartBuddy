@@ -6,7 +6,7 @@ import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
-import com.app.jonathanchiou.willimissbart.utils.models.mapResponse
+import com.app.jonathanchiou.willimissbart.utils.models.mapBody
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -32,10 +32,7 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                 bartService.getDepartures(
                     tripRequestEvent.originAbbreviation,
                     tripRequestEvent.destinationAbbreviation)
-                    .map { wrappedTripResponse ->
-                       wrappedTripResponse.mapResponse {
-                           it.root.schedule.request.trips }
-                    }
+                    .mapBody { it.root.schedule.request.trips }
                     .flatMap {
                         if (it.isSuccessful) {
                             realTimeTripClient.getEtdsForTrips(tripRequestEvent, it.body()!!)

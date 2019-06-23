@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
-import com.app.jonathanchiou.willimissbart.trips.*
+import com.app.jonathanchiou.willimissbart.trips.TripManager
+import com.app.jonathanchiou.willimissbart.trips.TripParentFragment
+import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
 
 class MainActivity : AppCompatActivity() {
 
