@@ -32,7 +32,16 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                 bartService.getDepartures(
                     tripRequestEvent.originAbbreviation,
                     tripRequestEvent.destinationAbbreviation)
-                    .mapBody { it.root.schedule.request.trips }
+                    .mapBody { departuresRootsWrapper ->
+                        departuresRootsWrapper.root.schedule.request.trips
+                            .distinctBy { trip ->
+                                trip.legs
+                                    .map {
+                                        "${it.origin}${it.destination}${it.trainHeadStation}"
+                                    }
+                                    .reduce { s1, s2 -> "$s1$s2" }
+                            }
+                    }
                     .flatMap {
                         if (it.isSuccessful) {
                             realTimeTripClient.getEtdsForTrips(tripRequestEvent, it.body()!!)
