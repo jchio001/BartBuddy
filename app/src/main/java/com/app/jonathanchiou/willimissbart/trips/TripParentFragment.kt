@@ -44,6 +44,7 @@ class TripParentFragment: BackStackConsumingFragment() {
         )
 
         bottomNavigationView.setSelection(0)
+        onHiddenChanged(false)
     }
 
     override fun onBackPressed(): Boolean {

@@ -18,7 +18,7 @@ import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.api.ApiClient
 import com.app.jonathanchiou.willimissbart.api.BartService
-import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
+import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.utils.models.State
 
 class RealTimeTripViewModelFactory(private val bartService: BartService):
@@ -58,19 +58,6 @@ class RealTimeTripFragment: Fragment() {
     private val realTimeTripAdapter = RealTimeTripAdapter()
 
     private var isReturnTrip = false
-
-    private val stationListener = object: StationListener {
-        override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
-            val actualOriginAbbreviation = if (!isReturnTrip) originAbbreviation else destinationAbbreviation
-            val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
-
-            (parentFragment as TripParentFragment?)?.also {
-                it.title.text = "$actualOriginAbbreviation to $actualDestinationAbbreviation"
-            }
-
-            realTimeTripViewModel.requestTrip(actualOriginAbbreviation!!, actualDestinationAbbreviation!!)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -121,25 +108,26 @@ class RealTimeTripFragment: Fragment() {
             })
 
         tripManager = (activity as MainActivity).tripManager
-    }
-
-    override fun onStart() {
-        super.onStart()
-        tripManager.addListener(stationListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        tripManager.addListener(stationListener)
+        requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden) {
-            tripManager.addListener(stationListener)
-        } else {
-            tripManager.removeListener(stationListener)
+
+        if (!isHidden) {
+        requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
         }
+    }
+
+    private fun requestTrip(originAbbreviation: String, destinationAbbreviation: String) {
+        val actualOriginAbbreviation = if (!isReturnTrip) originAbbreviation else destinationAbbreviation
+        val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
+
+        (parentFragment as TripParentFragment?)?.also {
+            it.title.text = "$actualOriginAbbreviation to $actualDestinationAbbreviation"
+        }
+
+        realTimeTripViewModel.requestTrip(actualOriginAbbreviation!!, actualDestinationAbbreviation!!)
     }
 
     companion object {

@@ -14,7 +14,7 @@ import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
-import com.app.jonathanchiou.willimissbart.trips.TripManager.StationListener
+import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
 import com.google.android.material.snackbar.Snackbar
 
@@ -44,14 +44,6 @@ class TripSelectionFragment: BackStackConsumingFragment() {
 
     lateinit var tripManager: TripManager
 
-    private val stationListener = object: StationListener {
-
-        override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
-            originStationTextView.text = originAbbreviation
-            destinationStationTextView.text = destinationAbbreviation
-        }
-    }
-
     private val tripUnchangedListener = object: TripUnchangedListener {
 
         override fun onTripUnchanged() {
@@ -71,7 +63,13 @@ class TripSelectionFragment: BackStackConsumingFragment() {
         ButterKnife.bind(this, view)
 
         tripManager = (activity as MainActivity).tripManager
-        tripManager.addListener(stationListener)
+        tripManager.tripEditedListener = object: TripStationListener {
+
+            override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
+                originStationTextView.text = originAbbreviation
+                destinationStationTextView.text = destinationAbbreviation
+            }
+        }
         tripManager.tripUnchangedListener = tripUnchangedListener
     }
 
@@ -82,7 +80,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        tripManager.removeListener(stationListener)
+        tripManager.tripEditedListener = null
     }
 
     override fun onBackPressed(): Boolean {
