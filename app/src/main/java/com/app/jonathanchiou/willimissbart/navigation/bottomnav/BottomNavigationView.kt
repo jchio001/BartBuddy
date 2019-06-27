@@ -48,7 +48,7 @@ class BottomNavigationView(context: Context,
                 resources.getDimensionPixelSize(R.dimen.default_text_size))
             focusedTextSize = (baseTextSize * 1.2).toInt()
 
-            baseIconSize = baseTextSize * 2
+            baseIconSize = (baseTextSize * 1.8).toInt()
             focusedIconSize = (baseIconSize * 1.2).toInt()
         } finally {
             attributes.recycle()
