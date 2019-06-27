@@ -21,7 +21,7 @@ class RealTimeTripClient(private val bartService: BartService) {
                             trip.destination,
                             etdRootWrapper.root.etdStations[0].etds
                                 .filter {
-                                    it.destination.contains(trip.legs[0].trainHeadStation)
+                                    trip.legs[0].trainHeadStation.contains(it.destination)
                                 }
                         )
                     }
