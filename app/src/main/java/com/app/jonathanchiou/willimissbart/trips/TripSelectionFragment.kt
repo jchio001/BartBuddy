@@ -65,9 +65,9 @@ class TripSelectionFragment: BackStackConsumingFragment() {
         tripManager = (activity as MainActivity).tripManager
         tripManager.tripEditedListener = object: TripStationListener {
 
-            override fun onTripStationChanged(originAbbreviation: String?, destinationAbbreviation: String?) {
-                originStationTextView.text = originAbbreviation
-                destinationStationTextView.text = destinationAbbreviation
+            override fun onTripStationChanged(originTitle: String?, destinationTitle: String?) {
+                originStationTextView.text = originTitle
+                destinationStationTextView.text = destinationTitle
             }
         }
         tripManager.tripUnchangedListener = tripUnchangedListener
