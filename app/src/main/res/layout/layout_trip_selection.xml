@@ -61,6 +61,7 @@
         android:layout_marginTop="12dp"
         android:layout_gravity="end"
         android:layout_marginRight="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="4dp"
         app:contentPaddingTop="8dp"
         app:contentPaddingBottom="8dp"
@@ -70,8 +71,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="@string/navigate"/>
+            android:text="@string/navigate"
+            android:textSize="16sp"/>
 
     </androidx.cardview.widget.CardView>
 
