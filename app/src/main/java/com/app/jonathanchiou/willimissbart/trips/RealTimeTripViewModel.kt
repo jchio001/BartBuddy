@@ -48,11 +48,15 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                         } else {
                             Observable.just(
                                 UiModel(
-                                state = State.ERROR,
-                                statusCode = it.code()))
+                                    state = State.ERROR,
+                                    query = tripRequestEvent,
+                                    statusCode = it.code()))
                         }
                     }
-                    .startWith(UiModel(state = State.PENDING))
+                    .startWith(
+                        UiModel(
+                            state = State.PENDING,
+                            query = tripRequestEvent))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }

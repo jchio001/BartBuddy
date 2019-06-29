@@ -114,8 +114,8 @@ class RealTimeTripFragment: Fragment() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
 
-        if (!isHidden) {
-        requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
+        if (!hidden) {
+            requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
         }
     }
 
@@ -127,7 +127,7 @@ class RealTimeTripFragment: Fragment() {
             it.title.text = "$actualOriginAbbreviation to $actualDestinationAbbreviation"
         }
 
-        realTimeTripViewModel.requestTrip(actualOriginAbbreviation!!, actualDestinationAbbreviation!!)
+        realTimeTripViewModel.requestTrip(actualOriginAbbreviation, actualDestinationAbbreviation)
     }
 
     companion object {
