@@ -7,7 +7,7 @@ import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.TripManager
-import com.app.jonathanchiou.willimissbart.trips.TripParentFragment
+import com.app.jonathanchiou.willimissbart.trips.RealTimeTripsParentFragment
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             if (tripManager.originAbbreviation != null && tripManager.destinationAbbreviation != null) {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.parent, TripParentFragment(), TripParentFragment.BACKSTACK_TAG)
+                    .add(R.id.parent, RealTimeTripsParentFragment(), RealTimeTripsParentFragment.BACKSTACK_TAG)
                     .commit()
             } else {
                 supportFragmentManager

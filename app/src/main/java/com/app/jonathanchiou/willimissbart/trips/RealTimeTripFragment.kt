@@ -1,10 +1,12 @@
 package com.app.jonathanchiou.willimissbart.trips
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.util.Consumer
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -18,7 +20,6 @@ import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.api.ApiClient
 import com.app.jonathanchiou.willimissbart.api.BartService
-import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.utils.models.State
 
 class RealTimeTripViewModelFactory(private val bartService: BartService):
@@ -73,6 +74,12 @@ class RealTimeTripFragment: Fragment() {
             isReturnTrip = it.getBoolean(IS_RETURN_TRIP_KEY, false)
         }
 
+        realTimeTripAdapter.onClickListener = Consumer {
+            val intent = Intent(context, RealTimeTripInfoActivity::class.java)
+            intent.putExtra(REAL_TIME_TRIP, it)
+            startActivity(intent)
+        }
+
         realTimeTripViewModel = ViewModelProviders
             .of(this,
                 RealTimeTripViewModelFactory(
@@ -123,7 +130,7 @@ class RealTimeTripFragment: Fragment() {
         val actualOriginAbbreviation = if (!isReturnTrip) originAbbreviation else destinationAbbreviation
         val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
 
-        (parentFragment as TripParentFragment?)?.also {
+        (parentFragment as RealTimeTripsParentFragment?)?.also {
             it.title.text = "$actualOriginAbbreviation to $actualDestinationAbbreviation"
         }
 

@@ -14,7 +14,7 @@ import com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigation
 import com.app.jonathanchiou.willimissbart.navigation.bottomnav.FragmentFactory
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 
-class TripParentFragment: BackStackConsumingFragment() {
+class RealTimeTripsParentFragment: BackStackConsumingFragment() {
 
     @BindView(R.id.title)
     lateinit var title: TextView

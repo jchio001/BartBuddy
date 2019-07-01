@@ -1,7 +1,9 @@
 package com.app.jonathanchiou.willimissbart.trips.models.internal
 
-import com.app.jonathanchiou.willimissbart.trips.models.api.Etd
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RealTimeTrip(val originAbbreviation: String,
                         val destinationAbbreviation: String,
-                        val originEtds: List<Etd>)
+                        val realTimeLegs: List<RealTimeLeg>): Parcelable

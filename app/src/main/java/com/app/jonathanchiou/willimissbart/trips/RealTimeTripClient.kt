@@ -2,6 +2,7 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.mapBody
@@ -19,11 +20,15 @@ class RealTimeTripClient(private val bartService: BartService) {
                         RealTimeTrip(
                             trip.origin,
                             trip.destination,
-                            etdRootWrapper.root.etdStations[0].etds
-                                .filter {
-                                    trip.legs[0].trainHeadStation.contains(it.destination)
-                                }
-                        )
+                            listOf(
+                                RealTimeLeg(
+                                    trip.legs[0].origin,
+                                    trip.legs[0].destination,
+                                    trip.legs[0].trainHeadStation,
+                                    etdRootWrapper.root.etdStations[0].etds
+                                        .filter {
+                                            trip.legs[0].trainHeadStation.contains(it.destination)
+                                        })))
                     }
                     .toTerminalUiModelStream(query = tripRequestEvent)
             }
@@ -35,7 +40,7 @@ class RealTimeTripClient(private val bartService: BartService) {
                         if (realTimeTripUiModel.data != null ) {
                             realTimeTripUiModel.copy(
                                 data = realTimeTripUiModel.data
-                                    .filter { it.originEtds.isNotEmpty() })
+                                    .filter { it.realTimeLegs.isNotEmpty() })
                         } else {
                             realTimeTripUiModel
                         }

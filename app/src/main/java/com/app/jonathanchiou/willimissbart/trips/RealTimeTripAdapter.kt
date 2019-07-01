@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -29,6 +30,21 @@ class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
 class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
 
+    var onClickListener: Consumer<RealTimeTrip>? = null
+
+    private var isClicked = false
+
+    private lateinit var recyclerView: RecyclerView
+
+    private val debouncedOnClickListener = View.OnClickListener {
+        if (!isClicked) {
+            isClicked = true
+            onClickListener?.accept(
+                realTimeTrips[recyclerView.getChildLayoutPosition(it)])
+            isClicked = false
+        }
+    }
+
     private var realTimeTrips: List<RealTimeTrip> = ArrayList()
     fun setTrips(realTimeTrips: List<RealTimeTrip>) {
         this.realTimeTrips = realTimeTrips
@@ -36,10 +52,10 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
-        return TripViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.cell_real_time_trip, parent, false))
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.cell_real_time_trip, parent, false)
+        view.setOnClickListener(debouncedOnClickListener)
+        return TripViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -47,15 +63,21 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        realTimeTrips[position].originEtds[0].also {etd ->
-            holder.departureTimeTextView.text = "To ${etd.destination}"
-            etd.estimates[0].also {
+        realTimeTrips[position].realTimeLegs[0].also { realTimeLeg ->
+            holder.departureTimeTextView.text = "To ${realTimeLeg.trainHeadStation}"
+            realTimeLeg.etds[0].also {
                 holder.timeUntilArrivalTextView.text =
-                    if (it.minutes != 0) "${it.minutes} min" else "Leaving..."
+                    if (it.estimates[0].minutes != 0) "${it.estimates[0].minutes} min"
+                    else "Leaving..."
                 holder.trainColorIndicator
                     .setBackgroundColor(
-                        Color.parseColor(it.hexColor))
+                        Color.parseColor(it.estimates[0].hexColor))
             }
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
     }
 }
