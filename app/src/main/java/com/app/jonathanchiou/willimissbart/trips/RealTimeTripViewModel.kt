@@ -3,6 +3,7 @@ package com.app.jonathanchiou.willimissbart.trips
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
+import com.app.jonathanchiou.willimissbart.api.getEtdsForTrips
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
@@ -24,8 +25,6 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
 
     private val disposable: Disposable
 
-    private val realTimeTripClient = RealTimeTripClient(bartService)
-
     init {
         disposable = tripEventSubject
             .switchMap { tripRequestEvent ->
@@ -44,7 +43,7 @@ class RealTimeTripViewModel(bartService: BartService): ViewModel() {
                     }
                     .flatMap {
                         if (it.isSuccessful) {
-                            realTimeTripClient.getEtdsForTrips(tripRequestEvent, it.body()!!)
+                            bartService.getEtdsForTrips(tripRequestEvent, it.body()!!)
                         } else {
                             Observable.just(
                                 UiModel(

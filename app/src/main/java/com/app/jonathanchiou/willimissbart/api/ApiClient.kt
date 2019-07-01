@@ -1,9 +1,17 @@
 package com.app.jonathanchiou.willimissbart.api
 
+import com.app.jonathanchiou.willimissbart.trips.TripRequestEvent
+import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.utils.models.UiModel
+import com.app.jonathanchiou.willimissbart.utils.models.mapBody
+import com.app.jonathanchiou.willimissbart.utils.models.toTerminalUiModelStream
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,6 +32,44 @@ class BartIntegerAdapter {
     fun toJson(value: Int): String {
         return value.toString()
     }
+}
+
+fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
+                                trips: List<Trip>):
+    Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
+    val etdObservables = trips
+        .map { trip ->
+            this.getRealTimeEstimates(trip.legs[0].origin)
+                .mapBody { etdRootWrapper ->
+                    RealTimeTrip(
+                        trip.origin,
+                        trip.destination,
+                        listOf(
+                            RealTimeLeg(
+                                trip.legs[0].origin,
+                                trip.legs[0].destination,
+                                trip.legs[0].trainHeadStation,
+                                etdRootWrapper.root.etdStations[0].etds
+                                    .filter {
+                                        trip.legs[0].trainHeadStation.contains(it.destination)
+                                    })))
+                }
+                .toTerminalUiModelStream(query = tripRequestEvent)
+        }
+
+    return Observable
+        .zip(etdObservables) { objects ->
+            UiModel.zip(objects.map { it as UiModel<TripRequestEvent, RealTimeTrip> })
+                .let { realTimeTripUiModel ->
+                    if (realTimeTripUiModel.data != null ) {
+                        realTimeTripUiModel.copy(
+                            data = realTimeTripUiModel.data
+                                .filter { it.realTimeLegs.isNotEmpty() })
+                    } else {
+                        realTimeTripUiModel
+                    }
+                }
+        }
 }
 
 class ApiClient {
