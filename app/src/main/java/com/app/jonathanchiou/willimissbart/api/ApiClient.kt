@@ -41,18 +41,21 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
         .map { trip ->
             this.getRealTimeEstimates(trip.legs[0].origin)
                 .mapBody { etdRootWrapper ->
+                    val firstLeg = trip.legs[0]
+                    val filteredEtds = etdRootWrapper.root.etdStations[0].etds
+                        .filter {
+                            trip.legs[0].trainHeadStation.contains(it.destination)
+                        }
+
                     RealTimeTrip(
                         trip.origin,
                         trip.destination,
                         listOf(
                             RealTimeLeg(
-                                trip.legs[0].origin,
-                                trip.legs[0].destination,
-                                trip.legs[0].trainHeadStation,
-                                etdRootWrapper.root.etdStations[0].etds
-                                    .filter {
-                                        trip.legs[0].trainHeadStation.contains(it.destination)
-                                    })))
+                                firstLeg.origin,
+                                firstLeg.destination,
+                                filteredEtds[0].abbreviation,
+                                filteredEtds)))
                 }
                 .toTerminalUiModelStream(query = tripRequestEvent)
         }

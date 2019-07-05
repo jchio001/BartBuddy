@@ -117,11 +117,8 @@ data class UiModel<QUERY, RESULT>(val state: State,
                 }
 
                 uiModel.data?.also { modelList.add(it) }
-                uiModel.error.also {
-                    if (it != null) {
-                        exceptionThrown = true
-                    }
-
+                uiModel.error?.also {
+                    exceptionThrown = true
                     throwables.add(uiModel.error)
                 }
             }
