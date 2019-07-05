@@ -4,6 +4,7 @@ import com.app.jonathanchiou.willimissbart.trips.TripRequestEvent
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
 import com.app.jonathanchiou.willimissbart.utils.models.mapBody
 import com.app.jonathanchiou.willimissbart.utils.models.toTerminalUiModelStream
@@ -47,15 +48,31 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
                             trip.legs[0].trainHeadStation.contains(it.destination)
                         }
 
+                    val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
+                    realTimeLegs.add(
+                        RealTimeLeg(
+                            State.DONE,
+                            firstLeg.origin,
+                            firstLeg.destination,
+                            filteredEtds[0].abbreviation,
+                            filteredEtds))
+
+                    for (i in 1 until trip.legs.size) {
+                        realTimeLegs.add(
+                            RealTimeLeg(
+                                State.PENDING,
+                                trip.legs[i].origin,
+                                trip.legs[i].destination,
+                                "",
+                                emptyList()
+                            )
+                        )
+                    }
+
                     RealTimeTrip(
                         trip.origin,
                         trip.destination,
-                        listOf(
-                            RealTimeLeg(
-                                firstLeg.origin,
-                                firstLeg.destination,
-                                filteredEtds[0].abbreviation,
-                                filteredEtds)))
+                        realTimeLegs)
                 }
                 .toTerminalUiModelStream(query = tripRequestEvent)
         }

@@ -5,12 +5,6 @@ import io.reactivex.Observable
 import retrofit2.Response
 import java.net.HttpURLConnection
 
-enum class State {
-    ERROR,
-    PENDING,
-    DONE,
-}
-
 inline fun <T, V> Observable<Response<T>>.mapBody(crossinline mapFunc: (T) -> V): Observable<Response<V>> {
     return this
         .map {
@@ -115,6 +109,7 @@ data class UiModel<QUERY, RESULT>(val state: State,
                         lowestState = it
                     }
                 }
+
 
                 uiModel.data?.also { modelList.add(it) }
                 uiModel.error?.also {
