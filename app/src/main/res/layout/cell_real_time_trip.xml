@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:padding="6dp">
 
     <View
         android:id="@+id/train_color_indicator"
-        android:layout_width="20dp"
+        android:layout_width="12dp"
         android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/destination_textview"
