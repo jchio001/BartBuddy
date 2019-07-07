@@ -8,8 +8,11 @@ import androidx.viewpager.widget.PagerAdapter
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.models.State
+import io.reactivex.functions.BiConsumer
 
-class RealTimeLegPagerAdapter(private val realTimeLegs: List<RealTimeLeg>): PagerAdapter() {
+class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>): PagerAdapter() {
+
+    var onRequestRealTimeLeg: BiConsumer<RealTimeLeg, Int>? = null
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val realTimeLeg = realTimeLegs[position]
@@ -18,6 +21,8 @@ class RealTimeLegPagerAdapter(private val realTimeLegs: List<RealTimeLeg>): Page
             State.PENDING -> {
                 val view = LayoutInflater.from(container.context)
                     .inflate(R.layout.layout_real_time_leg_pending, container, false)
+
+                onRequestRealTimeLeg?.accept(realTimeLeg, position)
                 view
             }
             State.DONE -> {
@@ -54,5 +59,10 @@ class RealTimeLegPagerAdapter(private val realTimeLegs: List<RealTimeLeg>): Page
 
     override fun getCount(): Int {
         return realTimeLegs.size
+    }
+
+    fun updateItem(realTimeLeg: RealTimeLeg, position: Int) {
+        realTimeLegs[position] = realTimeLeg
+        notifyDataSetChanged()
     }
 }

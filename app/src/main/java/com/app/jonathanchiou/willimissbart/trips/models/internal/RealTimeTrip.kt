@@ -6,4 +6,4 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class RealTimeTrip(val originAbbreviation: String,
                         val destinationAbbreviation: String,
-                        val realTimeLegs: List<RealTimeLeg>): Parcelable
+                        val realTimeLegs: MutableList<RealTimeLeg>): Parcelable

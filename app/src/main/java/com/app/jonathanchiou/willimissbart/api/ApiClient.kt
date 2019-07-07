@@ -46,7 +46,7 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
                     val filteredEtds = etdRootWrapper.root.etdStations[0].etds
                         .filter {
                             trip.legs[0].trainHeadStation.contains(it.destination)
-                        }
+                        } as MutableList
 
                     val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
                     realTimeLegs.add(
@@ -64,7 +64,7 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
                                 trip.legs[i].origin,
                                 trip.legs[i].destination,
                                 "",
-                                emptyList()
+                                mutableListOf()
                             )
                         )
                     }

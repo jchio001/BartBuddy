@@ -65,10 +65,10 @@ fun <QUERY, RESULT> Observable<Response<RESULT>>.responseToUiModelStream(query: 
                     statusCode = it.code())
             }
         }
-        .handlePendingAndError()
+        .handlePendingAndError(query)
 }
 
-private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndError():
+private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndError(query: QUERY? = null):
     Observable<UiModel<QUERY, RESULT>> {
     return this.
         onErrorReturn {
@@ -77,7 +77,9 @@ private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndE
                 error = it)
         }
         .startWith(
-            UiModel(state = State.PENDING))
+            UiModel(
+                query = query,
+                state = State.PENDING))
 }
 
 private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handleError(): Observable<UiModel<QUERY, RESULT>> {

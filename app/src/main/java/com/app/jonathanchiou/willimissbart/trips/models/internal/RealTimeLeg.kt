@@ -10,4 +10,4 @@ data class RealTimeLeg(val state: State,
                        val origin: String,
                        val destination: String,
                        val trainHeadStation: String,
-                       val etds: List<Etd>): Parcelable
+                       val etds: MutableList<Etd>): Parcelable
