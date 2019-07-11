@@ -65,13 +65,13 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
         realTimeTrips[position].realTimeLegs[0].also { realTimeLeg ->
             holder.departureTimeTextView.text = "To ${realTimeLeg.trainHeadStation}"
-            realTimeLeg.etds[0].also {
+            realTimeLeg.estimate.also {
                 holder.timeUntilArrivalTextView.text =
-                    if (it.estimates[0].minutes != 0) "${it.estimates[0].minutes} min"
+                    if (it!!.minutes != 0) "${it!!.minutes} min"
                     else "Leaving..."
                 holder.trainColorIndicator
                     .setBackgroundColor(
-                        Color.parseColor(it.estimates[0].hexColor))
+                        Color.parseColor(it.hexColor))
             }
         }
     }

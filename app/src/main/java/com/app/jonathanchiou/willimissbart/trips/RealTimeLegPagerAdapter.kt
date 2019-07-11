@@ -33,9 +33,12 @@ class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>
                         "take train heading towards ${realTimeLeg.trainHeadStation}. " +
                         "Exit at ${realTimeLeg.destination}."
 
-                val estimate = realTimeLeg.etds[0].estimates[0].minutes
+                val estimateInMinutes = realTimeLeg.estimate!!.minutes
                 view.findViewById<TextView>(R.id.next_train_estimate_textview).text =
-                    "Next train is leaving ${if (estimate == 0) "now!" else "%d minutes!".format(estimate)}"
+                    "Next train is leaving ${
+                    if (estimateInMinutes == 0) "now!"
+                    else "%d minutes!".format(estimateInMinutes)
+                    }"
                 view
             }
             State.ERROR -> {

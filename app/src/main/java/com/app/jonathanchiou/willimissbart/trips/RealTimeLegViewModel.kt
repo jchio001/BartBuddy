@@ -3,6 +3,7 @@ package com.app.jonathanchiou.willimissbart.trips
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
+import com.app.jonathanchiou.willimissbart.trips.models.api.Etd
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
@@ -30,10 +31,13 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
             .switchMap { requestEvent ->
                 bartService.getRealTimeEstimates(requestEvent.originAbbreviation)
                     .mapBody {
-                        val filteredEds = it.root.etdStations[0].etds
+                        val firstEstimate = it.root.etdStations[0].etds
                             .filter {
                                 it.destination == requestEvent.destinationAbbreviation
-                            } as MutableList
+                            }
+                            .map(Etd::estimates)
+                            .first()
+                            .first()
 
                         RealTimeLeg(
                             State.DONE,
@@ -41,7 +45,7 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
                             requestEvent.destinationAbbreviation,
                             // TODO: Figure out how to gracefully past the train head station abbreviation!
                             requestEvent.destinationAbbreviation,
-                            filteredEds)
+                            firstEstimate)
                     }
                     .responseToUiModelStream(requestEvent.index)
                     .subscribeOn(Schedulers.io())

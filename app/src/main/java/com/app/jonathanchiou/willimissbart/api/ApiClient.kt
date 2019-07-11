@@ -43,52 +43,46 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
             this.getRealTimeEstimates(trip.legs[0].origin)
                 .mapBody { etdRootWrapper ->
                     val firstLeg = trip.legs[0]
-                    val filteredEtds = etdRootWrapper.root.etdStations[0].etds
+                    etdRootWrapper.root.etdStations[0].etds
                         .filter {
-                            trip.legs[0].trainHeadStation.contains(it.destination)
-                        } as MutableList
+                            firstLeg.trainHeadStation.contains(it.destination)
+                        }
+                        .firstOrNull()
+                        ?.let { etd ->
+                            etd.estimates.map {
+                                val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
 
-                    val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
-                    realTimeLegs.add(
-                        RealTimeLeg(
-                            State.DONE,
-                            firstLeg.origin,
-                            firstLeg.destination,
-                            filteredEtds[0].abbreviation,
-                            filteredEtds))
+                                realTimeLegs.add(
+                                    RealTimeLeg(
+                                        State.DONE,
+                                        firstLeg.origin,
+                                        firstLeg.destination,
+                                        etd.abbreviation,
+                                        it))
 
-                    for (i in 1 until trip.legs.size) {
-                        realTimeLegs.add(
-                            RealTimeLeg(
-                                State.PENDING,
-                                trip.legs[i].origin,
-                                trip.legs[i].destination,
-                                "",
-                                mutableListOf()
-                            )
-                        )
-                    }
+                                for (i in 1 until trip.legs.size) {
+                                    realTimeLegs.add(
+                                        RealTimeLeg(
+                                            State.PENDING,
+                                            trip.legs[i].origin,
+                                            trip.legs[i].destination,
+                                            "",
+                                            null))
+                                }
 
-                    RealTimeTrip(
-                        trip.origin,
-                        trip.destination,
-                        realTimeLegs)
+                                RealTimeTrip(
+                                    trip.origin,
+                                    trip.destination,
+                                    realTimeLegs)
+                            }
+                        } as MutableList? ?: mutableListOf()
                 }
                 .toTerminalUiModelStream(query = tripRequestEvent)
         }
 
     return Observable
         .zip(etdObservables) { objects ->
-            UiModel.zip(objects.map { it as UiModel<TripRequestEvent, RealTimeTrip> })
-                .let { realTimeTripUiModel ->
-                    if (realTimeTripUiModel.data != null ) {
-                        realTimeTripUiModel.copy(
-                            data = realTimeTripUiModel.data
-                                .filter { it.realTimeLegs.isNotEmpty() })
-                    } else {
-                        realTimeTripUiModel
-                    }
-                }
+            UiModel.zipAndFlatten(objects.map { it as UiModel<TripRequestEvent, List<RealTimeTrip>> })
         }
 }
 

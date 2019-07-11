@@ -99,8 +99,7 @@ data class UiModel<QUERY, RESULT>(val state: State,
 
     companion object {
 
-        fun <QUERY, RESULT> zip(uiModels: List<UiModel<QUERY, RESULT>>): UiModel<QUERY, List<RESULT>> {
-            val modelList = ArrayList<RESULT>(uiModels.size)
+        fun <QUERY, RESULT> zipAndFlatten(uiModels: List<UiModel<QUERY, List<RESULT>>>): UiModel<QUERY, List<RESULT>> {
             val throwables = ArrayList<Throwable?>(uiModels.size)
             var lowestState = State.DONE
             var exceptionThrown = false
@@ -112,18 +111,26 @@ data class UiModel<QUERY, RESULT>(val state: State,
                     }
                 }
 
-
-                uiModel.data?.also { modelList.add(it) }
                 uiModel.error?.also {
                     exceptionThrown = true
                     throwables.add(uiModel.error)
                 }
             }
 
+            val flattenedModelsList =
+                if (lowestState == State.DONE) {
+                    uiModels
+                        .map(UiModel<QUERY, List<RESULT>>::data)
+                        .filterNotNull()
+                        .flatten()
+                } else {
+                    null
+                }
+
             return UiModel(
                 state = lowestState,
                 query = uiModels[0].query,
-                data = if (lowestState == State.DONE) modelList else null,
+                data = flattenedModelsList,
                 error = if (exceptionThrown) GulpException(throwables) else null)
         }
     }
