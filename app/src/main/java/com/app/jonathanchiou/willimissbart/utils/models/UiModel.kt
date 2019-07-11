@@ -19,7 +19,7 @@ inline fun <T, V> Observable<Response<T>>.mapBody(crossinline mapFunc: (T) -> V)
 fun <QUERY, RESULT> Observable<RESULT>.modelToUiModelStream(query: QUERY? = null): Observable<UiModel<QUERY, RESULT>> {
     return this.
         map {
-            UiModel(
+            UiModel<QUERY, RESULT>(
                 state = State.DONE,
                 query = query,
                 statusCode = HttpURLConnection.HTTP_OK,
@@ -33,7 +33,7 @@ fun <QUERY, RESULT> Observable<Response<RESULT>>.toTerminalUiModelStream(query: 
     return this
         .map {
             if (it.isSuccessful) {
-                UiModel(
+                UiModel<QUERY, RESULT>(
                     state = State.DONE,
                     query = query,
                     statusCode = it.code(),
@@ -53,7 +53,7 @@ fun <QUERY, RESULT> Observable<Response<RESULT>>.responseToUiModelStream(query: 
     return this
         .map {
             if (it.isSuccessful) {
-                UiModel(
+                UiModel<QUERY, RESULT>(
                     state = State.DONE,
                     query = query,
                     statusCode = it.code(),
