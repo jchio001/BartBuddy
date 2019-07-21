@@ -3,6 +3,8 @@ package com.app.jonathanchiou.willimissbart.trips
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
+import com.app.jonathanchiou.willimissbart.stations.StationsManager
+import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.trips.models.api.Etd
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.models.State
@@ -16,7 +18,8 @@ import io.reactivex.subjects.PublishSubject
 
 class RealTimeLegRequestEvent(val index: Int,
                               val originAbbreviation: String,
-                              val destinationAbbreviation: String)
+                              val destinationAbbreviation: String,
+                              val trainHeadStationAbbrevation: String)
 
 class RealTimeLegViewModel(bartService: BartService): ViewModel() {
 
@@ -31,9 +34,14 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
             .switchMap { requestEvent ->
                 bartService.getRealTimeEstimates(requestEvent.originAbbreviation)
                     .mapBody {
+                        val station = StationsManager.get()
+                            .getStationsFromLocalStorage()
+                            .filter { it.abbr == requestEvent.trainHeadStationAbbrevation }
+                            .first()
+
                         val firstEstimate = it.root.etdStations[0].etds
                             .filter {
-                                it.destination == requestEvent.destinationAbbreviation
+                                it.abbreviation == station.abbr
                             }
                             .map(Etd::estimates)
                             .first()
@@ -43,8 +51,7 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
                             State.DONE,
                             requestEvent.originAbbreviation,
                             requestEvent.destinationAbbreviation,
-                            // TODO: Figure out how to gracefully past the train head station abbreviation!
-                            requestEvent.destinationAbbreviation,
+                            requestEvent.trainHeadStationAbbrevation,
                             firstEstimate)
                     }
                     .responseToUiModelStream(requestEvent.index)
@@ -60,6 +67,7 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
                 RealTimeLegRequestEvent(
                     index,
                     realTimeLeg.origin,
-                    realTimeLeg.destination))
+                    realTimeLeg.destination,
+                    realTimeLeg.trainHeadStation))
     }
 }

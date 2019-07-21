@@ -7,6 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -15,6 +17,7 @@ import com.app.jonathanchiou.willimissbart.api.ApiClient
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import io.reactivex.functions.BiConsumer
+import kotlinx.android.synthetic.main.layout_model_recyclerview.*
 import java.lang.IllegalStateException
 
 class RealTimeLegViewModelFactory: ViewModelProvider.Factory {
@@ -32,8 +35,8 @@ const val REAL_TIME_TRIP = "real_time_trip"
 
 class RealTimeTripInfoActivity: AppCompatActivity() {
 
-    @BindView(R.id.real_time_leg_viewpager)
-    lateinit var realTimeLegViewPager: ViewPager
+    @BindView(R.id.real_time_leg_recyclerview)
+    lateinit var realTimeLegRecyclerView: RecyclerView
 
     private lateinit var realTimeTrip: RealTimeTrip
 
@@ -53,8 +56,12 @@ class RealTimeTripInfoActivity: AppCompatActivity() {
         supportActionBar?.title =
             "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
 
+        realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false)
         val realTimeLegPagerAdapter = RealTimeLegPagerAdapter(realTimeTrip.realTimeLegs)
-        realTimeLegViewPager.adapter = realTimeLegPagerAdapter
+        realTimeLegRecyclerView.adapter = realTimeLegPagerAdapter
 
         realTimeLegPagerAdapter.onRequestRealTimeLeg = BiConsumer(realTimeLegViewModel::requestRealTimeLeg)
 

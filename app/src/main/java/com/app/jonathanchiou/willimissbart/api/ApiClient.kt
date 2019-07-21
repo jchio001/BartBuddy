@@ -1,5 +1,6 @@
 package com.app.jonathanchiou.willimissbart.api
 
+import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.TripRequestEvent
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
@@ -35,6 +36,11 @@ class BartIntegerAdapter {
     }
 }
 
+// Utility method to deal with inconsistent strings returned from BART.
+fun String.matches(stringToMatch: String) {
+    return
+}
+
 fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
                                 trips: List<Trip>):
     Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
@@ -60,13 +66,26 @@ fun BartService.getEtdsForTrips(tripRequestEvent: TripRequestEvent,
                                         etd.abbreviation,
                                         it))
 
+                                val stationNameToAbbreivationMap by lazy {
+                                    val stations = StationsManager.get().getStationsFromLocalStorage()
+
+                                    val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
+                                    for (i in 1 until trip.legs.size) {
+                                        trainHeadStations.add(trip.legs[i].trainHeadStation)
+                                    }
+
+                                    stations.filter { station -> trainHeadStations.contains(station.name) }
+                                        .map { station -> station.name to station.abbr}
+                                        .toMap()
+                                }
+
                                 for (i in 1 until trip.legs.size) {
                                     realTimeLegs.add(
                                         RealTimeLeg(
                                             State.PENDING,
                                             trip.legs[i].origin,
                                             trip.legs[i].destination,
-                                            "",
+                                            stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!,
                                             null))
                                 }
 

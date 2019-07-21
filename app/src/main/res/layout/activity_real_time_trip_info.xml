@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".trips.RealTimeTripInfoActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/real_time_leg_viewpager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/real_time_leg_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -21,7 +21,7 @@ class StationsManager(
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
-    private val stationsListType by lazy {
+    val stationsListType by lazy {
         Types.newParameterizedType(List::class.java, Station::class.java)
     }
 
@@ -71,6 +71,23 @@ class StationsManager(
                     }
             }
             .subscribe(stationsLiveData::postValue)
+    }
+
+    fun getStationsFromLocalStorage(): List<Station> {
+        return stationsLiveData.value?.data ?:
+        apiClient.moshi.adapter<List<Station>>(stationsListType)
+            .fromJson(
+                sharedPreferences.getString(
+                    CACHED_STATIONS_KEY,
+                    null)!!)!!.also {
+            stationsLiveData.postValue(
+                UiModel(
+                    state = State.DONE,
+                    statusCode = 200,
+                    data = it
+                )
+            )
+        }
     }
 
     fun requestStations() {
