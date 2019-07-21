@@ -72,9 +72,13 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     }
 
     fun swapTripStations() {
-        val placeholder = originAbbreviation
+        val abbreviationPlaceholder = originAbbreviation
+        val namePlaceholder = originName
+
         originAbbreviation = destinationAbbreviation
-        destinationAbbreviation = placeholder
+        originName = destinationName
+        destinationAbbreviation = abbreviationPlaceholder
+        destinationName = namePlaceholder
         invokeTripEditedListener()
     }
 

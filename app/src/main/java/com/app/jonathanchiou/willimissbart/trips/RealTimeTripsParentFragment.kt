@@ -44,22 +44,19 @@ class RealTimeTripsParentFragment: BackStackConsumingFragment() {
         )
 
         bottomNavigationView.setSelection(0)
-        onHiddenChanged(false)
     }
 
     override fun onBackPressed(): Boolean {
-        if (childFragmentManager.backStackEntryCount <= 1) {
-            return false
+        return if (childFragmentManager.backStackEntryCount <= 1) {
+            false
         } else {
             bottomNavigationView.onBackPressed()
-            return true
+            true
         }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
-        for (fragment in childFragmentManager.fragments) {
-            fragment.onHiddenChanged(hidden)
-        }
+        bottomNavigationView.onHiddenChanged(hidden)
     }
 
     @OnClick(R.id.edit_icon)

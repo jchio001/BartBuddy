@@ -87,7 +87,7 @@ class BottomNavigationView(context: Context,
             fragmentManager
                 .beginTransaction()
                 .add(containerId, freshFragment, indexTag)
-                .commit()
+                .commitNow()
 
             freshFragment
         }
@@ -154,6 +154,17 @@ class BottomNavigationView(context: Context,
 
             true
         }
+    }
+
+    fun onHiddenChanged(hidden: Boolean) {
+        if (hidden) {
+            return
+        }
+
+        insertionStack
+            .lastOrNull()
+            ?.let(fragmentManager::findFragmentByTag)
+            ?.onHiddenChanged(false)
     }
 
     private fun sizeMenuItem(tag: String, iconSize: Int, textSize: Int) {
