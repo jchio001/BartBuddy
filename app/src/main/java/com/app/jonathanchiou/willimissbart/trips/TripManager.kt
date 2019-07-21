@@ -28,12 +28,10 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     private var previousDestinationAbbreviation: String? = null
     private var previousDestinationName: String? = null
 
-    var originAbbreviation: String? = null
-        private set
+    private var originAbbreviation: String? = null
     private var originName: String? = null
 
-    var destinationAbbreviation: String? = null
-        private set
+    private var destinationAbbreviation: String? = null
     private var destinationName: String? = null
 
     var tripEditedListener: TripStationListener? = null
@@ -62,6 +60,9 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
             destinationName = previousDestinationName
         }
     }
+
+    fun getOriginAbbreviation() = previousOriginAbbreviation
+    fun getDestinationAbbreviation() = previousDestinationAbbreviation
 
     fun updateStation(fragment: Fragment, stationType: StationType) {
         val intent = Intent(fragment.context, StationSelectionActivity::class.java)
@@ -100,6 +101,13 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
         }
     }
 
+    fun revertPendingChanges() {
+        originAbbreviation = previousOriginAbbreviation
+        originName = previousOriginName
+        destinationAbbreviation = previousDestinationAbbreviation
+        destinationName = previousDestinationName
+    }
+
     fun displayTripsFragment(fragment: Fragment, containerId: Int) {
         if (originAbbreviation != null && destinationAbbreviation != null
             && (previousOriginAbbreviation != originAbbreviation
@@ -114,7 +122,9 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
                 .apply()
 
             previousOriginAbbreviation = originAbbreviation
+            previousOriginName = originName
             previousDestinationAbbreviation = destinationAbbreviation
+            previousDestinationName = destinationName
 
             fragment.fragmentManager!!.also {
                 val tripParentFragment = it.findFragmentByTag(RealTimeTripsParentFragment.BACKSTACK_TAG) ?: RealTimeTripsParentFragment()

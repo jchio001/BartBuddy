@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(this))
 
         if (supportFragmentManager.backStackEntryCount == 0) {
-            if (tripManager.originAbbreviation != null && tripManager.destinationAbbreviation != null) {
+            if (tripManager.getOriginAbbreviation() != null && tripManager.getDestinationAbbreviation() != null) {
                 supportFragmentManager
                     .beginTransaction()
                     .add(R.id.parent, RealTimeTripsParentFragment(), RealTimeTripsParentFragment.BACKSTACK_TAG)

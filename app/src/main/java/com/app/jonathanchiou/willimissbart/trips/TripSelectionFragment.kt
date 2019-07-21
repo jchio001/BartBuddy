@@ -84,6 +84,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
     }
 
     override fun onBackPressed(): Boolean {
+        tripManager.revertPendingChanges()
         return false
     }
 

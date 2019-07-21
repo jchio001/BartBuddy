@@ -115,14 +115,14 @@ class RealTimeTripFragment: Fragment() {
             })
 
         tripManager = (activity as MainActivity).tripManager
-        requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
+        requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
 
         if (!hidden) {
-            requestTrip(tripManager.originAbbreviation!!, tripManager.destinationAbbreviation!!)
+            requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
         }
     }
 
