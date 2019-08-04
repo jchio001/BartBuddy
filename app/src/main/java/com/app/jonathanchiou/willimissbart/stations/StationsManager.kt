@@ -1,12 +1,11 @@
 package com.app.jonathanchiou.willimissbart.stations
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
-import com.app.jonathanchiou.willimissbart.api.ApiClient
+import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.utils.models.*
+import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +14,8 @@ import io.reactivex.subjects.PublishSubject
 
 class StationsManager(
     private val sharedPreferences: SharedPreferences,
-    private val apiClient: ApiClient) {
+    private val bartService: BartService,
+    private val moshi: Moshi) {
 
     val stationsLiveData =  MutableLiveData<UiModel<Void, List<Station>>>()
 
@@ -37,8 +37,7 @@ class StationsManager(
                     .subscribeOn(Schedulers.computation())
                     .flatMap { cachedStations ->
                         if (cachedStations.value == null) {
-                            apiClient
-                                .bartService
+                            bartService
                                 .getStations()
                                 .mapBody { it.root.stations.stations }
                                 .responseToUiModelStream<Void, List<Station>>()
@@ -52,7 +51,7 @@ class StationsManager(
                                             .edit()
                                             .putString(
                                                 CACHED_STATIONS_KEY,
-                                                apiClient.moshi
+                                                moshi
                                                     .adapter<List<Station>>(stationsListType)
                                                     .toJson(stations))
                                             .apply()
@@ -62,7 +61,7 @@ class StationsManager(
                                 .observeOn(AndroidSchedulers.mainThread())
                         } else {
                             Observable.fromCallable {
-                                apiClient.moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStations.value)!!
+                                moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStations.value)!!
                             }
                                 .modelToUiModelStream<Void, List<Station>>()
                                 .subscribeOn(Schedulers.io())
@@ -75,7 +74,7 @@ class StationsManager(
 
     fun getStationsFromLocalStorage(): List<Station> {
         return stationsLiveData.value?.data ?:
-        apiClient.moshi.adapter<List<Station>>(stationsListType)
+        moshi.adapter<List<Station>>(stationsListType)
             .fromJson(
                 sharedPreferences.getString(
                     CACHED_STATIONS_KEY,
@@ -99,22 +98,7 @@ class StationsManager(
     }
 
     companion object {
+
         const val CACHED_STATIONS_KEY = "cached_stations"
-
-        private var INSTANCE: StationsManager? = null
-
-        fun initialize(context: Context) {
-            if (INSTANCE == null) {
-                INSTANCE =
-                    StationsManager(
-                        PreferenceManager.getDefaultSharedPreferences(context),
-                        ApiClient.INSTANCE
-                    )
-            }
-        }
-
-        fun get(): StationsManager {
-            return INSTANCE!!
-        }
     }
 }

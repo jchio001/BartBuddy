@@ -9,27 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.api.ApiClient
+import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import io.reactivex.functions.BiConsumer
-import kotlinx.android.synthetic.main.layout_model_recyclerview.*
 import java.lang.IllegalStateException
-
-class RealTimeLegViewModelFactory: ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass == RealTimeLegViewModel::class.java) {
-            return RealTimeLegViewModel(ApiClient.INSTANCE.bartService) as T
-        }
-
-        throw IllegalStateException("Invalid class!")
-    }
-}
+import javax.inject.Inject
 
 const val REAL_TIME_TRIP = "real_time_trip"
 
@@ -37,6 +25,9 @@ class RealTimeTripInfoActivity: AppCompatActivity() {
 
     @BindView(R.id.real_time_leg_recyclerview)
     lateinit var realTimeLegRecyclerView: RecyclerView
+
+    @Inject
+    lateinit var tripViewModelFactory: TripViewModelFactory
 
     private lateinit var realTimeTrip: RealTimeTrip
 
@@ -46,10 +37,11 @@ class RealTimeTripInfoActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_real_time_trip_info)
         ButterKnife.bind(this)
+        appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        realTimeLegViewModel = ViewModelProviders.of(this, RealTimeLegViewModelFactory())
+        realTimeLegViewModel = ViewModelProviders.of(this, tripViewModelFactory)
             .get(RealTimeLegViewModel::class.java)
 
         realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)

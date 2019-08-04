@@ -13,26 +13,32 @@ import androidx.lifecycle.ViewModelProviders
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 import com.app.jonathanchiou.willimissbart.utils.models.State
+import javax.inject.Inject
 
 class StationSelectionActivity : AppCompatActivity() {
 
     @BindView(R.id.container)
     lateinit var container: FrameLayout
 
+    @Inject
+    lateinit var stationsViewModelFactory: StationsViewModelFactory
+
     lateinit var selectionType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_station_selection)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         ButterKnife.bind(this)
+        appComponent.inject(this)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         selectionType = intent!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!
 
-        val stationsViewModel = ViewModelProviders.of(this)
+        val stationsViewModel = ViewModelProviders.of(this, stationsViewModelFactory)
             .get(StationsViewModel::class.java)
         stationsViewModel
             .getStationsLiveData()

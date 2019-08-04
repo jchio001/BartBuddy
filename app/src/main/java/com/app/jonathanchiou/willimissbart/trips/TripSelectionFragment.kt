@@ -13,10 +13,12 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 fun View.showSnackbar(color: Int) {
     Snackbar
@@ -42,6 +44,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
     @BindView(R.id.destination_station_textview)
     lateinit var destinationStationTextView: TextView
 
+    @Inject
     lateinit var tripManager: TripManager
 
     private val tripUnchangedListener = object: TripUnchangedListener {
@@ -61,6 +64,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
                                savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
+        requireContext().appComponent.inject(this)
 
         tripManager = (activity as MainActivity).tripManager
         tripManager.tripEditedListener = object: TripStationListener {

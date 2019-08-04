@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        StationsManager.initialize(this)
-
         tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(this))
 
         if (supportFragmentManager.backStackEntryCount == 0) {

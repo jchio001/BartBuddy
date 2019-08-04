@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
-import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.trips.models.api.Etd
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.models.State
@@ -21,7 +20,8 @@ class RealTimeLegRequestEvent(val index: Int,
                               val destinationAbbreviation: String,
                               val trainHeadStationAbbrevation: String)
 
-class RealTimeLegViewModel(bartService: BartService): ViewModel() {
+class RealTimeLegViewModel(stationsManager: StationsManager,
+                           bartService: BartService): ViewModel() {
 
     val realTimeLegLiveData = MutableLiveData<UiModel<Int, RealTimeLeg>>()
 
@@ -34,7 +34,7 @@ class RealTimeLegViewModel(bartService: BartService): ViewModel() {
             .switchMap { requestEvent ->
                 bartService.getRealTimeEstimates(requestEvent.originAbbreviation)
                     .mapBody {
-                        val station = StationsManager.get()
+                        val station = stationsManager
                             .getStationsFromLocalStorage()
                             .filter { it.abbr == requestEvent.trainHeadStationAbbrevation }
                             .first()
