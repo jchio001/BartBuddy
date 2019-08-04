@@ -9,9 +9,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Station(@Json(name = "name")
                    val name: String,
-                   @Json(name ="abbr")
+                   @Json(name = "abbr")
                    var abbr: String,
-                   @Json(name ="gtfs_latitude")
+                   @Json(name = "gtfs_latitude")
                    val latitude: Double,
                    @Json(name = "gtfs_longitude")
                    val longitude: Double,
@@ -24,4 +24,4 @@ data class Station(@Json(name = "name")
                    @Json(name = "state")
                    val state: String,
                    @Json(name = "zipcode")
-                   val zipCode: Int = 0): Parcelable
+                   val zipCode: Int = 0) : Parcelable

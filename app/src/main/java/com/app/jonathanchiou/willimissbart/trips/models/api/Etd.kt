@@ -13,4 +13,4 @@ data class Etd(@Json(name = "destination")
                val abbreviation: String,
                @Json(name = "estimate")
                // Even though the JSON name is singular, it ccan return multiple estimates.
-               val estimates: List<Estimate>): Parcelable
+               val estimates: List<Estimate>) : Parcelable

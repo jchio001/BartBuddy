@@ -11,14 +11,14 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
-class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val trainColorIndicator: View by bind(R.id.train_color_indicator)
     val departureTimeTextView: TextView by bind(R.id.destination_textview)
     val timeUntilArrivalTextView: TextView by bind(R.id.time_until_arrival_textview)
 }
 
-class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
+class RealTimeTripAdapter : RecyclerView.Adapter<TripViewHolder>() {
 
     var onClickListener: Consumer<RealTimeTrip>? = null
 
@@ -57,7 +57,7 @@ class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {
             holder.departureTimeTextView.text = "To ${realTimeLeg.trainHeadStation}"
             realTimeLeg.estimate.also {
                 holder.timeUntilArrivalTextView.text =
-                    if (it!!.minutes != 0) "${it!!.minutes} min"
+                    if (it!!.minutes != 0) "${it.minutes} min"
                     else "Leaving..."
                 holder.trainColorIndicator
                     .setBackgroundColor(

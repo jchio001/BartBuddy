@@ -32,7 +32,7 @@ fun View.showSnackbar(color: Int) {
         .show()
 }
 
-class TripSelectionFragment: BackStackConsumingFragment() {
+class TripSelectionFragment : BackStackConsumingFragment() {
 
     val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
     val originStationTextView: TextView by bind(R.id.origin_station_textview)
@@ -41,7 +41,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
     @Inject
     lateinit var tripManager: TripManager
 
-    private val tripUnchangedListener = object: TripUnchangedListener {
+    private val tripUnchangedListener = object : TripUnchangedListener {
 
         override fun onTripUnchanged() {
             coordinatorContainer.showSnackbar(R.color.colorPrimary)
@@ -59,8 +59,9 @@ class TripSelectionFragment: BackStackConsumingFragment() {
         super.onViewCreated(view, savedInstanceState)
         requireContext().appComponent.inject(this)
 
-        bindClick(R.id.origin_station_textview,
-                  R.id.destination_station_textview) {
+        bindClick(
+            R.id.origin_station_textview,
+            R.id.destination_station_textview) {
             tripManager.updateStation(
                 this,
                 if (view.id == R.id.origin_station_textview) StationType.ORIGIN
@@ -70,7 +71,7 @@ class TripSelectionFragment: BackStackConsumingFragment() {
         bindClick(R.id.submit_trip_button) { tripManager.displayTripsFragment(this, R.id.parent) }
 
         tripManager = (activity as MainActivity).tripManager
-        tripManager.tripEditedListener = object: TripStationListener {
+        tripManager.tripEditedListener = object : TripStationListener {
 
             override fun onTripStationChanged(originTitle: String?, destinationTitle: String?) {
                 originStationTextView.text = originTitle

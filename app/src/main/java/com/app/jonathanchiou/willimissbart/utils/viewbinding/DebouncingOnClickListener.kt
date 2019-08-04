@@ -2,7 +2,7 @@ package com.app.jonathanchiou.willimissbart.utils.viewbinding
 
 import android.view.View
 
-abstract class DebouncingOnClickListener: View.OnClickListener {
+abstract class DebouncingOnClickListener : View.OnClickListener {
 
     private var isBeingClicked = false
 

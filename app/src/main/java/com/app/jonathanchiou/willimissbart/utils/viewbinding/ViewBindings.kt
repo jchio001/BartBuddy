@@ -26,7 +26,7 @@ inline fun Fragment.bindClick(vararg idResources: Int, crossinline doOnClick: ()
         return
     }
 
-    val debouncingOnClickListener = object: DebouncingOnClickListener() {
+    val debouncingOnClickListener = object : DebouncingOnClickListener() {
 
         override fun doOnClick() {
             doOnClick()
@@ -44,7 +44,7 @@ inline fun Activity.bindClick(vararg idResources: Int, crossinline doOnClick: ()
         return
     }
 
-    val debouncingOnClickListener = object: DebouncingOnClickListener() {
+    val debouncingOnClickListener = object : DebouncingOnClickListener() {
 
         override fun doOnClick() {
             doOnClick()

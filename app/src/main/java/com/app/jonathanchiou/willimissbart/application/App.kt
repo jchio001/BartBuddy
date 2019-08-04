@@ -3,9 +3,8 @@ package com.app.jonathanchiou.willimissbart.application
 import android.app.Application
 import android.content.Context
 import com.app.jonathanchiou.willimissbart.api.BartApiModule
-import com.app.jonathanchiou.willimissbart.stations.StationsModule
 
-class App: Application() {
+class App : Application() {
 
     lateinit var appComponent: AppComponent
 
@@ -24,10 +23,8 @@ class App: Application() {
         return super.getSystemService(name)
     }
 
-    companion object: ComponentDelegate<AppComponent>() {
+    companion object : ComponentDelegate<AppComponent>() {
 
         override val serviceName = "AppComponent"
     }
 }
-
-val Context.appComponent by App

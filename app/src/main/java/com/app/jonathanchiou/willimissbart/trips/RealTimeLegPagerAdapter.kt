@@ -7,9 +7,8 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import io.reactivex.functions.BiConsumer
-import java.lang.IllegalStateException
 
-class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>): Adapter<RealTimeLegViewHolder>() {
+class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>) : Adapter<RealTimeLegViewHolder>() {
 
     var onRequestRealTimeLeg: BiConsumer<RealTimeLeg, Int>? = null
 

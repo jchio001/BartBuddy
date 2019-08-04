@@ -1,8 +1,6 @@
 package com.app.jonathanchiou.willimissbart.stations
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.jonathanchiou.willimissbart.api.BartApiModule
@@ -12,7 +10,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-class StationsViewModelFactory(private val stationsManager: StationsManager):
+class StationsViewModelFactory(private val stationsManager: StationsManager) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

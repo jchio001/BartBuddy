@@ -5,4 +5,4 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 class BartResponseWrapper<T>(@Json(name = "root")
-                          val root: T)
+                             val root: T)

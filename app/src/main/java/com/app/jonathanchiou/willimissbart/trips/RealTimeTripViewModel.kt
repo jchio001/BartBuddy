@@ -21,7 +21,7 @@ class TripRequestEvent(val originAbbreviation: String,
                        val destinationAbbreviation: String)
 
 class RealTimeTripViewModel(stationsManager: StationsManager,
-                            bartService: BartService): ViewModel() {
+                            bartService: BartService) : ViewModel() {
 
     val realTimeTripLiveData = MutableLiveData<UiModel<TripRequestEvent, List<RealTimeTrip>>>()
 
@@ -71,7 +71,8 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
         realTimeTripLiveData.value.also {
             if (it == null || it.state == State.ERROR
                 || it.query!!.originAbbreviation != originAbbreviation
-                || it.query.destinationAbbreviation != destinationAbbreviation) {
+                || it.query.destinationAbbreviation != destinationAbbreviation
+            ) {
                 tripEventSubject.onNext(TripRequestEvent(originAbbreviation, destinationAbbreviation))
             }
         }
@@ -113,7 +114,7 @@ fun BartService.getEtdsForTrips(stationsManager: StationsManager,
                                     }
 
                                     stations.filter { station -> trainHeadStations.contains(station.name) }
-                                        .map { station -> station.name to station.abbr}
+                                        .map { station -> station.name to station.abbr }
                                         .toMap()
                                 }
 

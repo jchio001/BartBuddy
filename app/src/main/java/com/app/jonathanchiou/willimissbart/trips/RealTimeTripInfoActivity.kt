@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 const val REAL_TIME_TRIP = "real_time_trip"
 
-class RealTimeTripInfoActivity: AppCompatActivity() {
+class RealTimeTripInfoActivity : AppCompatActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
 

@@ -35,10 +35,10 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     private var destinationName: String? = null
 
     var tripEditedListener: TripStationListener? = null
-    set(tripEditedListener) {
-       field = tripEditedListener
-        invokeTripEditedListener()
-    }
+        set(tripEditedListener) {
+            field = tripEditedListener
+            invokeTripEditedListener()
+        }
 
     var tripUnchangedListener: TripUnchangedListener? = null
 
@@ -67,8 +67,9 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     fun updateStation(fragment: Fragment, stationType: StationType) {
         val intent = Intent(fragment.context, StationSelectionActivity::class.java)
         intent.putExtra(STATION_SELECTION_TYPE_KEY, stationType.toString())
-        fragment.startActivityForResult(intent,
-                                        STATIONS_SELECTION_CODE)
+        fragment.startActivityForResult(
+            intent,
+            STATIONS_SELECTION_CODE)
     }
 
     fun swapTripStations() {
@@ -87,20 +88,21 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
                                  data: Intent?) {
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val stationType = StationType.valueOf(data!!.getStringExtra(
-                    STATION_SELECTION_TYPE_KEY))
+                val stationType = StationType.valueOf(
+                    data!!.getStringExtra(
+                        STATION_SELECTION_TYPE_KEY))
 
-                 data.getParcelableExtra<Station>(SELECTED_STATION_KEY).also {
-                     if (stationType == StationType.ORIGIN) {
-                         originAbbreviation = it.abbr
-                         originName = it.name
-                     } else {
-                         destinationAbbreviation = it.abbr
-                         destinationName = it.name
-                     }
+                data.getParcelableExtra<Station>(SELECTED_STATION_KEY).also {
+                    if (stationType == StationType.ORIGIN) {
+                        originAbbreviation = it.abbr
+                        originName = it.name
+                    } else {
+                        destinationAbbreviation = it.abbr
+                        destinationName = it.name
+                    }
 
-                     invokeTripEditedListener()
-                 }
+                    invokeTripEditedListener()
+                }
             }
         }
     }
@@ -115,7 +117,8 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     fun displayTripsFragment(fragment: Fragment, containerId: Int) {
         if (originAbbreviation != null && destinationAbbreviation != null
             && (previousOriginAbbreviation != originAbbreviation
-                || previousDestinationAbbreviation != destinationAbbreviation)) {
+                || previousDestinationAbbreviation != destinationAbbreviation)
+        ) {
 
             sharedPreferences
                 .edit()
@@ -131,7 +134,8 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
             previousDestinationName = destinationName
 
             fragment.fragmentManager!!.also {
-                val tripParentFragment = it.findFragmentByTag(RealTimeTripsParentFragment.BACKSTACK_TAG) ?: RealTimeTripsParentFragment()
+                val tripParentFragment =
+                    it.findFragmentByTag(RealTimeTripsParentFragment.BACKSTACK_TAG) ?: RealTimeTripsParentFragment()
 
                 it.popBackStack()
                 it.beginTransaction()
@@ -141,7 +145,8 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
         }
 
         if (previousOriginAbbreviation == originAbbreviation
-            && previousDestinationAbbreviation == destinationAbbreviation) {
+            && previousDestinationAbbreviation == destinationAbbreviation
+        ) {
             tripUnchangedListener?.onTripUnchanged()
         }
     }
@@ -153,6 +158,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     }
 
     companion object {
+
         const val STATIONS_SELECTION_CODE = 73
 
         const val STATION_SELECTION_TYPE_KEY = "station_selection_type"

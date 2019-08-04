@@ -1,5 +1,6 @@
 package com.app.jonathanchiou.willimissbart.application
 
+import android.content.Context
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity
@@ -19,3 +20,5 @@ interface AppComponent {
 
     fun inject(stationSelectionActivity: StationSelectionActivity)
 }
+
+val Context.appComponent by App

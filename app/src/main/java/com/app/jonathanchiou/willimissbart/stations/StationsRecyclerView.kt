@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.SELECTED_STATION_KEY
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 
-class StationsRecyclerView(context: Context, attributeSet: AttributeSet):
+class StationsRecyclerView(context: Context, attributeSet: AttributeSet) :
     RecyclerView(context, attributeSet) {
 
     val stationsAdapter = StationsAdapter(this)

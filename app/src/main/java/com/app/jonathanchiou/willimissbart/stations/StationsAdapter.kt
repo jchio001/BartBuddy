@@ -12,7 +12,7 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
-class StationViewHolder(itemView: View): ViewHolder(itemView) {
+class StationViewHolder(itemView: View) : ViewHolder(itemView) {
 
     val stationTextView: TextView by bind(R.id.station_name_textview)
     val stationLocationTextView: TextView by bind(R.id.station_location_textview)
@@ -23,18 +23,18 @@ class StationViewHolder(itemView: View): ViewHolder(itemView) {
     }
 }
 
-class StationsAdapter(private val recyclerView: RecyclerView): Adapter<StationViewHolder>() {
+class StationsAdapter(private val recyclerView: RecyclerView) : Adapter<StationViewHolder>() {
 
     private var stations: ArrayList<Station> = ArrayList(0)
 
     private var isBeingClicked = false
     var onClickListener: Consumer<Station>? = null
     private val debouncedOnClickListener = View.OnClickListener {
-            if (!isBeingClicked) {
-                isBeingClicked = true
-                onClickListener?.accept(stations[recyclerView.getChildAdapterPosition(it)])
-                isBeingClicked = false
-            }
+        if (!isBeingClicked) {
+            isBeingClicked = true
+            onClickListener?.accept(stations[recyclerView.getChildAdapterPosition(it)])
+            isBeingClicked = false
+        }
     }
 
     override fun getItemCount(): Int {

@@ -13,7 +13,7 @@ import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumin
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 
-class RealTimeTripsParentFragment: BackStackConsumingFragment() {
+class RealTimeTripsParentFragment : BackStackConsumingFragment() {
 
     val title: TextView by bind(R.id.title)
     val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
@@ -40,7 +40,7 @@ class RealTimeTripsParentFragment: BackStackConsumingFragment() {
         bottomNavigationView.setFragmentManager(
             childFragmentManager,
             R.id.container,
-            object: FragmentFactory {
+            object : FragmentFactory {
 
                 override fun create(index: Int): Fragment {
                     return createRealTimeTripFragment(index == 1)
@@ -65,6 +65,7 @@ class RealTimeTripsParentFragment: BackStackConsumingFragment() {
     }
 
     companion object {
+
         const val BACKSTACK_TAG = "trip_parent_fragment"
     }
 }

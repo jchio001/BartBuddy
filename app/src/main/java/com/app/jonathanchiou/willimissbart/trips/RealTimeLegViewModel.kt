@@ -21,7 +21,7 @@ class RealTimeLegRequestEvent(val index: Int,
                               val trainHeadStationAbbrevation: String)
 
 class RealTimeLegViewModel(stationsManager: StationsManager,
-                           bartService: BartService): ViewModel() {
+                           bartService: BartService) : ViewModel() {
 
     val realTimeLegLiveData = MutableLiveData<UiModel<Int, RealTimeLeg>>()
 

@@ -7,9 +7,9 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
-sealed class RealTimeLegViewHolder(itemView: View): ViewHolder(itemView)
+sealed class RealTimeLegViewHolder(itemView: View) : ViewHolder(itemView)
 
-class DoneRealTimeLegViewHolder(itemView: View): RealTimeLegViewHolder(itemView) {
+class DoneRealTimeLegViewHolder(itemView: View) : RealTimeLegViewHolder(itemView) {
 
     val legInfoTextView: TextView by bind(R.id.leg_info_textview)
     val nextTrainEstimateTextView: TextView by bind(R.id.next_train_estimate_textview)
@@ -29,6 +29,6 @@ class DoneRealTimeLegViewHolder(itemView: View): RealTimeLegViewHolder(itemView)
     }
 }
 
-class PendingRealTimeLegViewHolder(itemView: View): RealTimeLegViewHolder(itemView)
+class PendingRealTimeLegViewHolder(itemView: View) : RealTimeLegViewHolder(itemView)
 
-class ErrorRealTimeLegViewHolder(itemView: View): RealTimeLegViewHolder(itemView)
+class ErrorRealTimeLegViewHolder(itemView: View) : RealTimeLegViewHolder(itemView)

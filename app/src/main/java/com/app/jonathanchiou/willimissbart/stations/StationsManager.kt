@@ -17,7 +17,7 @@ class StationsManager(
     private val bartService: BartService,
     private val moshi: Moshi) {
 
-    val stationsLiveData =  MutableLiveData<UiModel<Void, List<Station>>>()
+    val stationsLiveData = MutableLiveData<UiModel<Void, List<Station>>>()
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
@@ -73,8 +73,7 @@ class StationsManager(
     }
 
     fun getStationsFromLocalStorage(): List<Station> {
-        return stationsLiveData.value?.data ?:
-        moshi.adapter<List<Station>>(stationsListType)
+        return stationsLiveData.value?.data ?: moshi.adapter<List<Station>>(stationsListType)
             .fromJson(
                 sharedPreferences.getString(
                     CACHED_STATIONS_KEY,

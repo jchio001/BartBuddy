@@ -7,7 +7,7 @@ import java.lang.reflect.Type
 @JsonQualifier
 annotation class SingleToList
 
-class SingleToListFactory: JsonAdapter.Factory {
+class SingleToListFactory : JsonAdapter.Factory {
 
     override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
         val delegateAnnotations = Types.nextAnnotations(annotations, SingleToList::class.java) ?: return null

@@ -1,7 +1,7 @@
 package com.app.jonathanchiou.willimissbart.utils.models
 
-import com.app.jonathanchiou.willimissbart.utils.GulpException
 import io.reactivex.Observable
+import io.reactivex.exceptions.CompositeException
 import retrofit2.Response
 import java.net.HttpURLConnection
 
@@ -17,14 +17,13 @@ inline fun <T, V> Observable<Response<T>>.mapBody(crossinline mapFunc: (T) -> V)
 }
 
 fun <QUERY, RESULT> Observable<RESULT>.modelToUiModelStream(query: QUERY? = null): Observable<UiModel<QUERY, RESULT>> {
-    return this.
-        map {
-            UiModel<QUERY, RESULT>(
-                state = State.DONE,
-                query = query,
-                statusCode = HttpURLConnection.HTTP_OK,
-                data = it)
-        }
+    return this.map {
+        UiModel<QUERY, RESULT>(
+            state = State.DONE,
+            query = query,
+            statusCode = HttpURLConnection.HTTP_OK,
+            data = it)
+    }
         .handlePendingAndError()
 }
 
@@ -70,12 +69,11 @@ fun <QUERY, RESULT> Observable<Response<RESULT>>.responseToUiModelStream(query: 
 
 private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndError(query: QUERY? = null):
     Observable<UiModel<QUERY, RESULT>> {
-    return this.
-        onErrorReturn {
-            UiModel(
-                state = State.ERROR,
-                error = it)
-        }
+    return this.onErrorReturn {
+        UiModel(
+            state = State.ERROR,
+            error = it)
+    }
         .startWith(
             UiModel(
                 query = query,
@@ -83,12 +81,11 @@ private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndE
 }
 
 private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handleError(): Observable<UiModel<QUERY, RESULT>> {
-    return this.
-        onErrorReturn {
-            UiModel(
-                state = State.ERROR,
-                error = it)
-        }
+    return this.onErrorReturn {
+        UiModel(
+            state = State.ERROR,
+            error = it)
+    }
 }
 
 data class UiModel<QUERY, RESULT>(val state: State,
@@ -131,7 +128,7 @@ data class UiModel<QUERY, RESULT>(val state: State,
                 state = lowestState,
                 query = uiModels[0].query,
                 data = flattenedModelsList,
-                error = if (exceptionThrown) GulpException(throwables) else null)
+                error = if (exceptionThrown) CompositeException(throwables) else null)
         }
     }
 }

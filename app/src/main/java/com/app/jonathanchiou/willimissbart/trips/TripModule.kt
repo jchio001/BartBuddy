@@ -12,7 +12,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 class TripViewModelFactory(private val stationsManager: StationsManager,
-                           private val bartService: BartService):
+                           private val bartService: BartService) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

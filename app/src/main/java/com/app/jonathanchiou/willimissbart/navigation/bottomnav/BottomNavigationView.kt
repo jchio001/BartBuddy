@@ -2,24 +2,24 @@ package com.app.jonathanchiou.willimissbart.navigation.bottomnav
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.app.jonathanchiou.willimissbart.R
 import java.util.*
-import android.util.TypedValue
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 
 interface FragmentFactory {
     fun create(index: Int): Fragment
 }
 
 class BottomNavigationView(context: Context,
-                           attributeSet: AttributeSet):
+                           attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
 
     private var isBeingClicked = false

@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Estimate(@Json(name = "minutes")
                     val minutes: Int,
-                    @Json(name= "platform")
+                    @Json(name = "platform")
                     val platform: Int,
                     @Json(name = "hexcolor")
-                    val hexColor: String): Parcelable
+                    val hexColor: String) : Parcelable
