@@ -115,7 +115,7 @@ class TripManager(private val sharedPreferences: SharedPreferences) {
     fun displayTripsFragment(fragment: Fragment, containerId: Int) {
         if (originAbbreviation != null && destinationAbbreviation != null
             && (previousOriginAbbreviation != originAbbreviation
-                || previousDestinationAbbreviation != previousDestinationAbbreviation)) {
+                || previousDestinationAbbreviation != destinationAbbreviation)) {
 
             sharedPreferences
                 .edit()
