@@ -4,27 +4,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import io.reactivex.functions.BiConsumer
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 const val REAL_TIME_TRIP = "real_time_trip"
 
 class RealTimeTripInfoActivity: AppCompatActivity() {
 
-    @BindView(R.id.real_time_leg_recyclerview)
-    lateinit var realTimeLegRecyclerView: RecyclerView
+    val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
 
     @Inject
     lateinit var tripViewModelFactory: TripViewModelFactory
@@ -36,7 +31,6 @@ class RealTimeTripInfoActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_real_time_trip_info)
-        ButterKnife.bind(this)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -3,24 +3,16 @@ package com.app.jonathanchiou.willimissbart.trips
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 sealed class RealTimeLegViewHolder(itemView: View): ViewHolder(itemView)
 
 class DoneRealTimeLegViewHolder(itemView: View): RealTimeLegViewHolder(itemView) {
 
-    @BindView(R.id.leg_info_textview)
-    lateinit var legInfoTextView: TextView
-
-    @BindView(R.id.next_train_estimate_textview)
-    lateinit var nextTrainEstimateTextView: TextView
-
-    init {
-        ButterKnife.bind(this, itemView)
-    }
+    val legInfoTextView: TextView by bind(R.id.leg_info_textview)
+    val nextTrainEstimateTextView: TextView by bind(R.id.next_train_estimate_textview)
 
     fun renderView(realTimeLeg: RealTimeLeg) {
         legInfoTextView.text =

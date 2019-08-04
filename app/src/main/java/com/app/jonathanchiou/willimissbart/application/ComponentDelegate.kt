@@ -7,7 +7,7 @@ abstract class ComponentDelegate<T> {
 
     abstract val serviceName: String
 
-    operator fun getValue(thisRef: Context, property: KProperty<*>): T {
-        return thisRef.applicationContext.getSystemService(serviceName) as T
+    operator fun getValue(context: Context, property: KProperty<*>): T {
+        return context.applicationContext.getSystemService(serviceName) as T
     }
 }

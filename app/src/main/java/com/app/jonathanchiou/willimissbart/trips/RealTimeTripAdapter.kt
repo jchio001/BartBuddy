@@ -7,25 +7,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 class TripViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    @BindView(R.id.train_color_indicator)
-    lateinit var trainColorIndicator: View
-
-    @BindView(R.id.destination_textview)
-    lateinit var departureTimeTextView: TextView
-
-    @BindView(R.id.time_until_arrival_textview)
-    lateinit var timeUntilArrivalTextView: TextView
-
-    init {
-        ButterKnife.bind(this, itemView)
-    }
+    val trainColorIndicator: View by bind(R.id.train_color_indicator)
+    val departureTimeTextView: TextView by bind(R.id.destination_textview)
+    val timeUntilArrivalTextView: TextView by bind(R.id.time_until_arrival_textview)
 }
 
 class RealTimeTripAdapter: RecyclerView.Adapter<TripViewHolder>() {

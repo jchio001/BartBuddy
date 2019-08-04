@@ -8,22 +8,14 @@ import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 class StationViewHolder(itemView: View): ViewHolder(itemView) {
 
-    @BindView(R.id.station_name_textview)
-    lateinit var stationTextView: TextView
-
-    @BindView(R.id.station_location_textview)
-    lateinit var stationLocationTextView: TextView
-
-    init {
-        ButterKnife.bind(this, itemView)
-    }
+    val stationTextView: TextView by bind(R.id.station_name_textview)
+    val stationLocationTextView: TextView by bind(R.id.station_location_textview)
 
     fun renderStation(station: Station) {
         stationTextView.text = station.name

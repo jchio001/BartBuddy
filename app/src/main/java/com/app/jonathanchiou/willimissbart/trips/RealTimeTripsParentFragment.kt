@@ -6,21 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathanchiou.willimissbart.navigation.bottomnav.FragmentFactory
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 
 class RealTimeTripsParentFragment: BackStackConsumingFragment() {
 
-    @BindView(R.id.title)
-    lateinit var title: TextView
-
-    @BindView(R.id.bottom_navigationview)
-    lateinit var bottomNavigationView: BottomNavigationView
+    val title: TextView by bind(R.id.title)
+    val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -30,7 +26,16 @@ class RealTimeTripsParentFragment: BackStackConsumingFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
+
+        bindClick(R.id.edit_icon) {
+            fragmentManager!!
+                .beginTransaction()
+                .hide(this)
+                .add(R.id.parent, TripSelectionFragment())
+                .show(TripSelectionFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         bottomNavigationView.setFragmentManager(
             childFragmentManager,
@@ -57,17 +62,6 @@ class RealTimeTripsParentFragment: BackStackConsumingFragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         bottomNavigationView.onHiddenChanged(hidden)
-    }
-
-    @OnClick(R.id.edit_icon)
-    fun onEditIconClicked() {
-        fragmentManager!!
-            .beginTransaction()
-            .hide(this)
-            .add(R.id.parent, TripSelectionFragment())
-            .show(TripSelectionFragment())
-            .addToBackStack(null)
-            .commit()
     }
 
     companion object {

@@ -12,12 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import javax.inject.Inject
 
 fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
@@ -34,8 +33,7 @@ fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
 
 class RealTimeTripFragment: Fragment() {
 
-    @BindView(R.id.container)
-    lateinit var container: FrameLayout
+    val container: FrameLayout by bind(R.id.container)
 
     @Inject
     lateinit var realTimeTripViewModelFactory: TripViewModelFactory
@@ -56,7 +54,6 @@ class RealTimeTripFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
         requireContext().appComponent.inject(this)
 
         arguments?.also {

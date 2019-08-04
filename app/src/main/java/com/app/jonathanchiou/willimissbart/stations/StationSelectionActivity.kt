@@ -10,18 +10,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import javax.inject.Inject
 
 class StationSelectionActivity : AppCompatActivity() {
 
-    @BindView(R.id.container)
-    lateinit var container: FrameLayout
+    val container: FrameLayout by bind(R.id.container)
 
     @Inject
     lateinit var stationsViewModelFactory: StationsViewModelFactory
@@ -31,7 +29,6 @@ class StationSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_station_selection)
-        ButterKnife.bind(this)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
