@@ -6,13 +6,16 @@ import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
+import javax.inject.Inject
+import javax.inject.Singleton
 
 enum class StationType {
     ORIGIN,
     DESTINATION
 }
 
-class TripManager(private val sharedPreferences: SharedPreferences) {
+@Singleton
+class TripManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     interface TripUnchangedListener {
         fun onTripUnchanged()

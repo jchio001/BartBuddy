@@ -11,8 +11,11 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class StationsManager(
+@Singleton
+class StationsManager @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val bartService: BartService,
     private val moshi: Moshi) {
