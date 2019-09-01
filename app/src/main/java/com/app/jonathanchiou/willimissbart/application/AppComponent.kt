@@ -2,6 +2,7 @@ package com.app.jonathanchiou.willimissbart.application
 
 import android.content.Context
 import com.app.jonathanchiou.willimissbart.api.BartApiModule
+import com.app.jonathanchiou.willimissbart.notification.TimerService
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity
@@ -9,7 +10,7 @@ import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [BartApiModule::class])
+@Component(modules = [AppModule::class, BartApiModule::class])
 @Singleton
 interface AppComponent {
 
@@ -19,6 +20,8 @@ interface AppComponent {
     fun inject(realTimeTripInfoActivity: RealTimeTripInfoActivity)
 
     fun inject(stationSelectionActivity: StationSelectionActivity)
+
+    fun inject(realTimeTripNotificationService: TimerService)
 
     companion object : ComponentDelegate<AppComponent>() {
 

@@ -14,4 +14,8 @@
 
     <string name="to">&#160;to&#160;</string>
 
+    <string name="start_trip">Start Trip</string>
+
+    <string name = "cancel">Cancel</string>
+
 </resources>

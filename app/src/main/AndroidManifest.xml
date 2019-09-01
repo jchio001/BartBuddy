@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service
+            android:name=".notification.TimerService"
+            android:exported="false"/>
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

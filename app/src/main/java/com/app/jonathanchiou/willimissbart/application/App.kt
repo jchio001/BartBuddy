@@ -10,7 +10,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder()
-            .bartApiModule(BartApiModule(this))
+            .appModule(AppModule(this))
             .build()
     }
 

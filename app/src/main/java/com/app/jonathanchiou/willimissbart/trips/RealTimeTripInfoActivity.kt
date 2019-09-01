@@ -12,8 +12,10 @@ import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 import io.reactivex.functions.BiConsumer
 import javax.inject.Inject
+import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
 
 const val REAL_TIME_TRIP = "real_time_trip"
 
@@ -21,8 +23,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
 
-    @Inject
-    lateinit var tripViewModelFactory: TripViewModelFactory
+    @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
     private lateinit var realTimeTrip: RealTimeTrip
 
@@ -39,8 +40,12 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
             .get(RealTimeLegViewModel::class.java)
 
         realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)
-        supportActionBar?.title =
-            "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
+        val title = "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
+        supportActionBar?.title = title
+
+        bindClick(R.id.start_trip_button) {
+            startRealTimeTripTimer(realTimeTrip.realTimeLegs[0].estimate!!.minutes.toLong())
+        }
 
         realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
             this,

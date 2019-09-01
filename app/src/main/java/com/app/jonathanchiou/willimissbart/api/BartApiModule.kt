@@ -33,16 +33,9 @@ class BartIntegerAdapter {
 }
 
 @Module
-class BartApiModule(private val context: Context) {
+object BartApiModule {
 
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    @Provides
-    @Singleton
+    @[JvmStatic Provides Singleton]
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(BartIntegerAdapter())
@@ -50,8 +43,7 @@ class BartApiModule(private val context: Context) {
             .build()
     }
 
-    @Provides
-    @Singleton
+    @[JvmStatic Provides Singleton]
     fun provideBartService(moshi: Moshi): BartService {
         return Retrofit.Builder()
             .baseUrl("https://api.bart.gov/api/")
