@@ -36,9 +36,6 @@ class TimerService : Service() {
     init {
         compositeDisposable.add(
             timerSubject
-                .doOnNext {
-
-                }
                 .switchMap { value ->
                     Observable.intervalRange(1, value, 1, 1, TimeUnit.SECONDS)
                         .map { value - it }
@@ -72,7 +69,8 @@ class TimerService : Service() {
                     val notificationManager = getNotificationManager()
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                        && notificationManager.getNotificationChannel(CHANNEL_ID) != null) {
+                        && notificationManager.getNotificationChannel(CHANNEL_ID) != null
+                    ) {
                         notificationManager.createNotificationChannel(
                             NotificationChannel(
                                 CHANNEL_ID,
@@ -126,12 +124,13 @@ class TimerService : Service() {
 
         const val DURATION_ARG = "duration"
 
-        private fun Long.toTimerText() : String {
+        private fun Long.toTimerText(): String {
             val minutes = this / 60
             val seconds = this % 60
 
             return "${if (minutes < 10) "0" else ""}${minutes}:${if (seconds < 10) "0" else ""}${seconds}"
         }
+
         private fun Context.getNotificationManager() =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

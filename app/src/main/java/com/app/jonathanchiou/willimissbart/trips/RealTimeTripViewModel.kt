@@ -17,8 +17,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-class TripRequestEvent(val originAbbreviation: String,
-                       val destinationAbbreviation: String)
+class TripRequestEvent(
+    val originAbbreviation: String,
+    val destinationAbbreviation: String
+)
 
 class RealTimeTripViewModel(stationsManager: StationsManager,
                             bartService: BartService) : ViewModel() {
@@ -77,69 +79,69 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
             }
         }
     }
-}
 
-fun BartService.getEtdsForTrips(stationsManager: StationsManager,
-                                tripRequestEvent: TripRequestEvent,
-                                trips: List<Trip>):
-    Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
-    val etdObservables = trips
-        .map { trip ->
-            this.getRealTimeEstimates(trip.legs[0].origin)
-                .mapBody { etdRootWrapper ->
-                    val firstLeg = trip.legs[0]
-                    etdRootWrapper.root.etdStations[0].etds
-                        .filter {
-                            firstLeg.trainHeadStation.contains(it.destination)
-                        }
-                        .firstOrNull()
-                        ?.let { etd ->
-                            etd.estimates.map {
-                                val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
+    fun BartService.getEtdsForTrips(stationsManager: StationsManager,
+                                    tripRequestEvent: TripRequestEvent,
+                                    trips: List<Trip>):
+        Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
+        val etdObservables = trips
+            .map { trip ->
+                this.getRealTimeEstimates(trip.legs[0].origin)
+                    .mapBody { etdRootWrapper ->
+                        val firstLeg = trip.legs[0]
+                        etdRootWrapper.root.etdStations[0].etds
+                            .filter {
+                                firstLeg.trainHeadStation.contains(it.destination)
+                            }
+                            .firstOrNull()
+                            ?.let { etd ->
+                                etd.estimates.map {
+                                    val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
 
-                                realTimeLegs.add(
-                                    RealTimeLeg(
-                                        State.DONE,
-                                        firstLeg.origin,
-                                        firstLeg.destination,
-                                        etd.abbreviation,
-                                        it))
-
-                                val stationNameToAbbreivationMap by lazy {
-                                    val stations = stationsManager.getStationsFromLocalStorage()
-
-                                    val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
-                                    for (i in 1 until trip.legs.size) {
-                                        trainHeadStations.add(trip.legs[i].trainHeadStation)
-                                    }
-
-                                    stations.filter { station -> trainHeadStations.contains(station.name) }
-                                        .map { station -> station.name to station.abbr }
-                                        .toMap()
-                                }
-
-                                for (i in 1 until trip.legs.size) {
                                     realTimeLegs.add(
                                         RealTimeLeg(
-                                            State.PENDING,
-                                            trip.legs[i].origin,
-                                            trip.legs[i].destination,
-                                            stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!,
-                                            null))
+                                            State.DONE,
+                                            firstLeg.origin,
+                                            firstLeg.destination,
+                                            etd.abbreviation,
+                                            it))
+
+                                    val stationNameToAbbreivationMap by lazy {
+                                        val stations = stationsManager.getStationsFromLocalStorage()
+
+                                        val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
+                                        for (i in 1 until trip.legs.size) {
+                                            trainHeadStations.add(trip.legs[i].trainHeadStation)
+                                        }
+
+                                        stations.filter { station -> trainHeadStations.contains(station.name) }
+                                            .map { station -> station.name to station.abbr }
+                                            .toMap()
+                                    }
+
+                                    for (i in 1 until trip.legs.size) {
+                                        realTimeLegs.add(
+                                            RealTimeLeg(
+                                                State.PENDING,
+                                                trip.legs[i].origin,
+                                                trip.legs[i].destination,
+                                                stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!,
+                                                null))
+                                    }
+
+                                    RealTimeTrip(
+                                        trip.origin,
+                                        trip.destination,
+                                        realTimeLegs)
                                 }
+                            } as MutableList? ?: mutableListOf()
+                    }
+                    .toTerminalUiModelStream(query = tripRequestEvent)
+            }
 
-                                RealTimeTrip(
-                                    trip.origin,
-                                    trip.destination,
-                                    realTimeLegs)
-                            }
-                        } as MutableList? ?: mutableListOf()
-                }
-                .toTerminalUiModelStream(query = tripRequestEvent)
-        }
-
-    return Observable
-        .zip(etdObservables) { objects ->
-            UiModel.zipAndFlatten(objects.map { it as UiModel<TripRequestEvent, List<RealTimeTrip>> })
-        }
+        return Observable
+            .zip(etdObservables) { objects ->
+                UiModel.zipAndFlatten(objects.map { it as UiModel<TripRequestEvent, List<RealTimeTrip>> })
+            }
+    }
 }

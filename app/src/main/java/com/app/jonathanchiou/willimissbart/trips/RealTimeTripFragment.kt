@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
+import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity.Companion.REAL_TIME_TRIP
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import javax.inject.Inject

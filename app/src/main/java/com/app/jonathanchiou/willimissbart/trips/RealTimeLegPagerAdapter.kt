@@ -23,17 +23,17 @@ class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealTimeLegViewHolder {
         return when (viewType) {
             State.DONE.ordinal -> {
-                DoneRealTimeLegViewHolder(
+                RealTimeLegViewHolder.DoneRealTimeLegViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.layout_real_time_leg, parent, false))
             }
             State.PENDING.ordinal -> {
-                PendingRealTimeLegViewHolder(
+                RealTimeLegViewHolder.PendingRealTimeLegViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.layout_real_time_leg_pending, parent, false))
             }
             State.ERROR.ordinal -> {
-                ErrorRealTimeLegViewHolder(
+                RealTimeLegViewHolder.ErrorRealTimeLegViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.layout_real_time_leg_error, parent, false))
             }
@@ -43,8 +43,10 @@ class RealTimeLegPagerAdapter(private val realTimeLegs: MutableList<RealTimeLeg>
 
     override fun onBindViewHolder(holder: RealTimeLegViewHolder, position: Int) {
         when (holder) {
-            is DoneRealTimeLegViewHolder -> holder.renderView(realTimeLegs[position])
-            is PendingRealTimeLegViewHolder -> onRequestRealTimeLeg?.accept(realTimeLegs[position], position)
+            is RealTimeLegViewHolder.DoneRealTimeLegViewHolder ->
+                holder.renderView(realTimeLegs[position])
+            is RealTimeLegViewHolder.PendingRealTimeLegViewHolder ->
+                onRequestRealTimeLeg?.accept(realTimeLegs[position], position)
         }
     }
 

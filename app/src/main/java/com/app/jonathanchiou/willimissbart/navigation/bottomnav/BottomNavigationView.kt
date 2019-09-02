@@ -65,7 +65,7 @@ class BottomNavigationView(context: Context,
         for (i in 0 until childCount) {
             (getChildAt(i) as ViewGroup).also { child ->
                 child.setOnClickListener(debouncedOnClickListener)
-                sizeMenuItem(child, baseIconSize, baseTextSize)
+                child.sizeMenuItem(baseIconSize, baseTextSize)
             }
         }
     }
@@ -168,20 +168,20 @@ class BottomNavigationView(context: Context,
     }
 
     private fun sizeMenuItem(tag: String, iconSize: Int, textSize: Int) {
-        sizeMenuItem(getChildAt(Integer.valueOf(tag)) as ViewGroup, iconSize, textSize)
-    }
-}
-
-private fun sizeMenuItem(menuItem: ViewGroup, iconSize: Int, textSize: Int) {
-    val menuItemChild = menuItem.getChildAt(0) as ViewGroup
-
-    (menuItemChild.getChildAt(0) as ImageView).also {
-        val layoutParams = it.layoutParams
-        layoutParams.width = iconSize
-        layoutParams.height = iconSize
-        it.layoutParams = layoutParams
+        (getChildAt(Integer.valueOf(tag)) as ViewGroup).sizeMenuItem(iconSize, textSize)
     }
 
-    (menuItemChild.getChildAt(1) as TextView)
-        .setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+    private fun ViewGroup.sizeMenuItem(iconSize: Int, textSize: Int) {
+        val menuItemChild = getChildAt(0) as ViewGroup
+
+        (menuItemChild.getChildAt(0) as ImageView).also {
+            val layoutParams = it.layoutParams
+            layoutParams.width = iconSize
+            layoutParams.height = iconSize
+            it.layoutParams = layoutParams
+        }
+
+        (menuItemChild.getChildAt(1) as TextView)
+            .setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+    }
 }

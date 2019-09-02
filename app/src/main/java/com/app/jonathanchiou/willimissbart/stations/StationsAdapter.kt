@@ -52,10 +52,6 @@ class StationsAdapter(private val recyclerView: RecyclerView) : Adapter<StationV
         holder.renderStation(stations[position])
     }
 
-    fun getStation(index: Int): Station {
-        return stations[index]
-    }
-
     fun setStations(stations: List<Station>) {
         this.stations = ArrayList(stations)
         notifyDataSetChanged()

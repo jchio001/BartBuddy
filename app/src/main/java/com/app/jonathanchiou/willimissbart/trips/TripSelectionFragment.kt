@@ -19,19 +19,6 @@ import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-fun View.showSnackbar(color: Int) {
-    Snackbar
-        .make(
-            this,
-            R.string.stations_unchanged_error,
-            Snackbar.LENGTH_SHORT)
-        .setActionTextColor(ContextCompat.getColor(context!!, android.R.color.white))
-        .also {
-            it.view.setBackgroundColor(ContextCompat.getColor(context!!, color))
-        }
-        .show()
-}
-
 class TripSelectionFragment : BackStackConsumingFragment() {
 
     val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
@@ -94,6 +81,19 @@ class TripSelectionFragment : BackStackConsumingFragment() {
     override fun onBackPressed(): Boolean {
         tripManager.revertPendingChanges()
         return false
+    }
+
+    fun View.showSnackbar(color: Int) {
+        Snackbar
+            .make(
+                this,
+                R.string.stations_unchanged_error,
+                Snackbar.LENGTH_SHORT)
+            .setActionTextColor(ContextCompat.getColor(context!!, android.R.color.white))
+            .also {
+                it.view.setBackgroundColor(ContextCompat.getColor(context!!, color))
+            }
+            .show()
     }
 
     companion object {

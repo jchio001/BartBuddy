@@ -7,9 +7,8 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class Estimate(@Json(name = "minutes")
-                    val minutes: Int,
-                    @Json(name = "platform")
-                    val platform: Int,
-                    @Json(name = "hexcolor")
-                    val hexColor: String) : Parcelable
+data class Estimate(
+    @Json(name = "minutes") val minutes: Int,
+    @Json(name = "platform") val platform: Int,
+    @Json(name = "hexcolor") val hexColor: String
+) : Parcelable

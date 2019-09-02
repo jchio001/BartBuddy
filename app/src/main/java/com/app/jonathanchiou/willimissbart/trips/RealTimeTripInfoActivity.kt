@@ -9,15 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
+import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 import io.reactivex.functions.BiConsumer
 import javax.inject.Inject
-import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
-
-const val REAL_TIME_TRIP = "real_time_trip"
 
 class RealTimeTripInfoActivity : AppCompatActivity() {
 
@@ -71,5 +69,10 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+
+        const val REAL_TIME_TRIP = "real_time_trip"
     }
 }

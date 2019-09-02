@@ -6,8 +6,10 @@ import com.app.jonathanchiou.willimissbart.utils.models.State
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class RealTimeLeg(val state: State,
-                       val origin: String,
-                       val destination: String,
-                       val trainHeadStation: String,
-                       val estimate: Estimate?) : Parcelable
+data class RealTimeLeg(
+    val state: State,
+    val origin: String,
+    val destination: String,
+    val trainHeadStation: String,
+    val estimate: Estimate?
+) : Parcelable

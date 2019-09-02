@@ -1,7 +1,6 @@
 package com.app.jonathanchiou.willimissbart.application
 
 import android.app.Application
-import com.app.jonathanchiou.willimissbart.api.BartApiModule
 
 class App : Application() {
 

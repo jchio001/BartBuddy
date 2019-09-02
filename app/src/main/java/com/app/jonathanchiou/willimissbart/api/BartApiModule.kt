@@ -1,8 +1,5 @@
 package com.app.jonathanchiou.willimissbart.api
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
