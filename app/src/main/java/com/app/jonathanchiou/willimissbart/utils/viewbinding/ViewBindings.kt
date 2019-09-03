@@ -8,16 +8,18 @@ import kotlin.reflect.KProperty
 
 class bind<out T : View>(private val idResource: Int) {
 
+    private var view: T? = null
+
     operator fun getValue(viewHolder: RecyclerView.ViewHolder, property: KProperty<*>): T {
-        return viewHolder.itemView.findViewById(idResource)
+        return view ?: viewHolder.itemView.findViewById<T>(idResource).also { this.view = it }
     }
 
     operator fun getValue(fragment: Fragment, property: KProperty<*>): T {
-        return fragment.view!!.findViewById(idResource)
+        return fragment.view!!.findViewById<T>(idResource).also { this.view = it }
     }
 
     operator fun getValue(activity: Activity, property: KProperty<*>): T {
-        return activity.findViewById(idResource)
+        return activity.findViewById<T>(idResource).also { this.view = it }
     }
 }
 
