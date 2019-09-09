@@ -99,12 +99,13 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
                                     val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
 
                                     realTimeLegs.add(
-                                        RealTimeLeg(
-                                            State.DONE,
+                                        RealTimeLeg.Complete(
                                             firstLeg.origin,
                                             firstLeg.destination,
                                             etd.abbreviation,
-                                            it))
+                                            it
+                                        )
+                                    )
 
                                     val stationNameToAbbreivationMap by lazy {
                                         val stations = stationsManager.getStationsFromLocalStorage()
@@ -121,12 +122,12 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
 
                                     for (i in 1 until trip.legs.size) {
                                         realTimeLegs.add(
-                                            RealTimeLeg(
-                                                State.PENDING,
+                                            RealTimeLeg.Incomplete(
                                                 trip.legs[i].origin,
                                                 trip.legs[i].destination,
-                                                stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!,
-                                                null))
+                                                stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!
+                                            )
+                                        )
                                     }
 
                                     RealTimeTrip(

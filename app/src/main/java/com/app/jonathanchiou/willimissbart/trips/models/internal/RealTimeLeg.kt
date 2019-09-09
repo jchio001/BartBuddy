@@ -2,14 +2,22 @@ package com.app.jonathanchiou.willimissbart.trips.models.internal
 
 import android.os.Parcelable
 import com.app.jonathanchiou.willimissbart.trips.models.api.Estimate
-import com.app.jonathanchiou.willimissbart.utils.models.State
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-data class RealTimeLeg(
-    val state: State,
-    val origin: String,
-    val destination: String,
-    val trainHeadStation: String,
-    val estimate: Estimate?
-) : Parcelable
+sealed class RealTimeLeg : Parcelable {
+
+    @Parcelize
+    class Complete(
+        val origin: String,
+        val destination: String,
+        val trainHeadStation: String,
+        val estimate: Estimate
+    ) : RealTimeLeg()
+
+    @Parcelize
+    class Incomplete(
+        val origin: String,
+        val destination: String,
+        val trainHeadStation: String
+    ) : RealTimeLeg()
+}

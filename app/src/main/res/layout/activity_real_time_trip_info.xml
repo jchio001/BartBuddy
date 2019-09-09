@@ -11,7 +11,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/real_time_leg_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/start_trip_button"
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_gravity="center_horizontal"
+        android:visibility="gone"
         app:contentPaddingTop="8dp"
         app:contentPaddingBottom="8dp"
         app:contentPaddingLeft="18dp"
