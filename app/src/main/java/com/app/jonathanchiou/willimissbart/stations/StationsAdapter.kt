@@ -23,7 +23,9 @@ class StationViewHolder(itemView: View) : ViewHolder(itemView) {
     }
 }
 
-class StationsAdapter(private val recyclerView: RecyclerView) : Adapter<StationViewHolder>() {
+class StationsAdapter(
+    private val recyclerView: RecyclerView
+) : Adapter<StationViewHolder>() {
 
     private var stations: ArrayList<Station> = ArrayList(0)
 

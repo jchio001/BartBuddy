@@ -3,22 +3,23 @@ package com.app.jonathanchiou.willimissbart
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripsParentFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripSelectionFragment
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var tripManager: TripManager
+    @Inject lateinit var tripManager: TripManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        appComponent.inject(this)
 
         supportActionBar?.hide()
-
-        tripManager = TripManager(PreferenceManager.getDefaultSharedPreferences(this))
 
         if (supportFragmentManager.backStackEntryCount == 0) {
             if (tripManager.getOriginAbbreviation() != null && tripManager.getDestinationAbbreviation() != null) {

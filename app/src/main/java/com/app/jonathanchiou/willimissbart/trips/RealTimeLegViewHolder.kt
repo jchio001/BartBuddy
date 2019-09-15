@@ -7,7 +7,9 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
-class CompleteRealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class CompleteRealTimeLegViewHolder(
+    itemView: View
+) : RecyclerView.ViewHolder(itemView) {
 
     val legInfoTextView: TextView by bind(R.id.leg_info_textview)
     val nextTrainEstimateTextView: TextView by bind(R.id.next_train_estimate_textview)

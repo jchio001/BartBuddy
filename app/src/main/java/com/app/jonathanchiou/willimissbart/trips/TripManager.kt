@@ -15,7 +15,9 @@ enum class StationType {
 }
 
 @Singleton
-class TripManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
+class TripManager @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) {
 
     interface TripUnchangedListener {
         fun onTripUnchanged()

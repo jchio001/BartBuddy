@@ -22,8 +22,10 @@ class TripRequestEvent(
     val destinationAbbreviation: String
 )
 
-class RealTimeTripViewModel(stationsManager: StationsManager,
-                            bartService: BartService) : ViewModel() {
+class RealTimeTripViewModel(
+    stationsManager: StationsManager,
+    bartService: BartService
+) : ViewModel() {
 
     val realTimeTripLiveData = MutableLiveData<UiModel<TripRequestEvent, List<RealTimeTrip>>>()
 
@@ -80,9 +82,11 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
         }
     }
 
-    fun BartService.getEtdsForTrips(stationsManager: StationsManager,
-                                    tripRequestEvent: TripRequestEvent,
-                                    trips: List<Trip>):
+    fun BartService.getEtdsForTrips(
+        stationsManager: StationsManager,
+        tripRequestEvent: TripRequestEvent,
+        trips: List<Trip>
+    ):
         Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
         val etdObservables = trips
             .map { trip ->

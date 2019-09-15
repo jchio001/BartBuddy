@@ -47,11 +47,11 @@ class RealTimeTripFragment : Fragment() {
 
     private var isReturnTrip = false
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_real_time_trips, container, false)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = inflater.inflate(R.layout.fragment_real_time_trips, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,7 +112,10 @@ class RealTimeTripFragment : Fragment() {
         }
     }
 
-    private fun requestTrip(originAbbreviation: String, destinationAbbreviation: String) {
+    private fun requestTrip(
+        originAbbreviation: String,
+        destinationAbbreviation: String
+    ) {
         val actualOriginAbbreviation = if (!isReturnTrip) originAbbreviation else destinationAbbreviation
         val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
 

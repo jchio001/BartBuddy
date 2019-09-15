@@ -1,6 +1,7 @@
 package com.app.jonathanchiou.willimissbart.application
 
 import android.content.Context
+import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.api.BartApiModule
 import com.app.jonathanchiou.willimissbart.notification.TimerService
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
@@ -13,6 +14,8 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class, BartApiModule::class])
 @Singleton
 interface AppComponent {
+
+    fun inject(mainActivity: MainActivity)
 
     fun inject(tripSelectionFragment: TripSelectionFragment)
 
