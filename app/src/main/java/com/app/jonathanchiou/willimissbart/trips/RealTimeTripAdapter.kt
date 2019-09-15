@@ -54,7 +54,7 @@ class RealTimeTripAdapter : RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        (realTimeTrips[position].realTimeLegs[0] as RealTimeLeg.Complete).also { completeRealTimeLeg ->
+        realTimeTrips[position].completeRealTimeLegs.first().also { completeRealTimeLeg ->
             holder.departureTimeTextView.text = "To ${completeRealTimeLeg.trainHeadStation}"
             completeRealTimeLeg.estimate.also {
                 holder.timeUntilArrivalTextView.text =

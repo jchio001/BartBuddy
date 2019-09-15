@@ -1,31 +1,39 @@
 package com.app.jonathanchiou.willimissbart.trips.models.internal
 
 import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-data class RealTimeTrip(
-    val originAbbreviation: String,
-    val destinationAbbreviation: String,
-    val realTimeLegs: List<RealTimeLeg>
-) : Parcelable {
+sealed class RealTimeTrip : Parcelable {
 
-    @IgnoredOnParcel
-    val isIncomplete = realTimeLegs.isNotEmpty() && realTimeLegs.last() is RealTimeLeg.Incomplete
+    abstract val originAbbreviation: String
+    abstract val destinationAbbreviation: String
+    abstract val completeRealTimeLegs: List<RealTimeLeg.Complete>
 
-    fun completeLeg(completeLeg: RealTimeLeg.Complete) : RealTimeTrip {
-        val index = realTimeLegs.lastIndex
+    @Parcelize
+    class Complete(
+        override val originAbbreviation: String,
+        override val destinationAbbreviation: String,
+        override val completeRealTimeLegs: List<RealTimeLeg.Complete>
+    ) : RealTimeTrip()
 
-        if (realTimeLegs[index] is RealTimeLeg.Complete) {
-            throw IllegalStateException("Leg at ${index} already complete!")
+    @Parcelize
+    class Incomplete(
+        override val originAbbreviation: String,
+        override val destinationAbbreviation: String,
+        override val completeRealTimeLegs: List<RealTimeLeg.Complete>,
+        val incompleteRealTimeLegs: List<RealTimeLeg.Incomplete>
+    ) : RealTimeTrip() {
+
+        fun complete(vararg completeRealTimeLegs: RealTimeLeg.Complete) : RealTimeTrip.Complete {
+            if (incompleteRealTimeLegs.size != completeRealTimeLegs.size) {
+                throw IllegalStateException("Failed to complete real time trip!")
+            }
+
+            return RealTimeTrip.Complete(
+                originAbbreviation = originAbbreviation,
+                destinationAbbreviation = destinationAbbreviation,
+                completeRealTimeLegs = this.completeRealTimeLegs.toMutableList().apply { addAll(completeRealTimeLegs)}
+            )
         }
-
-        return copy(
-            realTimeLegs = realTimeLegs.toMutableList()
-                .also {
-                    it[index] = completeLeg
-                }
-        )
     }
 }

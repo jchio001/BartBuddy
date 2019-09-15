@@ -20,7 +20,7 @@ import io.reactivex.subjects.PublishSubject
 class RealTimeLegViewModel(stationsManager: StationsManager,
                            bartService: BartService) : ViewModel() {
 
-    val realTimeLegLiveData = MutableLiveData<UiModel<Void, RealTimeTrip>>()
+    val realTimeLegLiveData = MutableLiveData<UiModel<Void, RealTimeTrip.Complete>>()
 
     private val realTimeLegSubject = PublishSubject.create<RealTimeTrip>()
 
@@ -29,40 +29,41 @@ class RealTimeLegViewModel(stationsManager: StationsManager,
     init {
         diposable = realTimeLegSubject
             .switchMap { realTimeTrip ->
-                if (realTimeTrip.isIncomplete) {
-                    val realTimeLegs = realTimeTrip.realTimeLegs
-                    val incompleteLeg = realTimeLegs.last() as RealTimeLeg.Incomplete
+                when (realTimeTrip) {
+                    is RealTimeTrip.Incomplete -> {
+                        val incompleteLeg = realTimeTrip.incompleteRealTimeLegs.first()
 
-                    bartService.getRealTimeEstimates(incompleteLeg.origin)
-                        .mapBody {
-                            val station = stationsManager
-                                .getStationsFromLocalStorage()
-                                .filter { it.abbr == incompleteLeg.trainHeadStation }
-                                .first()
+                        bartService.getRealTimeEstimates(incompleteLeg.origin)
+                            .mapBody {
+                                val station = stationsManager
+                                    .getStationsFromLocalStorage()
+                                    .filter { it.abbr == incompleteLeg.trainHeadStation }
+                                    .first()
 
-                            val firstEstimate = it.root.etdStations[0].etds
-                                .filter {
-                                    it.abbreviation == station.abbr
-                                }
-                                .map(Etd::estimates)
-                                .first()
-                                .first()
+                                val firstEstimate = it.root.etdStations[0].etds
+                                    .filter {
+                                        it.abbreviation == station.abbr
+                                    }
+                                    .map(Etd::estimates)
+                                    .first()
+                                    .first()
 
-                            realTimeTrip.completeLeg(
-                                RealTimeLeg.Complete(
-                                    incompleteLeg.origin,
-                                    incompleteLeg.destination,
-                                    incompleteLeg.trainHeadStation,
-                                    firstEstimate
+                                realTimeTrip.complete(
+                                    RealTimeLeg.Complete(
+                                        incompleteLeg.origin,
+                                        incompleteLeg.destination,
+                                        incompleteLeg.trainHeadStation,
+                                        firstEstimate
+                                    )
                                 )
-                            )
-                        }
-                        .responseToUiModelStream<Void, RealTimeTrip>()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                } else {
-                    Observable.just(realTimeTrip)
-                        .modelToUiModelStream()
+                            }
+                            .responseToUiModelStream<Void, RealTimeTrip.Complete>()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                    }
+                    is RealTimeTrip.Complete ->
+                        Observable.just(realTimeTrip)
+                            .modelToUiModelStream()
                 }
             }
             .subscribe(realTimeLegLiveData::postValue)

@@ -45,7 +45,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
         supportActionBar?.title = title
 
         bindClick(R.id.start_trip_button) {
-            startRealTimeTripTimer((realTimeTrip.realTimeLegs[0] as RealTimeLeg.Complete).estimate.minutes.toLong())
+            startRealTimeTripTimer((realTimeTrip.completeRealTimeLegs.first()).estimate.minutes.toLong())
         }
 
         realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
@@ -60,8 +60,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
                 if (it.state == State.DONE) {
                     realTimeLegPagerAdapter.submitList(
                         it.data!!
-                            .realTimeLegs
-                            .map { it as RealTimeLeg.Complete }
+                            .completeRealTimeLegs
                     )
                     realTimeLegRecyclerView.visibility = View.VISIBLE
                     startTripButton.visibility = View.VISIBLE

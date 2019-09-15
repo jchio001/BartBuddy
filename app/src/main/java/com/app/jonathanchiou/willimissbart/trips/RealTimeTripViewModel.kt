@@ -96,18 +96,14 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
                             .firstOrNull()
                             ?.let { etd ->
                                 etd.estimates.map {
-                                    val realTimeLegs = ArrayList<RealTimeLeg>(trip.legs.size)
-
-                                    realTimeLegs.add(
-                                        RealTimeLeg.Complete(
-                                            firstLeg.origin,
-                                            firstLeg.destination,
-                                            etd.abbreviation,
-                                            it
-                                        )
+                                    val completeRealTimeLeg = RealTimeLeg.Complete(
+                                        firstLeg.origin,
+                                        firstLeg.destination,
+                                        etd.abbreviation,
+                                        it
                                     )
 
-                                    val stationNameToAbbreivationMap by lazy {
+                                    val stationNameToAbbreviationMap by lazy {
                                         val stations = stationsManager.getStationsFromLocalStorage()
 
                                         val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
@@ -120,20 +116,33 @@ class RealTimeTripViewModel(stationsManager: StationsManager,
                                             .toMap()
                                     }
 
-                                    for (i in 1 until trip.legs.size) {
-                                        realTimeLegs.add(
-                                            RealTimeLeg.Incomplete(
-                                                trip.legs[i].origin,
-                                                trip.legs[i].destination,
-                                                stationNameToAbbreivationMap[trip.legs[i].trainHeadStation]!!
+                                    if (trip.legs.size == 1) {
+                                        RealTimeTrip.Complete(
+                                            originAbbreviation = trip.origin,
+                                            destinationAbbreviation = trip.destination,
+                                            completeRealTimeLegs = listOf(completeRealTimeLeg)
+                                        )
+                                    } else {
+                                        val incompleteRealTimeLegs =
+                                            ArrayList<RealTimeLeg.Incomplete>(trip.legs.size - 1)
+
+                                        for (i in 1 until trip.legs.size) {
+                                            incompleteRealTimeLegs.add(
+                                                RealTimeLeg.Incomplete(
+                                                    trip.legs[i].origin,
+                                                    trip.legs[i].destination,
+                                                    stationNameToAbbreviationMap[trip.legs[i].trainHeadStation]!!
+                                                )
                                             )
+                                        }
+
+                                        RealTimeTrip.Incomplete(
+                                            originAbbreviation = trip.origin,
+                                            destinationAbbreviation = trip.destination,
+                                            completeRealTimeLegs = listOf(completeRealTimeLeg),
+                                            incompleteRealTimeLegs = incompleteRealTimeLegs
                                         )
                                     }
-
-                                    RealTimeTrip(
-                                        trip.origin,
-                                        trip.destination,
-                                        realTimeLegs)
                                 }
                             } as MutableList? ?: mutableListOf()
                     }
