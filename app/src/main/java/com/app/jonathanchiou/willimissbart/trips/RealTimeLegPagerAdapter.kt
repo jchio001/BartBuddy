@@ -7,9 +7,9 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 
-class RealTimeLegPagerAdapter() :
-    ListAdapter<RealTimeLeg.Complete, CompleteRealTimeLegViewHolder>(
-        BasicDiffCallback<RealTimeLeg.Complete>()
+class RealTimeLegPagerAdapter :
+    ListAdapter<RealTimeLeg, CompleteRealTimeLegViewHolder>(
+        BasicDiffCallback<RealTimeLeg>()
     ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CompleteRealTimeLegViewHolder(

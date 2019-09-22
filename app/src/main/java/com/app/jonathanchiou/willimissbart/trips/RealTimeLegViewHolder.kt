@@ -14,7 +14,7 @@ class CompleteRealTimeLegViewHolder(
     val legInfoTextView: TextView by bind(R.id.leg_info_textview)
     val nextTrainEstimateTextView: TextView by bind(R.id.next_train_estimate_textview)
 
-    fun renderView(completeLeg: RealTimeLeg.Complete) {
+    fun renderView(completeLeg: RealTimeLeg) {
         legInfoTextView.text =
             "From ${completeLeg.origin}, " +
                 "take train heading towards ${completeLeg.trainHeadStation}. " +
@@ -22,7 +22,7 @@ class CompleteRealTimeLegViewHolder(
 
         val estimateInMinutes = completeLeg.estimate.minutes
         nextTrainEstimateTextView.text =
-            "Next train is leaving ${
+            "Take the train leaving ${
             if (estimateInMinutes == 0) "now!"
             else "%d minutes!".format(estimateInMinutes)
             }"

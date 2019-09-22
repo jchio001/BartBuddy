@@ -92,6 +92,19 @@ class RealTimeTripViewModel(
             .map { trip ->
                 this.getRealTimeEstimates(trip.legs[0].origin)
                     .mapBody { etdRootWrapper ->
+                        val stationNameToAbbreviationMap by lazy {
+                            val stations = stationsManager.getStationsFromLocalStorage()
+
+                            val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
+                            for (i in 1 until trip.legs.size) {
+                                trainHeadStations.add(trip.legs[i].trainHeadStation)
+                            }
+
+                            stations.filter { station -> trainHeadStations.contains(station.name) }
+                                .map { station -> station.name to station.abbr }
+                                .toMap()
+                        }
+
                         val firstLeg = trip.legs[0]
                         etdRootWrapper.root.etdStations[0].etds
                             .filter {
@@ -99,54 +112,8 @@ class RealTimeTripViewModel(
                             }
                             .firstOrNull()
                             ?.let { etd ->
-                                etd.estimates.map {
-                                    val completeRealTimeLeg = RealTimeLeg.Complete(
-                                        firstLeg.origin,
-                                        firstLeg.destination,
-                                        etd.abbreviation,
-                                        it
-                                    )
-
-                                    val stationNameToAbbreviationMap by lazy {
-                                        val stations = stationsManager.getStationsFromLocalStorage()
-
-                                        val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
-                                        for (i in 1 until trip.legs.size) {
-                                            trainHeadStations.add(trip.legs[i].trainHeadStation)
-                                        }
-
-                                        stations.filter { station -> trainHeadStations.contains(station.name) }
-                                            .map { station -> station.name to station.abbr }
-                                            .toMap()
-                                    }
-
-                                    if (trip.legs.size == 1) {
-                                        RealTimeTrip.Complete(
-                                            originAbbreviation = trip.origin,
-                                            destinationAbbreviation = trip.destination,
-                                            completeRealTimeLegs = listOf(completeRealTimeLeg)
-                                        )
-                                    } else {
-                                        val incompleteRealTimeLegs =
-                                            ArrayList<RealTimeLeg.Incomplete>(trip.legs.size - 1)
-
-                                        for (i in 1 until trip.legs.size) {
-                                            incompleteRealTimeLegs.add(
-                                                RealTimeLeg.Incomplete(
-                                                    trip.legs[i].origin,
-                                                    trip.legs[i].destination,
-                                                    stationNameToAbbreviationMap[trip.legs[i].trainHeadStation]!!
-                                                )
-                                            )
-                                        }
-
-                                        RealTimeTrip.Incomplete(
-                                            originAbbreviation = trip.origin,
-                                            destinationAbbreviation = trip.destination,
-                                            completeRealTimeLegs = listOf(completeRealTimeLeg),
-                                            incompleteRealTimeLegs = incompleteRealTimeLegs
-                                        )
-                                    }
+                                etd.estimates.map { estimate ->
+                                    trip.toRealTimeTrip(etd, estimate, stationNameToAbbreviationMap)
                                 }
                             } as MutableList? ?: mutableListOf()
                     }

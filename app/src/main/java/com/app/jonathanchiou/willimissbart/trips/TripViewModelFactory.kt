@@ -16,8 +16,6 @@ class TripViewModelFactory @Inject constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass == RealTimeTripViewModel::class.java) {
             return RealTimeTripViewModel(stationsManager, bartService) as T
-        } else if (modelClass == RealTimeLegViewModel::class.java) {
-            return RealTimeLegViewModel(stationsManager, bartService) as T
         }
 
         throw IllegalStateException("Invalid class!")

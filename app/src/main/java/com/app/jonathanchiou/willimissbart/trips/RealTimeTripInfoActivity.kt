@@ -28,17 +28,12 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
 
     private lateinit var realTimeTrip: RealTimeTrip
 
-    lateinit var realTimeLegViewModel: RealTimeLegViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_real_time_trip_info)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        realTimeLegViewModel = ViewModelProviders.of(this, tripViewModelFactory)
-            .get(RealTimeLegViewModel::class.java)
 
         realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)
         val title = "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
@@ -54,20 +49,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
             false)
         val realTimeLegPagerAdapter = RealTimeLegPagerAdapter()
         realTimeLegRecyclerView.adapter = realTimeLegPagerAdapter
-
-        realTimeLegViewModel.realTimeLegLiveData
-            .observe(this, Observer {
-                if (it.state == State.DONE) {
-                    realTimeLegPagerAdapter.submitList(
-                        it.data!!
-                            .completeRealTimeLegs
-                    )
-                    realTimeLegRecyclerView.visibility = View.VISIBLE
-                    startTripButton.visibility = View.VISIBLE
-                }
-            })
-
-        realTimeLegViewModel.completeRealTimeTrip(realTimeTrip)
+        realTimeLegPagerAdapter.submitList(realTimeTrip.completeRealTimeLegs)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
