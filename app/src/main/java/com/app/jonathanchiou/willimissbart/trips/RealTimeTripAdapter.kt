@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 

@@ -1,6 +1,5 @@
 package com.app.jonathanchiou.willimissbart.trips.models.internal
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.app.jonathanchiou.willimissbart.trips.models.api.Estimate
 import kotlinx.android.parcel.Parcelize

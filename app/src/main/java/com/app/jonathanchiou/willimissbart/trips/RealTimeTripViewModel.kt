@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
