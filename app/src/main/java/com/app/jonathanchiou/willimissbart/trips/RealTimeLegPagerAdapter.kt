@@ -19,7 +19,7 @@ class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RealTimeLegViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_real_time_leg, parent, false);
+            .inflate(R.layout.layout_real_time_leg, parent, false)
         return when (viewType) {
             0 -> RealTimeLegViewHolder.Train(view)
             1 -> RealTimeLegViewHolder.Wait(view)
