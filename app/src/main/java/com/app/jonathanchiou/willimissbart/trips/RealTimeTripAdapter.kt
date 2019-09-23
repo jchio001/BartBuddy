@@ -1,25 +1,18 @@
 package com.app.jonathanchiou.willimissbart.trips
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.util.Consumer
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
+import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 
-class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    val trainColorIndicator: View by bind(R.id.train_color_indicator)
-    val departureTimeTextView: TextView by bind(R.id.destination_textview)
-    val timeUntilArrivalTextView: TextView by bind(R.id.time_until_arrival_textview)
-}
-
-class RealTimeTripAdapter : RecyclerView.Adapter<TripViewHolder>() {
+class RealTimeTripAdapter : ListAdapter<RealTimeTrip, RealTimeTripViewHolder>(
+    BasicDiffCallback<RealTimeTrip>()
+) {
 
     var onClickListener: Consumer<RealTimeTrip>? = null
 
@@ -30,43 +23,19 @@ class RealTimeTripAdapter : RecyclerView.Adapter<TripViewHolder>() {
     private val debouncedOnClickListener = View.OnClickListener {
         if (!isClicked) {
             isClicked = true
-            onClickListener?.accept(
-                realTimeTrips[recyclerView.getChildLayoutPosition(it)])
+            onClickListener?.accept(getItem(recyclerView.getChildLayoutPosition(it)))
             isClicked = false
         }
     }
 
-    private var realTimeTrips: List<RealTimeTrip> = ArrayList()
-    fun setTrips(realTimeTrips: List<RealTimeTrip>) {
-        this.realTimeTrips = realTimeTrips
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealTimeTripViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cell_real_time_trip, parent, false)
         view.setOnClickListener(debouncedOnClickListener)
-        return TripViewHolder(view)
+        return RealTimeTripViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return realTimeTrips.size
-    }
-
-    override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        val realTimeTrip = realTimeTrips[position]
-        (realTimeTrip.realTimeLegs.first() as RealTimeLeg.Wait).also { waitRealTimeLeg ->
-            holder.departureTimeTextView.text = "To ${waitRealTimeLeg.nextTrainHeadStation}"
-            waitRealTimeLeg.also {
-                holder.timeUntilArrivalTextView.text =
-                    if (it.duration != 0) "${it.duration} min"
-                    else "Leaving..."
-                holder.trainColorIndicator
-                    .setBackgroundColor(
-                        Color.parseColor(realTimeTrip.hexColor))
-            }
-        }
-    }
+    override fun onBindViewHolder(holder: RealTimeTripViewHolder, position: Int) = holder.bind(getItem(position))
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)

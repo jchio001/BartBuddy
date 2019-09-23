@@ -96,7 +96,7 @@ class RealTimeTripFragment : Fragment() {
                         container.addView(recyclerView)
                     }
 
-                    realTimeTripAdapter.setTrips(it.data!!)
+                    realTimeTripAdapter.submitList(it.data!!)
                 }
             })
 

@@ -8,10 +8,9 @@ import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 import java.lang.IllegalStateException
 
-class RealTimeLegPagerAdapter :
-    ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
-        BasicDiffCallback<RealTimeLeg>()
-    ) {
+class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
+    BasicDiffCallback<RealTimeLeg>()
+) {
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is RealTimeLeg.Train -> 0
