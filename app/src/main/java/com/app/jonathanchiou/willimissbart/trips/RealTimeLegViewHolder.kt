@@ -22,10 +22,7 @@ sealed class RealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
             val estimateInMinutes = trainRealTimeLeg.duration
             realTimeLegDuration.text =
-                "Take the train leaving ${
-                if (estimateInMinutes == 0) "now!"
-                else "%d minutes!".format(estimateInMinutes)
-                }"
+                "The ride will take approximately ${trainRealTimeLeg.duration} minutes."
         }
     }
 

@@ -34,9 +34,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
         val title = "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
         supportActionBar?.title = title
 
-        bindClick(R.id.start_trip_button) {
-            startRealTimeTripTimer((realTimeTrip.realTimeLegs.first() as RealTimeLeg.Train).duration.toLong())
-        }
+        bindClick(R.id.start_trip_button) { startRealTimeTripTimer(realTimeTrip) }
 
         realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
             this,
