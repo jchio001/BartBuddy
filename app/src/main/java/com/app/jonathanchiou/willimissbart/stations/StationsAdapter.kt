@@ -17,7 +17,7 @@ class StationViewHolder(itemView: View) : ViewHolder(itemView) {
     val stationTextView: TextView by bind(R.id.station_name_textview)
     val stationLocationTextView: TextView by bind(R.id.station_location_textview)
 
-    fun renderStation(station: Station) {
+    fun bind(station: Station) {
         stationTextView.text = station.name
         stationLocationTextView.text = "${station.city}, ${station.state}"
     }
@@ -51,7 +51,7 @@ class StationsAdapter(
     }
 
     override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
-        holder.renderStation(stations[position])
+        holder.bind(stations[position])
     }
 
     fun setStations(stations: List<Station>) {

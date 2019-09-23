@@ -14,7 +14,7 @@ sealed class RealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
     class Train(itemView: View) : RealTimeLegViewHolder(itemView) {
 
-        fun renderView(trainRealTimeLeg: RealTimeLeg.Train) {
+        fun bind(trainRealTimeLeg: RealTimeLeg.Train) {
             realTimeLegInfo.text =
                 "From ${trainRealTimeLeg.origin}, " +
                     "take train heading towards ${trainRealTimeLeg.trainHeadStation}. " +
@@ -31,7 +31,7 @@ sealed class RealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
     class Wait(itemView: View) : RealTimeLegViewHolder(itemView) {
 
-        fun renderView(waitRealTimeLeg: RealTimeLeg.Wait) {
+        fun bind(waitRealTimeLeg: RealTimeLeg.Wait) {
             realTimeLegInfo.text =
                 "At ${waitRealTimeLeg.station}, wait for the next train heading towards " +
                     "${waitRealTimeLeg.nextTrainHeadStation}."

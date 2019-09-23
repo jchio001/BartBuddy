@@ -29,8 +29,8 @@ class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
 
     override fun onBindViewHolder(holder: RealTimeLegViewHolder, position: Int) {
         when (holder) {
-            is RealTimeLegViewHolder.Train -> holder.renderView(getItem(position) as RealTimeLeg.Train)
-            is RealTimeLegViewHolder.Wait -> holder.renderView(getItem(position) as RealTimeLeg.Wait)
+            is RealTimeLegViewHolder.Train -> holder.bind(getItem(position) as RealTimeLeg.Train)
+            is RealTimeLegViewHolder.Wait -> holder.bind(getItem(position) as RealTimeLeg.Wait)
         }
     }
 }
