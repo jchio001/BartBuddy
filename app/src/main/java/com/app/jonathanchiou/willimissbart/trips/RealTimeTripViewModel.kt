@@ -94,9 +94,9 @@ class RealTimeTripViewModel(
                         val stationNameToAbbreviationMap by lazy {
                             val stations = stationsManager.getStationsFromLocalStorage()
 
-                            val trainHeadStations = HashSet<String>(trip.legs.size - 1, 1.0f)
-                            for (i in 1 until trip.legs.size) {
-                                trainHeadStations.add(trip.legs[i].trainHeadStation)
+                            val trainHeadStations = HashSet<String>(trip.legs.size, 1.0f)
+                            for (leg in trip.legs) {
+                                trainHeadStations.add(leg.trainHeadStation)
                             }
 
                             stations.filter { station -> trainHeadStations.contains(station.name) }

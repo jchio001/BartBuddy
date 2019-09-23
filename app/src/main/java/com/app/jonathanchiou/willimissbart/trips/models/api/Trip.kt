@@ -15,43 +15,62 @@ data class Trip(
 ) {
 
     fun toRealTimeTrip(
-        etd: Etd, estimate:
-        Estimate,
+        etd: Etd,
+        estimate: Estimate,
         nameToAbbreviationMap: Map<String, String>
     ) : RealTimeTrip {
         val firstLeg = legs.first()
-
-        val completeRealTimeLegs = ArrayList<RealTimeLeg>(legs.size)
-        completeRealTimeLegs.add(
-            RealTimeLeg(
+        val realTimeLegs = ArrayList<RealTimeLeg>(legs.size * 2)
+        realTimeLegs.add(
+            RealTimeLeg.Wait(
+                station = firstLeg.origin,
+                nextTrainHeadStation = nameToAbbreviationMap[firstLeg.trainHeadStation]!!,
+                duration = estimate.minutes
+            )
+        )
+        realTimeLegs.add(
+            RealTimeLeg.Train(
                 origin = firstLeg.origin,
                 destination = firstLeg.destination,
                 trainHeadStation = etd.abbreviation,
-                estimate = estimate
+                duration = estimate.minutes
             )
         )
 
-        // TODO: Factor in time between legs!
         var currentTravelTime = estimate.minutes + firstLeg.duration
+        var previousDestinationTimeMinutesEpoch = firstLeg.destinationTimeMinutesEpoch
         for (i in 1 until legs.size) {
             val leg = legs[i]
+            val legTrainHeadStation = nameToAbbreviationMap[leg.trainHeadStation]!!
 
-            completeRealTimeLegs.add(
-                RealTimeLeg(
+            val waitTime = (leg.originTimeMinutesEpoch - previousDestinationTimeMinutesEpoch).toInt()
+                realTimeLegs.add(
+                    RealTimeLeg.Wait(
+                        station = leg.origin,
+                        nextTrainHeadStation = legTrainHeadStation,
+                        duration = waitTime
+                    )
+                )
+                currentTravelTime += waitTime
+
+            realTimeLegs.add(
+                RealTimeLeg.Train(
                     origin = leg.origin,
                     destination = leg.destination,
-                    trainHeadStation = nameToAbbreviationMap[leg.trainHeadStation]!!,
-                    estimate = estimate.copy(minutes = currentTravelTime)
+                    trainHeadStation = legTrainHeadStation,
+                    duration = currentTravelTime
                 )
             )
 
+            previousDestinationTimeMinutesEpoch = leg.destinationTimeMinutesEpoch
             currentTravelTime += leg.duration
         }
 
         return RealTimeTrip(
+            hexColor = estimate.hexColor,
             originAbbreviation = origin,
             destinationAbbreviation = destination,
-            completeRealTimeLegs = completeRealTimeLegs
+            realTimeLegs = realTimeLegs
         )
     }
 }

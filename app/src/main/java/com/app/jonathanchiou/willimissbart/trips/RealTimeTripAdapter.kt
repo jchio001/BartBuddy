@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
@@ -53,15 +54,16 @@ class RealTimeTripAdapter : RecyclerView.Adapter<TripViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        realTimeTrips[position].completeRealTimeLegs.first().also { completeRealTimeLeg ->
-            holder.departureTimeTextView.text = "To ${completeRealTimeLeg.trainHeadStation}"
-            completeRealTimeLeg.estimate.also {
+        val realTimeTrip = realTimeTrips[position]
+        (realTimeTrip.realTimeLegs.first() as RealTimeLeg.Wait).also { waitRealTimeLeg ->
+            holder.departureTimeTextView.text = "To ${waitRealTimeLeg.nextTrainHeadStation}"
+            waitRealTimeLeg.also {
                 holder.timeUntilArrivalTextView.text =
-                    if (it.minutes != 0) "${it.minutes} min"
+                    if (it.duration != 0) "${it.duration} min"
                     else "Leaving..."
                 holder.trainColorIndicator
                     .setBackgroundColor(
-                        Color.parseColor(it.hexColor))
+                        Color.parseColor(realTimeTrip.hexColor))
             }
         }
     }

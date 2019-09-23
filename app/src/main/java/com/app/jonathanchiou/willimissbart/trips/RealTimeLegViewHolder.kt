@@ -7,24 +7,35 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
-class CompleteRealTimeLegViewHolder(
-    itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+sealed class RealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val legInfoTextView: TextView by bind(R.id.leg_info_textview)
-    val nextTrainEstimateTextView: TextView by bind(R.id.next_train_estimate_textview)
+    val realTimeLegInfo: TextView by bind(R.id.real_time_leg_info)
+    val realTimeLegDuration: TextView by bind(R.id.real_time_leg_duration)
 
-    fun renderView(completeLeg: RealTimeLeg) {
-        legInfoTextView.text =
-            "From ${completeLeg.origin}, " +
-                "take train heading towards ${completeLeg.trainHeadStation}. " +
-                "Exit at ${completeLeg.destination}."
+    class Train(itemView: View) : RealTimeLegViewHolder(itemView) {
 
-        val estimateInMinutes = completeLeg.estimate.minutes
-        nextTrainEstimateTextView.text =
-            "Take the train leaving ${
-            if (estimateInMinutes == 0) "now!"
-            else "%d minutes!".format(estimateInMinutes)
-            }"
+        fun renderView(trainRealTimeLeg: RealTimeLeg.Train) {
+            realTimeLegInfo.text =
+                "From ${trainRealTimeLeg.origin}, " +
+                    "take train heading towards ${trainRealTimeLeg.trainHeadStation}. " +
+                    "Exit at ${trainRealTimeLeg.destination}."
+
+            val estimateInMinutes = trainRealTimeLeg.duration
+            realTimeLegDuration.text =
+                "Take the train leaving ${
+                if (estimateInMinutes == 0) "now!"
+                else "%d minutes!".format(estimateInMinutes)
+                }"
+        }
+    }
+
+    class Wait(itemView: View) : RealTimeLegViewHolder(itemView) {
+
+        fun renderView(waitRealTimeLeg: RealTimeLeg.Wait) {
+            realTimeLegInfo.text =
+                "At ${waitRealTimeLeg.station}, wait for the next train heading towards " +
+                    "${waitRealTimeLeg.nextTrainHeadStation}."
+            realTimeLegDuration.text = "Next train arriving in ${waitRealTimeLeg.duration} minutes!"
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.app.jonathanchiou.willimissbart
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment

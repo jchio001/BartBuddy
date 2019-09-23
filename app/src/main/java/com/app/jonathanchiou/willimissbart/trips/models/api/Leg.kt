@@ -1,6 +1,5 @@
 package com.app.jonathanchiou.willimissbart.trips.models.api
 
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.text.SimpleDateFormat
@@ -16,18 +15,13 @@ data class Leg(
     @Json(name = "@destTimeDate") val destinationDate: String,
     @Json(name = "@destTimeMin") val destinationDateMinutes: String
 ) {
+    val originTimeMinutesEpoch =
+        ((DATE_FORMATTER.parse("${originDate} ${originDateMinutes}").time / 60000))
 
-    val duration: Int
-        get() {
-            val originTimeMinutes = (DATE_FORMATTER.parse(
-                "${originDate} ${originDateMinutes}"
-            ).time / 60000) * 60000
-            val destinationTimeMinutes = (DATE_FORMATTER.parse(
-                "${destinationDate} ${destinationDateMinutes}"
-            ).time / 60000) * 60000
+    val destinationTimeMinutesEpoch =
+        ((DATE_FORMATTER.parse("${destinationDate} ${destinationDateMinutes}").time / 60000))
 
-            return ((destinationTimeMinutes - originTimeMinutes) / 60000).toInt()
-        }
+    val duration = (destinationTimeMinutesEpoch - originTimeMinutesEpoch).toInt()
 
     companion object {
 

@@ -16,14 +16,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/leg_info_textview"
+                android:id="@+id/real_time_leg_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 tools:text="Pizza"/>
 
             <TextView
-                android:id="@+id/next_train_estimate_textview"
+                android:id="@+id/real_time_leg_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

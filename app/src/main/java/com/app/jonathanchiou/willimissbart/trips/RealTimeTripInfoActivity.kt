@@ -2,11 +2,8 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
@@ -14,7 +11,6 @@ import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 import javax.inject.Inject
@@ -22,7 +18,6 @@ import javax.inject.Inject
 class RealTimeTripInfoActivity : AppCompatActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
-    val startTripButton: CardView by bind(R.id.start_trip_button)
 
     @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
@@ -40,7 +35,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
         supportActionBar?.title = title
 
         bindClick(R.id.start_trip_button) {
-            startRealTimeTripTimer((realTimeTrip.completeRealTimeLegs.first()).estimate.minutes.toLong())
+            startRealTimeTripTimer((realTimeTrip.realTimeLegs.first() as RealTimeLeg.Train).duration.toLong())
         }
 
         realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
@@ -49,7 +44,7 @@ class RealTimeTripInfoActivity : AppCompatActivity() {
             false)
         val realTimeLegPagerAdapter = RealTimeLegPagerAdapter()
         realTimeLegRecyclerView.adapter = realTimeLegPagerAdapter
-        realTimeLegPagerAdapter.submitList(realTimeTrip.completeRealTimeLegs)
+        realTimeLegPagerAdapter.submitList(realTimeTrip.realTimeLegs)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
