@@ -11,6 +11,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.app.jonathanchiou.willimissbart.R
+import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.toTimerText
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import io.reactivex.Observable
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit
 
 class TimerService : Service() {
 
-    private val timerSubject = PublishSubject.create<Int>()
+    private val timerSubject = PublishSubject.create<RealTimeTrip>()
     private val compositeDisposable = CompositeDisposable()
 
     private val dismissIntent by lazy {
@@ -36,21 +37,26 @@ class TimerService : Service() {
     init {
         compositeDisposable.add(
             timerSubject
-                .switchMap { value ->
-                    Observable.intervalRange(1, value.toLong(), 1, 1, TimeUnit.SECONDS)
-                        .map { value - it }
-                        .observeOn(AndroidSchedulers.mainThread())
-                }
-                .subscribe { time ->
-                    Log.d("Timer", time.toString())
+                .switchMap { realTimeTrip ->
+                    Observable.fromIterable(realTimeTrip.realTimeLegs)
+                        .concatMap { realTimeLeg ->
+                            val durationAsSeconds = (realTimeLeg.duration * 60).toLong()
 
+                            Observable.intervalRange(1, durationAsSeconds + 1, 0, 1, TimeUnit.SECONDS)
+                                .map { durationAsSeconds - it }
+                                .map { realTimeLeg to it }
+                                .observeOn(AndroidSchedulers.mainThread())
+                        }
+                }
+                .subscribe { (realTimeLeg, duration) ->
                     val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                         .addAction(
                             R.drawable.ic_train_icon,
                             this.getString(R.string.cancel),
                             dismissIntent
                         )
-                        .setContentTitle(time.toInt().toTimerText())
+                        .setContentTitle(duration.toTimerText())
+                        .setContentText(realTimeLeg.asTitle())
                         .setSmallIcon(R.drawable.ic_train_icon)
                         .build()
 
@@ -81,29 +87,8 @@ class TimerService : Service() {
                     )
                 }
 
-                val realTimeLegIndex = intent.getIntExtra(REAL_TIME_LEG_INDEX_ARG, -1)
-                val realTimeLeg = intent.getParcelableExtra<RealTimeTrip>(REAL_TIME_TRIP_ARG)
-                    .realTimeLegs[realTimeLegIndex]
-
-                when (realTimeLeg) {
-                    is RealTimeLeg.Wait -> {
-                        val durationAsSeconds = realTimeLeg.duration * 60
-
-                        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                            .addAction(
-                                R.drawable.ic_train_icon,
-                                this.getString(R.string.cancel),
-                                dismissIntent
-                            )
-                            .setContentTitle(durationAsSeconds.toTimerText())
-                            .setSmallIcon(R.drawable.ic_train_icon)
-                            .build()
-
-                        startForeground(NOTIFICATION_ID, notification)
-                        timerSubject.onNext(durationAsSeconds)
-                    }
-                    is RealTimeLeg.Train -> {}
-                }
+                val realTimeTrip = intent.getParcelableExtra<RealTimeTrip>(REAL_TIME_TRIP_ARG)
+                timerSubject.onNext(realTimeTrip)
             }
             ACTION_DISMISS -> {
                 (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(NOTIFICATION_ID)
@@ -131,13 +116,17 @@ class TimerService : Service() {
 
         const val ELAPSED_SECONDS = "elapsed_seconds"
         const val REAL_TIME_TRIP_ARG = "duration"
-        const val REAL_TIME_LEG_INDEX_ARG = "real_time_leg_index"
 
-        private fun Int.toTimerText(): String {
+        private fun Long.toTimerText(): String {
             val minutes = this / 60
             val seconds = this % 60
 
             return "${if (minutes < 10) "0" else ""}${minutes}:${if (seconds < 10) "0" else ""}${seconds}"
+        }
+
+        private fun RealTimeLeg.asTitle() = when (this) {
+            is RealTimeLeg.Train -> "${this.origin} -> ${this.destination}"
+            is RealTimeLeg.Wait -> "Until the next train heading towards ${this.nextTrainHeadStation}"
         }
 
         private fun Context.getNotificationManager() =
@@ -150,7 +139,6 @@ class TimerService : Service() {
                         .setAction(ACTION_SHOW)
                         .putExtra(ELAPSED_SECONDS, 0)
                         .putExtra(REAL_TIME_TRIP_ARG, realTimeTrip)
-                        .putExtra(REAL_TIME_LEG_INDEX_ARG, 0)
                 )
             } else {
                 this.startService(
@@ -158,7 +146,6 @@ class TimerService : Service() {
                         .setAction(ACTION_SHOW)
                         .putExtra(ELAPSED_SECONDS, 0)
                         .putExtra(REAL_TIME_TRIP_ARG, realTimeTrip)
-                        .putExtra(REAL_TIME_LEG_INDEX_ARG, 0)
                 )
             }
         }
