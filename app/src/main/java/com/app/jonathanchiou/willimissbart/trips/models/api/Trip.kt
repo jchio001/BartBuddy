@@ -33,11 +33,10 @@ data class Trip(
                 origin = firstLeg.origin,
                 destination = firstLeg.destination,
                 trainHeadStation = etd.abbreviation,
-                duration = estimate.minutes
+                duration =  firstLeg.duration
             )
         )
 
-        var currentTravelTime = estimate.minutes + firstLeg.duration
         var previousDestinationTimeMinutesEpoch = firstLeg.destinationTimeMinutesEpoch
         for (i in 1 until legs.size) {
             val leg = legs[i]
@@ -51,19 +50,17 @@ data class Trip(
                         duration = waitTime
                     )
                 )
-                currentTravelTime += waitTime
 
             realTimeLegs.add(
                 RealTimeLeg.Train(
                     origin = leg.origin,
                     destination = leg.destination,
                     trainHeadStation = legTrainHeadStation,
-                    duration = currentTravelTime
+                    duration = leg.duration
                 )
             )
 
             previousDestinationTimeMinutesEpoch = leg.destinationTimeMinutesEpoch
-            currentTravelTime += leg.duration
         }
 
         return RealTimeTrip(
