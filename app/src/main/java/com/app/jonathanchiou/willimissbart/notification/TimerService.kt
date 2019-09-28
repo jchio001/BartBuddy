@@ -171,7 +171,7 @@ class TimerService : Service() {
                     timerItems.add(
                         TimerItem.Timer(
                             title = realTimeLeg.asTimerTitle(),
-                            initialDuration = (realTimeLeg.duration * 60 - ALERT_DURATION).toLong()
+                            initialDuration = realTimeLeg.duration * 60 - ALERT_DURATION
                         )
                     )
                 }
