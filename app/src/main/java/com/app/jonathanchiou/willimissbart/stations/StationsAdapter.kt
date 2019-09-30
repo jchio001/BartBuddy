@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.util.Consumer
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
+import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 class StationViewHolder(itemView: View) : ViewHolder(itemView) {
@@ -23,24 +24,22 @@ class StationViewHolder(itemView: View) : ViewHolder(itemView) {
     }
 }
 
-class StationsAdapter(
-    private val recyclerView: RecyclerView
-) : Adapter<StationViewHolder>() {
+class StationsAdapter : ListAdapter<Station, StationViewHolder>(BasicDiffCallback<Station>()) {
 
-    private var stations: ArrayList<Station> = ArrayList(0)
+    private lateinit var recyclerView: RecyclerView
 
     private var isBeingClicked = false
     var onClickListener: Consumer<Station>? = null
     private val debouncedOnClickListener = View.OnClickListener {
         if (!isBeingClicked) {
             isBeingClicked = true
-            onClickListener?.accept(stations[recyclerView.getChildAdapterPosition(it)])
+            onClickListener?.accept(getItem(recyclerView.getChildAdapterPosition(it)))
             isBeingClicked = false
         }
     }
 
-    override fun getItemCount(): Int {
-        return stations.size
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationViewHolder {
@@ -50,12 +49,5 @@ class StationsAdapter(
         return StationViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: StationViewHolder, position: Int) {
-        holder.bind(stations[position])
-    }
-
-    fun setStations(stations: List<Station>) {
-        this.stations = ArrayList(stations)
-        notifyDataSetChanged()
-    }
+    override fun onBindViewHolder(holder: StationViewHolder, position: Int) = holder.bind(getItem(position))
 }
