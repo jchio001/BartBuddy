@@ -48,10 +48,10 @@ class TripSelectionFragment : BackStackConsumingFragment() {
 
         bindClick(
             R.id.origin_station_textview,
-            R.id.destination_station_textview) {
+            R.id.destination_station_textview) { stationTextView ->
             tripManager.updateStation(
                 this,
-                if (view.id == R.id.origin_station_textview) StationType.ORIGIN
+                if (stationTextView.id == R.id.origin_station_textview) StationType.ORIGIN
                 else StationType.DESTINATION)
         }
         bindClick(R.id.swap_icon) { tripManager.swapTripStations() }

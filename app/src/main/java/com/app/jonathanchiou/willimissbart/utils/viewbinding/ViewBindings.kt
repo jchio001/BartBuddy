@@ -23,15 +23,15 @@ class bind<out T : View>(private val idResource: Int) {
     }
 }
 
-inline fun Fragment.bindClick(vararg idResources: Int, crossinline doOnClick: () -> Unit) {
+inline fun Fragment.bindClick(vararg idResources: Int, crossinline doOnClick: (View) -> Unit) {
     if (idResources.isEmpty()) {
         return
     }
 
     val debouncingOnClickListener = object : DebouncingOnClickListener() {
 
-        override fun doOnClick() {
-            doOnClick()
+        override fun doOnClick(view: View) {
+            doOnClick(view)
         }
     }
 
@@ -48,8 +48,8 @@ inline fun Activity.bindClick(vararg idResources: Int, crossinline doOnClick: ()
 
     val debouncingOnClickListener = object : DebouncingOnClickListener() {
 
-        override fun doOnClick() {
-            doOnClick()
+        override fun doOnClick(view: View) {
+            doOnClick(view)
         }
     }
 

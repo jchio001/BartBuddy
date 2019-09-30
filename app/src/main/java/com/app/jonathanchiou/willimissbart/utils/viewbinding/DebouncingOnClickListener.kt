@@ -6,13 +6,13 @@ abstract class DebouncingOnClickListener : View.OnClickListener {
 
     private var isBeingClicked = false
 
-    override fun onClick(v: View?) {
+    override fun onClick(view: View) {
         if (!isBeingClicked) {
             isBeingClicked = true
-            doOnClick()
+            doOnClick(view)
             isBeingClicked = false
         }
     }
 
-    abstract fun doOnClick()
+    abstract fun doOnClick(view: View)
 }
