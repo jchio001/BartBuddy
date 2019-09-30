@@ -14,8 +14,6 @@ import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 

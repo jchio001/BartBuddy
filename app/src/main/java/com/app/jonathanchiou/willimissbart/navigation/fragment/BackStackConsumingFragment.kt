@@ -1,8 +1,8 @@
 package com.app.jonathanchiou.willimissbart.navigation.fragment
 
-import androidx.fragment.app.Fragment
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableFragment
 
-abstract class BackStackConsumingFragment : Fragment() {
+abstract class BackStackConsumingFragment : ViewBindableFragment() {
 
     abstract fun onBackPressed(): Boolean
 }

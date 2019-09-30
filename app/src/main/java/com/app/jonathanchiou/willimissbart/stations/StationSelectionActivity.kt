@@ -7,17 +7,16 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 import com.app.jonathanchiou.willimissbart.utils.models.State
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableActivity
 import javax.inject.Inject
 
-class StationSelectionActivity : AppCompatActivity() {
+class StationSelectionActivity : ViewBindableActivity() {
 
     val container: FrameLayout by bind(R.id.container)
 

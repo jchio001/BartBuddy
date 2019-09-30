@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.util.Consumer
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,7 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity.Companion.REAL_TIME_TRIP
 import com.app.jonathanchiou.willimissbart.utils.models.State
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableFragment
 import javax.inject.Inject
 
 fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
@@ -32,7 +31,7 @@ fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
     return realTimeTripFragment
 }
 
-class RealTimeTripFragment : Fragment() {
+class RealTimeTripFragment : ViewBindableFragment() {
 
     val container: FrameLayout by bind(R.id.container)
 

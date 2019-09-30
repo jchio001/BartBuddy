@@ -2,18 +2,16 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
+import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableActivity
 import javax.inject.Inject
 
-class RealTimeTripInfoActivity : AppCompatActivity() {
+class RealTimeTripInfoActivity : ViewBindableActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
 

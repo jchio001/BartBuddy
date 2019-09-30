@@ -2,7 +2,6 @@ package com.app.jonathanchiou.willimissbart.application
 
 import android.app.NotificationManager
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Vibrator
 import android.preference.PreferenceManager
 import dagger.Module

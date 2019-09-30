@@ -10,8 +10,6 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathanchiou.willimissbart.navigation.bottomnav.FragmentFactory
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick
 
 class RealTimeTripsParentFragment : BackStackConsumingFragment() {
 
