@@ -30,9 +30,9 @@ sealed class RealTimeLegViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
         fun bind(waitRealTimeLeg: RealTimeLeg.Wait) {
             realTimeLegInfo.text =
-                "At ${waitRealTimeLeg.station}, wait for the next train heading towards " +
+                "At ${waitRealTimeLeg.station}, look for the next train heading towards " +
                     "${waitRealTimeLeg.nextTrainHeadStation}."
-            realTimeLegDuration.text = "Next train arriving in ${waitRealTimeLeg.duration} minutes!"
+            realTimeLegDuration.text = "Estimate wait of ${waitRealTimeLeg.duration} minutes."
         }
     }
 }
