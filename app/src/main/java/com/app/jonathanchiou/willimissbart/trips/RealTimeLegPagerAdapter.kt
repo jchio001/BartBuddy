@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
-import java.lang.IllegalStateException
 
 class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
     BasicDiffCallback<RealTimeLeg>()
@@ -17,7 +16,7 @@ class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
         is RealTimeLeg.Wait -> 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RealTimeLegViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealTimeLegViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_real_time_leg, parent, false)
         return when (viewType) {

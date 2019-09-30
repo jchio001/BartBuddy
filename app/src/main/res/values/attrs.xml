@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="BottomNavigationView">
-        <attr name="android:textSize"/>
+        <attr name="android:textSize" />
     </declare-styleable>
 
 </resources>

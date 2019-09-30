@@ -1,11 +1,9 @@
 package com.app.jonathanchiou.willimissbart.trips.models.internal
 
 import android.os.Parcelable
-import com.app.jonathanchiou.willimissbart.trips.models.api.Estimate
 import kotlinx.android.parcel.Parcelize
-import java.time.Duration
 
-sealed class RealTimeLeg: Parcelable {
+sealed class RealTimeLeg : Parcelable {
 
     abstract val duration: Int
 

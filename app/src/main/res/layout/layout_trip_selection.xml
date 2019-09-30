@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,23 +24,23 @@
             android:background="@drawable/rounded_background"
             android:hint="@string/origin_station"
             android:padding="6dp"
-            android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/hint_white"/>
+            android:textColorHint="@color/hint_white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/destination_station_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/origin_station_textview"
-            android:layout_toLeftOf="@+id/swap_icon"
             android:layout_marginTop="12dp"
+            android:layout_toLeftOf="@+id/swap_icon"
             android:background="@drawable/rounded_background"
             android:hint="@string/destination_station"
             android:padding="6dp"
-            android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/hint_white"/>
+            android:textColorHint="@color/hint_white"
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/swap_icon"
@@ -50,7 +49,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="4dp"
-            app:srcCompat="@drawable/ic_swap_vertical"/>
+            app:srcCompat="@drawable/ic_swap_vertical" />
 
     </RelativeLayout>
 
@@ -58,21 +57,21 @@
         android:id="@+id/submit_trip_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_gravity="end"
+        android:layout_marginTop="12dp"
         android:layout_marginRight="16dp"
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="4dp"
-        app:contentPaddingTop="8dp"
         app:contentPaddingBottom="8dp"
         app:contentPaddingLeft="16dp"
-        app:contentPaddingRight="16dp">
+        app:contentPaddingRight="16dp"
+        app:contentPaddingTop="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/navigate"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </androidx.cardview.widget.CardView>
 

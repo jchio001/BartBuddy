@@ -18,7 +18,7 @@ data class Trip(
         etd: Etd,
         estimate: Estimate,
         nameToAbbreviationMap: Map<String, String>
-    ) : RealTimeTrip {
+    ): RealTimeTrip {
         val firstLeg = legs.first()
         val realTimeLegs = ArrayList<RealTimeLeg>(legs.size * 2)
         realTimeLegs.add(
@@ -33,7 +33,7 @@ data class Trip(
                 origin = firstLeg.origin,
                 destination = firstLeg.destination,
                 trainHeadStation = etd.abbreviation,
-                duration =  firstLeg.duration
+                duration = firstLeg.duration
             )
         )
 
@@ -43,13 +43,13 @@ data class Trip(
             val legTrainHeadStation = nameToAbbreviationMap[leg.trainHeadStation]!!
 
             val waitTime = (leg.originTimeMinutesEpoch - previousDestinationTimeMinutesEpoch).toInt()
-                realTimeLegs.add(
-                    RealTimeLeg.Wait(
-                        station = leg.origin,
-                        nextTrainHeadStation = legTrainHeadStation,
-                        duration = waitTime
-                    )
+            realTimeLegs.add(
+                RealTimeLeg.Wait(
+                    station = leg.origin,
+                    nextTrainHeadStation = legTrainHeadStation,
+                    duration = waitTime
                 )
+            )
 
             realTimeLegs.add(
                 RealTimeLeg.Train(

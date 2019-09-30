@@ -42,7 +42,6 @@ class TimerService : Service() {
                     Observable.intervalRange(0, timerItem.initialDuration + 2, 0, 1, TimeUnit.SECONDS)
                         .map { timerItem to timerItem.initialDuration - it }
                         .observeOn(AndroidSchedulers.mainThread())
-
                 }
                 .subscribe { (timerItem, duration) ->
                     if (duration >= 0L) {
@@ -162,7 +161,7 @@ class TimerService : Service() {
         private fun Context.getNotificationManager() =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        private fun List<RealTimeLeg>.toTimerItems():List<TimerItem> {
+        private fun List<RealTimeLeg>.toTimerItems(): List<TimerItem> {
             val timerItems = ArrayList<TimerItem>(this.size * 2)
 
             for (realTimeLeg in this) {

@@ -3,13 +3,11 @@ package com.app.jonathanchiou.willimissbart.trips
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
-import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.bindClick

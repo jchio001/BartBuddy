@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,11 +9,11 @@
         android:id="@+id/train_color_indicator"
         android:layout_width="12dp"
         android:layout_height="0dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/destination_textview"
         android:layout_alignBottom="@+id/destination_textview"
+        android:layout_alignParentLeft="true"
         android:layout_marginRight="4dp"
-        tools:background="@color/bart_blue"/>
+        tools:background="@color/bart_blue" />
 
     <TextView
         android:id="@+id/destination_textview"
@@ -22,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/train_color_indicator"
         android:textSize="28sp"
-        tools:text="Flavortown"/>
+        tools:text="Flavortown" />
 
     <TextView
         android:id="@+id/time_until_arrival_textview"
@@ -31,6 +30,6 @@
         android:layout_toRightOf="@+id/destination_textview"
         android:gravity="end"
         android:textSize="28sp"
-        tools:text="73"/>
+        tools:text="73" />
 
 </RelativeLayout>
