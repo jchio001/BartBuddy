@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".notification.TimerService"
+            android:name=".timer.TimerService"
             android:exported="false" />
 
         <activity

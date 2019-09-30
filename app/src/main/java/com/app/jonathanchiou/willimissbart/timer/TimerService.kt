@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.notification
+package com.app.jonathanchiou.willimissbart.timer
 
 import android.app.*
 import android.content.Context

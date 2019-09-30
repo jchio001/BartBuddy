@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.notification
+package com.app.jonathanchiou.willimissbart.timer
 
 sealed class TimerItem(
     val title: String,

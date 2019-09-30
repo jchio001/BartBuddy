@@ -3,7 +3,7 @@ package com.app.jonathanchiou.willimissbart.application
 import android.content.Context
 import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.api.BartApiModule
-import com.app.jonathanchiou.willimissbart.notification.TimerService
+import com.app.jonathanchiou.willimissbart.timer.TimerService
 import com.app.jonathanchiou.willimissbart.stations.StationSelectionActivity
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity

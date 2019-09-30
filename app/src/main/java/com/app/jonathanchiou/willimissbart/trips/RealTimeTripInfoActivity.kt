@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
-import com.app.jonathanchiou.willimissbart.notification.TimerService.Companion.startRealTimeTripTimer
+import com.app.jonathanchiou.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableActivity
 import javax.inject.Inject
