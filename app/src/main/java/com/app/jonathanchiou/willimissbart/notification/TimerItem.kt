@@ -12,4 +12,6 @@ sealed class TimerItem(
 
     class Alert(title: String
     ) : TimerItem(title, TimerService.ALERT_DURATION)
+
+    object Terminal : TimerItem("", -1)
 }

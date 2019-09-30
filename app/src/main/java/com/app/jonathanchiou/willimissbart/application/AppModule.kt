@@ -1,7 +1,9 @@
 package com.app.jonathanchiou.willimissbart.application
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Vibrator
 import android.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
@@ -11,10 +13,14 @@ import javax.inject.Singleton
 class AppModule(private val appContext: Context) {
 
     @Provides
-    fun provideAppContext() = appContext
+    fun providesContext() = appContext
 
     @[Provides Singleton]
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
+    fun providesNotificationManager(context: Context) = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    @[Provides Singleton]
+    fun provideSharedPreferences(context: Context) = PreferenceManager.getDefaultSharedPreferences(context)
+
+    @[Provides Singleton]
+    fun providesVibrator(context: Context) = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 }
