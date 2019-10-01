@@ -130,6 +130,7 @@ class TimerService : Service() {
     }
 
     override fun stopService(name: Intent?): Boolean {
+        vibrator.cancel()
         stopForeground(true)
         compositeDisposable.clear()
         return super.stopService(name)
