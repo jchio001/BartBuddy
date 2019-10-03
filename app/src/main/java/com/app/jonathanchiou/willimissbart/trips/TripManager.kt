@@ -19,8 +19,9 @@ class TripManager @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
 
-    interface TripUnchangedListener {
+    interface EditCallbacks {
         fun onTripUnchanged()
+        fun onDuplicateStationSelection(stationType: StationType)
     }
 
     interface TripStationListener {
@@ -45,7 +46,7 @@ class TripManager @Inject constructor(
             invokeTripEditedListener()
         }
 
-    var tripUnchangedListener: TripUnchangedListener? = null
+    var editCallbacks: EditCallbacks? = null
 
     init {
         sharedPreferences.also {
@@ -93,15 +94,22 @@ class TripManager @Inject constructor(
                                  data: Intent?) {
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val stationType = StationType.valueOf(
-                    data!!.getStringExtra(
-                        STATION_SELECTION_TYPE_KEY))
-
-                data.getParcelableExtra<Station>(SELECTED_STATION_KEY).also {
+                val stationType = StationType.valueOf(data!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!)
+                data.getParcelableExtra<Station>(SELECTED_STATION_KEY)!!.also {
                     if (stationType == StationType.ORIGIN) {
+                        if (it.abbr == destinationAbbreviation) {
+                            editCallbacks?.onDuplicateStationSelection(StationType.ORIGIN)
+                            return
+                        }
+
                         originAbbreviation = it.abbr
                         originName = it.name
                     } else {
+                        if (it.abbr == originAbbreviation) {
+                            editCallbacks?.onDuplicateStationSelection(StationType.DESTINATION)
+                            return
+                        }
+
                         destinationAbbreviation = it.abbr
                         destinationName = it.name
                     }
@@ -152,7 +160,7 @@ class TripManager @Inject constructor(
         if (previousOriginAbbreviation == originAbbreviation
             && previousDestinationAbbreviation == destinationAbbreviation
         ) {
-            tripUnchangedListener?.onTripUnchanged()
+            editCallbacks?.onTripUnchanged()
         }
     }
 

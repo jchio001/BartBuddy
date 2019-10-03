@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.app.jonathanchiou.willimissbart.MainActivity
@@ -13,7 +14,7 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
-import com.app.jonathanchiou.willimissbart.trips.TripManager.TripUnchangedListener
+import com.app.jonathanchiou.willimissbart.trips.TripManager.EditCallbacks
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -26,10 +27,14 @@ class TripSelectionFragment : BackStackConsumingFragment() {
     @Inject
     lateinit var tripManager: TripManager
 
-    private val tripUnchangedListener = object : TripUnchangedListener {
+    private val tripUnchangedListener = object : EditCallbacks {
 
         override fun onTripUnchanged() {
-            coordinatorContainer.showSnackbar(R.color.colorPrimary)
+            coordinatorContainer.showSnackbar(R.string.stations_unchanged_error)
+        }
+
+        override fun onDuplicateStationSelection(stationType: StationType) {
+            coordinatorContainer.showSnackbar(R.string.stations_duplicate_error)
         }
     }
 
@@ -63,7 +68,7 @@ class TripSelectionFragment : BackStackConsumingFragment() {
                 destinationStationTextView.text = destinationTitle
             }
         }
-        tripManager.tripUnchangedListener = tripUnchangedListener
+        tripManager.editCallbacks = tripUnchangedListener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,15 +86,15 @@ class TripSelectionFragment : BackStackConsumingFragment() {
         return false
     }
 
-    fun View.showSnackbar(color: Int) {
+    fun View.showSnackbar(@StringRes messageResource: Int) {
         Snackbar
             .make(
                 this,
-                R.string.stations_unchanged_error,
+                messageResource,
                 Snackbar.LENGTH_SHORT)
             .setActionTextColor(ContextCompat.getColor(context!!, android.R.color.white))
             .also {
-                it.view.setBackgroundColor(ContextCompat.getColor(context!!, color))
+                it.view.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
             }
             .show()
     }

@@ -6,6 +6,7 @@
     <string name="navigate">Navigate</string>
     <string name="refresh">REFRESH</string>Stations unchanged.
     <string name="stations_unchanged_error">Please select new stations.</string>
+    <string name="stations_duplicate_error">Origin and destination stations must be different.</string>
 
     <string name="select_station">Select a station</string>
 
