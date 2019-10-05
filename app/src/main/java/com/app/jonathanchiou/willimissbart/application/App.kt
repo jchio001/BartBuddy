@@ -13,7 +13,7 @@ class App : Application() {
             .build()
     }
 
-    override fun getSystemService(name: String): Any {
+    override fun getSystemService(name: String): Any? {
         if (name == AppComponent.serviceName) {
             return appComponent
         }
