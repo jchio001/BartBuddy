@@ -2,6 +2,8 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
@@ -18,6 +20,8 @@ class RealTimeTripInfoActivity : ViewBindableActivity() {
     @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
     private lateinit var realTimeTrip: RealTimeTrip
+
+    private lateinit var realTimeLegsCountdownViewModel: RealTimeLegsCountdownViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +42,12 @@ class RealTimeTripInfoActivity : ViewBindableActivity() {
             false)
         val realTimeLegPagerAdapter = RealTimeLegPagerAdapter()
         realTimeLegRecyclerView.adapter = realTimeLegPagerAdapter
-        realTimeLegPagerAdapter.submitList(realTimeTrip.realTimeLegs)
+
+        realTimeLegsCountdownViewModel = ViewModelProviders.of(this)
+            .get(RealTimeLegsCountdownViewModel::class.java)
+        realTimeLegsCountdownViewModel.realTimeLegsLiveData
+            .observe(this, Observer(realTimeLegPagerAdapter::submitList))
+        realTimeLegsCountdownViewModel.seed(realTimeTrip)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

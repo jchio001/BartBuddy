@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class RealTimeTrip(
+data class RealTimeTrip(
     val hexColor: String,
     val originAbbreviation: String,
     val destinationAbbreviation: String,

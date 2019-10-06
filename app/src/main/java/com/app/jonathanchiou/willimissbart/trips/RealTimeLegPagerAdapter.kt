@@ -2,16 +2,17 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 
-class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
-    BasicDiffCallback<RealTimeLeg>()
-) {
+class RealTimeLegPagerAdapter : RecyclerView.Adapter<RealTimeLegViewHolder>() {
 
-    override fun getItemViewType(position: Int) = when (getItem(position)) {
+    private var realTimeLegs = listOf<RealTimeLeg>()
+
+    override fun getItemCount() = realTimeLegs.size
+
+    override fun getItemViewType(position: Int) = when (realTimeLegs[position]) {
         is RealTimeLeg.Train -> 0
         is RealTimeLeg.Wait -> 1
     }
@@ -28,8 +29,18 @@ class RealTimeLegPagerAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder>(
 
     override fun onBindViewHolder(holder: RealTimeLegViewHolder, position: Int) {
         when (holder) {
-            is RealTimeLegViewHolder.Train -> holder.bind(getItem(position) as RealTimeLeg.Train)
-            is RealTimeLegViewHolder.Wait -> holder.bind(getItem(position) as RealTimeLeg.Wait)
+            is RealTimeLegViewHolder.Train -> holder.bind(realTimeLegs[position] as RealTimeLeg.Train)
+            is RealTimeLegViewHolder.Wait -> holder.bind(realTimeLegs[position] as RealTimeLeg.Wait)
+        }
+    }
+
+    fun submitList(updatedRealTimeLegs: List<RealTimeLeg>) {
+        if (itemCount != updatedRealTimeLegs.size) {
+            this.realTimeLegs = updatedRealTimeLegs
+            notifyItemRemoved(0)
+        } else {
+            this.realTimeLegs = updatedRealTimeLegs
+            notifyItemChanged(0)
         }
     }
 }

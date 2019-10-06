@@ -1,0 +1,38 @@
+package com.app.jonathanchiou.willimissbart.trips
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.decrement
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
+
+class RealTimeLegsCountdownViewModel: ViewModel() {
+
+    val realTimeLegsLiveData = MutableLiveData<List<RealTimeLeg>>()
+
+    private val realTimeTripSubject = PublishSubject.create<RealTimeTrip>()
+
+    private val diposable: Disposable
+
+    init {
+        diposable = realTimeTripSubject
+            .switchMap { realTimeTrip ->
+                Observable.interval(1, TimeUnit.MINUTES)
+                    .scan(realTimeTrip.realTimeLegs) { realTimeLegs, _ -> realTimeLegs.decrement() }
+                    .observeOn(AndroidSchedulers.mainThread())
+            }
+            .subscribe(realTimeLegsLiveData::postValue)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        diposable.dispose()
+    }
+
+    fun seed(realTimeTrip: RealTimeTrip) = realTimeTripSubject.onNext(realTimeTrip)
+}

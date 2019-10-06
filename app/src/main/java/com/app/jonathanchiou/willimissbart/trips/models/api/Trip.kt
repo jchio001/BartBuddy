@@ -10,8 +10,8 @@ import java.util.*
 data class Trip(
     @Json(name = "@origin") val origin: String,
     @Json(name = "@destination") val destination: String,
-    @Json(name = "leg") val legs: List<Leg>,
-    @Json(name = "@origTimeMin") val originDepartureTime: String
+    @Json(name = "@origTimeMin") val originDepartureTime: String,
+    @Json(name = "leg") val legs: List<Leg>
 ) {
 
     fun toRealTimeTrip(
