@@ -2,6 +2,7 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.app.jonathanchiou.willimissbart.BuildConfig
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.decrement
@@ -9,7 +10,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 class RealTimeLegsCountdownViewModel: ViewModel() {
 
@@ -22,7 +22,7 @@ class RealTimeLegsCountdownViewModel: ViewModel() {
     init {
         diposable = realTimeTripSubject
             .switchMap { realTimeTrip ->
-                Observable.interval(1, TimeUnit.MINUTES)
+                Observable.interval(1, BuildConfig.UPPDATE_TIME_UNIT)
                     .scan(realTimeTrip.realTimeLegs) { realTimeLegs, _ -> realTimeLegs.decrement() }
                     .observeOn(AndroidSchedulers.mainThread())
             }
