@@ -22,26 +22,29 @@ sealed class RealTimeLeg : Parcelable {
         override val duration: Int
     ) : RealTimeLeg()
 
-    fun decrement() = when (this) {
-        is Train -> copy(duration = duration - 1)
-        is Wait -> copy(duration = duration - 1)
+    fun decrement(interval: Int) = when (this) {
+        is Train -> copy(duration = duration - interval)
+        is Wait -> copy(duration = duration - interval)
     }
 }
 
-fun List<RealTimeLeg>.decrement(): List<RealTimeLeg> {
+fun List<RealTimeLeg>.decrement(duration: Int): List<RealTimeLeg> {
     if (this.isEmpty()) {
         return this
     }
 
     val firstLeg = this.first()
-    return if (firstLeg.duration > 0) {
+    val updatedFirstLegDuration = firstLeg.duration - duration
+    return if (updatedFirstLegDuration >= 0) {
         val updatedList = ArrayList<RealTimeLeg>(this.size)
-        updatedList.add(firstLeg.decrement())
+        updatedList.add(firstLeg.decrement(duration))
         for (i in 1 until this.size) {
             updatedList.add(this[i])
         }
         updatedList
+    } else if (updatedFirstLegDuration == -1) {
+        return this.subList(1, this.size)
     } else {
-        this.subList(1, this.size)
+        return this.subList(1, this.size).decrement(updatedFirstLegDuration * -1)
     }
 }

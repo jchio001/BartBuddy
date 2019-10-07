@@ -37,6 +37,11 @@ android {
                     "UPPDATE_TIME_UNIT",
                     "java.util.concurrent.TimeUnit.SECONDS"
             )
+            buildConfigField(
+                    "long",
+                    "UPPDATE_TIME_UNIT_MILLISECONDS",
+                    "1000L"
+            )
         }
         release {
             minifyEnabled false
@@ -45,6 +50,11 @@ android {
                     "java.util.concurrent.TimeUnit",
                     "UPDATE_TIME_UNIT",
                     "java.util.concurrent.TimeUnit.MINUTES"
+            )
+            buildConfigField(
+                    "long",
+                    "UPPDATE_TIME_UNIT_MILLISECONDS",
+                    "60000L"
             )
         }
     }

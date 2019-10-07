@@ -65,6 +65,7 @@ data class Trip(
 
         return RealTimeTrip(
             hexColor = estimate.hexColor,
+            lastUpdatedTime = System.currentTimeMillis(),
             originAbbreviation = origin,
             destinationAbbreviation = destination,
             realTimeLegs = realTimeLegs
