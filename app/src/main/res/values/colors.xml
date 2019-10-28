@@ -6,4 +6,6 @@
 
     <color name="bart_blue">#008AD3</color>
     <color name="hint_white">#CECECE</color>
+
+    <color name="disabled_grey">#A0A0A0</color>
 </resources>

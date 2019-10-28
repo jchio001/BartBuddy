@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <androidx.cardview.widget.CardView style="@style/RealTimeLegCardViewStyle">
+    <ImageView
+        android:id="@+id/icon_image_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        tools:srcCompat="@drawable/ic_chevron_right_black"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/real_time_leg_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon_image_view"
+        android:textSize="20sp"
+        tools:text="Pizza"/>
 
-            <TextView
-                android:id="@+id/real_time_leg_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                tools:text="Pizza" />
+    <TextView
+        android:id="@+id/real_time_leg_duration_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/real_time_leg_info_text"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/icon_image_view"
+        android:textSize="16sp"
+        tools:text="Hut" />
 
-            <TextView
-                android:id="@+id/real_time_leg_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="20sp"
-                tools:text="Naruto" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</RelativeLayout>

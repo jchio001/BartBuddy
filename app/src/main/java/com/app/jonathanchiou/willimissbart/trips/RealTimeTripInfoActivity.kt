@@ -2,6 +2,9 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,7 @@ import javax.inject.Inject
 class RealTimeTripInfoActivity : ViewBindableActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
+    val startTripButton: CardView by bind(R.id.start_trip_button)
 
     @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
@@ -30,23 +34,30 @@ class RealTimeTripInfoActivity : ViewBindableActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)
+        realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)!!
         val title = "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
         supportActionBar?.title = title
 
         bindClick(R.id.start_trip_button) { startRealTimeTripTimer(realTimeTrip) }
 
+        realTimeLegRecyclerView.itemAnimator = null
         realTimeLegRecyclerView.layoutManager = LinearLayoutManager(
             this,
-            LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.VERTICAL,
             false)
-        val realTimeLegPagerAdapter = RealTimeLegPagerAdapter()
+        val realTimeLegPagerAdapter = RealTimeLegAdapter()
         realTimeLegRecyclerView.adapter = realTimeLegPagerAdapter
 
         realTimeLegsCountdownViewModel = ViewModelProviders.of(this)
             .get(RealTimeLegsCountdownViewModel::class.java)
         realTimeLegsCountdownViewModel.realTimeLegsLiveData
-            .observe(this, Observer(realTimeLegPagerAdapter::submitList))
+            .observe(this, Observer { realTimeLegs ->
+                realTimeLegPagerAdapter.submitList(realTimeLegs)
+                if (realTimeLegs.first().duration < 0) {
+                    startTripButton.isEnabled = false
+                    startTripButton.setCardBackgroundColor(ContextCompat.getColor(this, R.color.disabled_grey))
+                }
+            })
         realTimeLegsCountdownViewModel.seed(realTimeTrip)
     }
 

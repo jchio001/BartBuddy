@@ -33,18 +33,14 @@ fun List<RealTimeLeg>.decrement(duration: Int): List<RealTimeLeg> {
         return this
     }
 
-    val firstLeg = this.first()
-    val updatedFirstLegDuration = firstLeg.duration - duration
-    return if (updatedFirstLegDuration >= 0) {
+    val indexOfActiveLeg = this.indexOfFirst { it.duration >= 0 }
+    if (indexOfActiveLeg != -1) {
         val updatedList = ArrayList<RealTimeLeg>(this.size)
-        updatedList.add(firstLeg.decrement(duration))
-        for (i in 1 until this.size) {
-            updatedList.add(this[i])
-        }
-        updatedList
-    } else if (updatedFirstLegDuration == -1) {
-        return this.subList(1, this.size)
+        updatedList.addAll(this.subList(0, indexOfActiveLeg))
+        updatedList.add(this[indexOfActiveLeg].decrement(duration))
+        updatedList.addAll(this.subList(indexOfActiveLeg + 1, this.size))
+        return updatedList
     } else {
-        return this.subList(1, this.size).decrement(updatedFirstLegDuration * -1)
+        return this
     }
 }
