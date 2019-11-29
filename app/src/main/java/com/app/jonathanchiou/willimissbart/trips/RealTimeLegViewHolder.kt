@@ -1,6 +1,7 @@
 package com.app.jonathanchiou.willimissbart.trips
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
@@ -28,6 +29,7 @@ sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerVi
         }
     }
 
+    val iconImageView: ImageView by bind(R.id.icon_image_view)
     val realTimeLegInfo: TextView by bind(R.id.real_time_leg_info_text)
     val realTimeLegDuration: TextView by bind(R.id.real_time_leg_duration_text)
 
@@ -36,6 +38,7 @@ sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerVi
     class Train(itemView: View) : RealTimeLegViewHolder<RealTimeLeg.Train>(itemView) {
 
         override fun bind(realTimeLeg: RealTimeLeg.Train, state: State) {
+            iconImageView.visibility = if (state == State.IN_PROGRESS) View.VISIBLE else View.INVISIBLE
             realTimeLegInfo.text =
                 "From ${realTimeLeg.origin}, " +
                     "take train heading towards ${realTimeLeg.trainHeadStation}. " +
@@ -54,6 +57,7 @@ sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerVi
     class Wait(itemView: View) : RealTimeLegViewHolder<RealTimeLeg.Wait>(itemView) {
 
         override fun bind(realTimeLeg: RealTimeLeg.Wait, state: State) {
+            iconImageView.visibility = if (state == State.IN_PROGRESS) View.VISIBLE else View.INVISIBLE
             realTimeLegInfo.text =
                 "At ${realTimeLeg.station}, look for the next train heading towards " +
                     "${realTimeLeg.nextTrainHeadStation}."

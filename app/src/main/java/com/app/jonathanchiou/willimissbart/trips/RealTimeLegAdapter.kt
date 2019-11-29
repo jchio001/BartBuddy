@@ -1,5 +1,6 @@
 package com.app.jonathanchiou.willimissbart.trips
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -11,6 +12,8 @@ import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
 class RealTimeLegAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder<RealTimeLeg>>(
     BasicDiffCallback<RealTimeLeg>()
 ) {
+
+    private var focusedIndex = 0
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is RealTimeLeg.Train -> 0
@@ -28,6 +31,19 @@ class RealTimeLegAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder<RealTi
     }
 
     override fun onBindViewHolder(holder: RealTimeLegViewHolder<RealTimeLeg>, position: Int) {
-        holder.bind(getItem(position), RealTimeLegViewHolder.State.toState(0, 1))
+        holder.bind(getItem(position), RealTimeLegViewHolder.State.toState(position, focusedIndex))
+    }
+
+    override fun submitList(list: List<RealTimeLeg>?) {
+        if (list != null) {
+            var newFocusedIndex = 0
+            while (newFocusedIndex < list.size && list[newFocusedIndex].duration < 0) {
+                ++newFocusedIndex
+            }
+            focusedIndex = newFocusedIndex
+            Log.d("pizza", focusedIndex.toString())
+        }
+
+        super.submitList(list)
     }
 }
