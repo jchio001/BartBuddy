@@ -10,57 +10,35 @@ fun <QUERY, RESULT> Observable<RESULT>.modelToUiModelStream(query: QUERY? = null
         UiModel(
             state = State.DONE,
             query = query,
-            statusCode = HttpURLConnection.HTTP_OK,
-            data = it)
+            data = it
+        )
     }
         .handlePendingAndError()
 }
 
-fun <QUERY, RESULT> Observable<Response<RESULT>>.toTerminalUiModelStream(query: QUERY? = null):
-    Observable<UiModel<QUERY, RESULT>> {
-    return this
-        .map {
-            if (it.isSuccessful) {
-                UiModel<QUERY, RESULT>(
-                    state = State.DONE,
-                    query = query,
-                    statusCode = it.code(),
-                    data = it.body())
-            } else {
-                UiModel(
-                    state = State.ERROR,
-                    query = query,
-                    statusCode = it.code())
-            }
-        }
-        .handleError()
-}
-
 private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handlePendingAndError(query: QUERY? = null):
     Observable<UiModel<QUERY, RESULT>> {
-    return this.onErrorReturn {
-        UiModel(
-            state = State.ERROR,
-            error = it)
-    }
+    return this.errorToUiModel()
         .startWith(
             UiModel(
                 query = query,
-                state = State.PENDING))
+                state = State.PENDING
+            )
+        )
 }
 
-private fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.handleError(): Observable<UiModel<QUERY, RESULT>> {
+fun <QUERY, RESULT> Observable<UiModel<QUERY, RESULT>>.errorToUiModel(): Observable<UiModel<QUERY, RESULT>> {
     return this.onErrorReturn {
         UiModel(
             state = State.ERROR,
-            error = it)
+            error = it
+        )
     }
 }
 
 data class UiModel<QUERY, RESULT>(
     val state: State,
     val query: QUERY? = null,
-    val statusCode: Int? = null,
     val data: RESULT? = null,
     val error: Throwable? = null
 )

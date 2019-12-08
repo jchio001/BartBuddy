@@ -10,6 +10,7 @@ import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.Union
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
+import com.app.jonathanchiou.willimissbart.utils.models.errorToUiModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -64,13 +65,7 @@ class RealTimeTripViewModel(
                                     .takeUntil { it.data?.isEmpty() ?: true }
                             }
                     }
-                    .onErrorReturn {
-                        UiModel(
-                            state = State.ERROR,
-                            query = tripRequestEvent,
-                            error = it
-                        )
-                    }
+                    .errorToUiModel()
                     .startWith(
                         UiModel(
                             state = State.PENDING,

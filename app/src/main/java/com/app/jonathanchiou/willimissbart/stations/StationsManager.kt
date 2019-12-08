@@ -4,10 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
-import com.app.jonathanchiou.willimissbart.utils.models.Optional
-import com.app.jonathanchiou.willimissbart.utils.models.State
-import com.app.jonathanchiou.willimissbart.utils.models.UiModel
-import com.app.jonathanchiou.willimissbart.utils.models.modelToUiModelStream
+import com.app.jonathanchiou.willimissbart.utils.models.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import io.reactivex.Observable
@@ -63,12 +60,7 @@ class StationsManager @Inject constructor(
                                             .apply()
                                     }
                                 }
-                                .onErrorReturn {
-                                    UiModel(
-                                        state = State.ERROR,
-                                        error = it
-                                    )
-                                }
+                                .errorToUiModel()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                         } else {
@@ -93,7 +85,6 @@ class StationsManager @Inject constructor(
             stationsLiveData.postValue(
                 UiModel(
                     state = State.DONE,
-                    statusCode = 200,
                     data = it
                 )
             )
