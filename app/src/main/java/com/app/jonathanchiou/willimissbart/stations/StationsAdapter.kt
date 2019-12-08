@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
 import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 class StationViewHolder(itemView: View) : ViewHolder(itemView) {
 
-    val stationTextView: TextView by bind(R.id.station_name_textview)
-    val stationLocationTextView: TextView by bind(R.id.station_location_textview)
+    val stationTextView: TextView = itemView.findViewById(R.id.station_name_textview)
+    val stationLocationTextView: TextView = itemView.findViewById(R.id.station_location_textview)
 
     fun bind(station: Station) {
         stationTextView.text = station.name

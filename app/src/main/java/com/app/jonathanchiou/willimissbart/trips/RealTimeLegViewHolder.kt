@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.bind
 
 sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -29,9 +28,9 @@ sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerVi
         }
     }
 
-    val iconImageView: ImageView by bind(R.id.icon_image_view)
-    val realTimeLegInfo: TextView by bind(R.id.real_time_leg_info_text)
-    val realTimeLegDuration: TextView by bind(R.id.real_time_leg_duration_text)
+    val iconImageView: ImageView = itemView.findViewById(R.id.icon_image_view)
+    val realTimeLegInfo: TextView = itemView.findViewById(R.id.real_time_leg_info_text)
+    val realTimeLegDuration: TextView = itemView.findViewById(R.id.real_time_leg_duration_text)
 
     abstract fun bind(realTimeLeg: T, state: State)
 
