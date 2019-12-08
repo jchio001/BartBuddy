@@ -4,7 +4,10 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.models.api.Station
-import com.app.jonathanchiou.willimissbart.utils.models.*
+import com.app.jonathanchiou.willimissbart.utils.models.Optional
+import com.app.jonathanchiou.willimissbart.utils.models.State
+import com.app.jonathanchiou.willimissbart.utils.models.UiModel
+import com.app.jonathanchiou.willimissbart.utils.models.modelToUiModelStream
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import io.reactivex.Observable
@@ -42,8 +45,8 @@ class StationsManager @Inject constructor(
                         if (cachedStations.value == null) {
                             bartService
                                 .getStations()
-                                .mapBody { it.root.stations.stations }
-                                .responseToUiModelStream<Void, List<Station>>()
+                                .map { it.root.stations.stations }
+                                .modelToUiModelStream<Void, List<Station>>()
                                 .doOnNext {
                                     // Confirmed that this is not happening on the UI thread by logging the current
                                     // thread's name.
@@ -59,6 +62,12 @@ class StationsManager @Inject constructor(
                                                     .toJson(stations))
                                             .apply()
                                     }
+                                }
+                                .onErrorReturn {
+                                    UiModel(
+                                        state = State.ERROR,
+                                        error = it
+                                    )
                                 }
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())

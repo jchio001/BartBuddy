@@ -1,6 +1,5 @@
 package com.app.jonathanchiou.willimissbart.trips
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathanchiou.willimissbart.BuildConfig
@@ -8,15 +7,16 @@ import com.app.jonathanchiou.willimissbart.api.BartService
 import com.app.jonathanchiou.willimissbart.stations.StationsManager
 import com.app.jonathanchiou.willimissbart.trips.models.api.Trip
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.trips.models.internal.Union
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.models.UiModel
-import com.app.jonathanchiou.willimissbart.utils.models.mapBody
-import com.app.jonathanchiou.willimissbart.utils.models.toTerminalUiModelStream
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 class TripRequestEvent(
@@ -40,9 +40,10 @@ class RealTimeTripViewModel(
             .switchMap { tripRequestEvent ->
                 bartService.getDepartures(
                     tripRequestEvent.originAbbreviation,
-                    tripRequestEvent.destinationAbbreviation)
-                    .mapBody { departuresRootsWrapper ->
-                        departuresRootsWrapper.root.schedule.request.trips
+                    tripRequestEvent.destinationAbbreviation
+                )
+                    .map {
+                        it.root.schedule.request.trips
                             .distinctBy { trip ->
                                 trip.legs
                                     .map {
@@ -52,25 +53,23 @@ class RealTimeTripViewModel(
                             }
                     }
                     .flatMap {
-                        if (it.isSuccessful) {
-                            bartService.getEtdsForTrips(stationsManager, tripRequestEvent, it.body()!!)
-                                .flatMap {
-                                    Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                                        .delay(1, TimeUnit.SECONDS)
-                                        .scan(it) { realTimeTripsUiModel, _ ->
-                                            realTimeTripsUiModel.copy(
-                                                data = realTimeTripsUiModel.data?.decrement()
-                                            )
-                                        }
-                                        .takeUntil { it.data?.isEmpty() ?: true }
-                                }
-                        } else {
-                            Observable.just(
-                                UiModel(
-                                    state = State.ERROR,
-                                    query = tripRequestEvent,
-                                    statusCode = it.code()))
-                        }
+                        bartService.getEtdsForTrips(stationsManager, tripRequestEvent, it)
+                            .flatMap {
+                                Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
+                                    .scan(it) { realTimeTripsUiModel, _ ->
+                                        realTimeTripsUiModel.copy(
+                                            data = realTimeTripsUiModel.data?.decrement()
+                                        )
+                                    }
+                                    .takeUntil { it.data?.isEmpty() ?: true }
+                            }
+                    }
+                    .onErrorReturn {
+                        UiModel(
+                            state = State.ERROR,
+                            query = tripRequestEvent,
+                            error = it
+                        )
                     }
                     .startWith(
                         UiModel(
@@ -98,12 +97,11 @@ class RealTimeTripViewModel(
         stationsManager: StationsManager,
         tripRequestEvent: TripRequestEvent,
         trips: List<Trip>
-    ):
-        Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
+    ): Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
         val etdObservables = trips
             .map { trip ->
                 this.getRealTimeEstimates(trip.legs[0].origin)
-                    .mapBody { etdRootWrapper ->
+                    .map { etdRootWrapper ->
                         val stationNameToAbbreviationMap by lazy {
                             val stations = stationsManager.getStationsFromLocalStorage()
 
@@ -118,7 +116,7 @@ class RealTimeTripViewModel(
                         }
 
                         val firstLeg = trip.legs[0]
-                        etdRootWrapper.root.etdStations[0].etds
+                        val realTimeTrip = etdRootWrapper.root.etdStations[0].etds
                             .filter {
                                 firstLeg.trainHeadStation.contains(it.destination)
                             }
@@ -128,13 +126,34 @@ class RealTimeTripViewModel(
                                     trip.toRealTimeTrip(etd, estimate, stationNameToAbbreviationMap)
                                 }
                             } as MutableList? ?: mutableListOf()
+                        Union.first<List<RealTimeTrip>, Throwable>(realTimeTrip)
                     }
-                    .toTerminalUiModelStream(query = tripRequestEvent)
+                    .onErrorReturn { Union.second(it) }
             }
 
         return Observable
             .zip(etdObservables) { objects ->
-                UiModel.zipAndFlatten(objects.map { it as UiModel<TripRequestEvent, List<RealTimeTrip>> })
+                val realTimeTrips = mutableListOf<RealTimeTrip>()
+                val throwables = mutableListOf<Throwable>()
+                for (`object` in objects) {
+                    when (val union = `object` as Union<List<RealTimeTrip>, Throwable>) {
+                        is Union.First -> realTimeTrips.addAll(union.value)
+                        is Union.Second -> throwables.add(union.value)
+                    }
+                }
+
+                if (throwables.isEmpty()) {
+                    UiModel(
+                        state = State.DONE,
+                        query = tripRequestEvent,
+                        data = realTimeTrips as List<RealTimeTrip>
+                    )
+                } else {
+                    UiModel(
+                        state = State.ERROR,
+                        error = CompositeException(throwables)
+                    )
+                }
             }
     }
 }
