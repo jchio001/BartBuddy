@@ -1,11 +1,11 @@
-package com.app.jonathanchiou.willimissbart.utils.viewbinding
+package com.app.jonathanchiou.willimissbart.utils.view
 
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class ViewBindableFragment : Fragment() {
+abstract class ViewBindableActivity : AppCompatActivity() {
 
-    protected val viewCache = HashMap<Int, View>()
+    protected val viewCache = HashMap<Int, View>(5)
 
     @Suppress("UNCHECKED_CAST")
     fun <T: View> bind(id: Int): Lazy<T> {
@@ -14,7 +14,7 @@ abstract class ViewBindableFragment : Fragment() {
         }
 
         return lazy {
-            val view = view!!.findViewById<T>(id)
+            val view = findViewById<T>(id)
             viewCache[id] = view
             view
         }
@@ -36,7 +36,7 @@ abstract class ViewBindableFragment : Fragment() {
             if (viewCache[id] != null) {
                 viewCache[id]!!
             } else {
-                val view = view!!.findViewById<View>(id)!!
+                val view = findViewById<View>(id)!!
                 viewCache[id] = view
                 view
             }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.util.Consumer
@@ -18,7 +17,7 @@ import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.TripManager
 import com.app.jonathanchiou.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 import com.app.jonathanchiou.willimissbart.utils.models.State
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableActivity
+import com.app.jonathanchiou.willimissbart.utils.view.ViewBindableActivity
 import javax.inject.Inject
 
 class StationSelectionActivity : ViewBindableActivity() {

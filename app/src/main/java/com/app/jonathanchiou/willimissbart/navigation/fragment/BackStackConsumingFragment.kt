@@ -1,6 +1,6 @@
 package com.app.jonathanchiou.willimissbart.navigation.fragment
 
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableFragment
+import com.app.jonathanchiou.willimissbart.utils.view.ViewBindableFragment
 
 abstract class BackStackConsumingFragment : ViewBindableFragment() {
 

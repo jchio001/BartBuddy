@@ -1,4 +1,4 @@
-package com.app.jonathanchiou.willimissbart.utils.viewbinding
+package com.app.jonathanchiou.willimissbart.utils.view
 
 import android.view.View
 

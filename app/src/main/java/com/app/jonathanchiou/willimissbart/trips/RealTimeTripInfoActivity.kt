@@ -2,7 +2,6 @@ package com.app.jonathanchiou.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -13,7 +12,7 @@ import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathanchiou.willimissbart.utils.viewbinding.ViewBindableActivity
+import com.app.jonathanchiou.willimissbart.utils.view.ViewBindableActivity
 import javax.inject.Inject
 
 class RealTimeTripInfoActivity : ViewBindableActivity() {
