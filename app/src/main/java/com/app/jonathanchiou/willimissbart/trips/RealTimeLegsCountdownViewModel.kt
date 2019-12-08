@@ -26,7 +26,7 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
                 val timeUnitElapsed = elapsedMilliseconds / BuildConfig.UPDATE_TIME_UNIT_MILLISECONDS
 
                 Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                    .scan(realTimeTrip.realTimeLegs.decrement(timeUnitElapsed.toInt())) { realTimeLegs, _ ->
+                    .scan(realTimeTrip.realTimeLegs) { realTimeLegs, _ ->
                         realTimeLegs.decrement(1)
                     }
                     .observeOn(AndroidSchedulers.mainThread())
