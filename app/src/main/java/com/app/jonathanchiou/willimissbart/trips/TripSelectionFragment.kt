@@ -13,8 +13,8 @@ import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.navigation.fragment.BackStackConsumingFragment
-import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathanchiou.willimissbart.trips.TripManager.EditCallbacks
+import com.app.jonathanchiou.willimissbart.trips.TripManager.TripStationListener
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 

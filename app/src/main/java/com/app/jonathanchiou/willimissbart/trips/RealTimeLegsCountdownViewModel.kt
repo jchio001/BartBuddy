@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-class RealTimeLegsCountdownViewModel: ViewModel() {
+class RealTimeLegsCountdownViewModel : ViewModel() {
 
     val realTimeLegsLiveData = MutableLiveData<List<RealTimeLeg>>()
 

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.util.Consumer
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +14,7 @@ import com.app.jonathanchiou.willimissbart.MainActivity
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.application.appComponent
 import com.app.jonathanchiou.willimissbart.trips.RealTimeTripInfoActivity.Companion.REAL_TIME_TRIP
+import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.utils.models.State
 import com.app.jonathanchiou.willimissbart.utils.view.ViewBindableFragment
 import javax.inject.Inject
@@ -31,7 +31,7 @@ fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
     return realTimeTripFragment
 }
 
-class RealTimeTripFragment : ViewBindableFragment() {
+class RealTimeTripFragment : ViewBindableFragment(), RealTimeTripsAdapter.Callbacks {
 
     val container: FrameLayout by bind(R.id.container)
 
@@ -42,7 +42,7 @@ class RealTimeTripFragment : ViewBindableFragment() {
 
     lateinit var realTimeTripViewModel: RealTimeTripViewModel
 
-    private val realTimeTripAdapter = RealTimeTripAdapter()
+    private val realTimeTripAdapter = RealTimeTripsAdapter()
 
     private var isReturnTrip = false
 
@@ -60,11 +60,7 @@ class RealTimeTripFragment : ViewBindableFragment() {
             isReturnTrip = it.getBoolean(IS_RETURN_TRIP_KEY, false)
         }
 
-        realTimeTripAdapter.onClickListener = Consumer {
-            val intent = Intent(context, RealTimeTripInfoActivity::class.java)
-            intent.putExtra(REAL_TIME_TRIP, it)
-            startActivity(intent)
-        }
+        realTimeTripAdapter.callbacks = this
 
         realTimeTripViewModel = ViewModelProviders
             .of(this, realTimeTripViewModelFactory)
@@ -109,6 +105,12 @@ class RealTimeTripFragment : ViewBindableFragment() {
         if (!hidden) {
             requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
         }
+    }
+
+    override fun onRealTimeTripClicked(realTimeTrip: RealTimeTrip) {
+        val intent = Intent(context, RealTimeTripInfoActivity::class.java)
+        intent.putExtra(REAL_TIME_TRIP, realTimeTrip)
+        startActivity(intent)
     }
 
     private fun requestTrip(

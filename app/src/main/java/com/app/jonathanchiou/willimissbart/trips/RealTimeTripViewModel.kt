@@ -17,8 +17,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.util.ArrayList
-import java.util.concurrent.TimeUnit
 
 class TripRequestEvent(
     val originAbbreviation: String,
