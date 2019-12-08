@@ -1,10 +1,8 @@
 package com.app.jonathanchiou.willimissbart.trips
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathanchiou.willimissbart.R
 import com.app.jonathanchiou.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathanchiou.willimissbart.utils.BasicDiffCallback
@@ -41,7 +39,6 @@ class RealTimeLegAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder<RealTi
                 ++newFocusedIndex
             }
             focusedIndex = newFocusedIndex
-            Log.d("pizza", focusedIndex.toString())
         }
 
         super.submitList(list)

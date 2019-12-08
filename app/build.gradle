@@ -34,12 +34,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField(
                     "java.util.concurrent.TimeUnit",
-                    "UPPDATE_TIME_UNIT",
+                    "UPDATE_TIME_UNIT",
                     "java.util.concurrent.TimeUnit.SECONDS"
             )
             buildConfigField(
                     "long",
-                    "UPPDATE_TIME_UNIT_MILLISECONDS",
+                    "UPDATE_TIME_UNIT_MILLISECONDS",
                     "1000L"
             )
         }
@@ -53,7 +53,7 @@ android {
             )
             buildConfigField(
                     "long",
-                    "UPPDATE_TIME_UNIT_MILLISECONDS",
+                    "UPDATE_TIME_UNIT_MILLISECONDS",
                     "60000L"
             )
         }
