@@ -10,6 +10,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class RealTimeLegsCountdownViewModel : ViewModel() {
 
@@ -22,13 +23,18 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
     init {
         diposable = realTimeTripSubject
             .switchMap { realTimeTrip ->
-                val elapsedMilliseconds = System.currentTimeMillis() - realTimeTrip.lastUpdatedTime
-                val timeUnitElapsed = elapsedMilliseconds / BuildConfig.UPDATE_TIME_UNIT_MILLISECONDS
+                val delayDurationInMilliSeconds = maxOf(
+                    (System.currentTimeMillis() - realTimeTrip.lastUpdatedTime)
+                        % BuildConfig.UPDATE_TIME_UNIT.toMillis(1),
+                    BuildConfig.DELAY_TIME_UNIT.toMillis(BuildConfig.MINIMUM_DELAY)
+                )
 
                 Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                    .scan(realTimeTrip.realTimeLegs) { realTimeLegs, _ ->
+                    .scan(realTimeTrip.realTimeLegs.decrement(1)) { realTimeLegs, _ ->
                         realTimeLegs.decrement(1)
                     }
+                    .delay(delayDurationInMilliSeconds, TimeUnit.MILLISECONDS)
+                    .startWith(realTimeTrip.realTimeLegs)
                     .observeOn(AndroidSchedulers.mainThread())
             }
             .subscribe(realTimeLegsLiveData::postValue)

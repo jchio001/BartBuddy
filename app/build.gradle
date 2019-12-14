@@ -38,9 +38,14 @@ android {
                     "java.util.concurrent.TimeUnit.SECONDS"
             )
             buildConfigField(
+                    "java.util.concurrent.TimeUnit",
+                    "DELAY_TIME_UNIT",
+                    "java.util.concurrent.TimeUnit.MILLISECONDS"
+            )
+            buildConfigField(
                     "long",
-                    "UPDATE_TIME_UNIT_MILLISECONDS",
-                    "1000L"
+                    "MINIMUM_DELAY",
+                    "300"
             )
         }
         release {
@@ -52,9 +57,14 @@ android {
                     "java.util.concurrent.TimeUnit.MINUTES"
             )
             buildConfigField(
+                    "java.util.concurrent.TimeUnit",
+                    "DELAY_TIME_UNIT",
+                    "java.util.concurrent.TimeUnit.MILLISECONDS"
+            )
+            buildConfigField(
                     "long",
-                    "UPDATE_TIME_UNIT_MILLISECONDS",
-                    "60000L"
+                    "MINIMUM_DELAY",
+                    "3"
             )
         }
     }
