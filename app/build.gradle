@@ -15,6 +15,19 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     defaultConfig {
         applicationId "com.app.jonathanchiou.willimissbart"
         minSdkVersion 16
@@ -66,6 +79,7 @@ android {
                     "MINIMUM_DELAY",
                     "3"
             )
+            signingConfig signingConfigs.release
         }
     }
 
