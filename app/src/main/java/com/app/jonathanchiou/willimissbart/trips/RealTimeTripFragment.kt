@@ -85,6 +85,7 @@ class RealTimeTripFragment : ViewBindableFragment(), RealTimeTripsAdapter.Callba
                             .inflate(R.layout.layout_model_recyclerview, container, false)
                             as RecyclerView
                         recyclerView.adapter = realTimeTripAdapter
+                        recyclerView.itemAnimator = null
                         recyclerView.layoutManager = LinearLayoutManager(context)
 
                         container.removeAllViews()
