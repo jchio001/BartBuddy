@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="6dp"
-    tools:parentTag="android.widget.RelativeLayout">
+    tools:parentTag="android.widget.RelativeLayout"
+    >
 
     <View
         android:id="@+id/train_color_indicator"
@@ -15,7 +16,8 @@
         android:layout_alignBottom="@+id/destination_textview"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="4dp"
-        tools:background="@color/bart_blue" />
+        tools:background="@color/bart_blue"
+        />
 
     <TextView
         android:id="@+id/destination_textview"
@@ -23,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/train_color_indicator"
         android:textSize="28sp"
-        tools:text="Flavortown" />
+        tools:text="Flavortown"
+        />
 
     <TextView
         android:id="@+id/time_until_arrival_textview"
@@ -32,6 +35,7 @@
         android:layout_toRightOf="@+id/destination_textview"
         android:gravity="end"
         android:textSize="28sp"
-        tools:text="73" />
+        tools:text="73"
+        />
 
 </merge>

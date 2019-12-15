@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <ImageView
         android:id="@+id/icon_image_view"
@@ -13,7 +14,8 @@
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_chevron_right_black" />
+        app:srcCompat="@drawable/ic_chevron_right_black"
+        />
 
     <TextView
         android:id="@+id/real_time_leg_info_text"
@@ -21,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon_image_view"
         android:textSize="20sp"
-        tools:text="Pizza" />
+        tools:text="Pizza"
+        />
 
     <TextView
         android:id="@+id/real_time_leg_duration_text"
@@ -31,6 +34,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/icon_image_view"
         android:textSize="16sp"
-        tools:text="Hut" />
+        tools:text="Hut"
+        />
 
 </RelativeLayout>

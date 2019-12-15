@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <View
         android:id="@+id/color_indicator"
         android:layout_width="16dp"
         android:layout_height="20sp"
-        tools:background="@color/bart_blue" />
+        tools:background="@color/bart_blue"
+        />
 
     <TextView
         android:id="@+id/trip_information_textview"
@@ -18,7 +21,8 @@
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/color_indicator"
         android:textSize="20sp"
-        tools:text="Pizza123" />
+        tools:text="Pizza123"
+        />
 
     <TextView
         android:id="@+id/estimate_textview"
@@ -26,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textSize="20sp"
-        tools:text="1m" />
+        tools:text="1m"
+        />
 
 </RelativeLayout>
