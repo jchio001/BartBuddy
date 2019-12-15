@@ -8,4 +8,6 @@
     <color name="hint_white">#CECECE</color>
 
     <color name="disabled_grey">#A0A0A0</color>
+
+    <color name="text_color">#000000</color>
 </resources>

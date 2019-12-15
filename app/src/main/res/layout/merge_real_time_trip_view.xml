@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/train_color_indicator"
+        android:textColor="@color/text_color"
         android:textSize="28sp"
         tools:text="Flavortown"
         />
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/destination_textview"
         android:gravity="end"
+        android:textColor="@color/text_color"
         android:textSize="28sp"
         tools:text="73"
         />
