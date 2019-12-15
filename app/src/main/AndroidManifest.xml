@@ -43,6 +43,7 @@
             android:label="@string/select_station"
             android:screenOrientation="portrait"
             />
+
     </application>
 
 </manifest>
