@@ -18,10 +18,10 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
 
     private val realTimeTripSubject = PublishSubject.create<RealTimeTrip>()
 
-    private val diposable: Disposable
+    private val disposable: Disposable
 
     init {
-        diposable = realTimeTripSubject
+        disposable = realTimeTripSubject
             .switchMap { realTimeTrip ->
                 val delayDurationInMilliSeconds = maxOf(
                     (System.currentTimeMillis() - realTimeTrip.lastUpdatedTime)
@@ -35,6 +35,9 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
                     }
                     .delay(delayDurationInMilliSeconds, TimeUnit.MILLISECONDS)
                     .startWith(realTimeTrip.realTimeLegs)
+                    .takeUntil { realTimeLegs ->
+                        realTimeLegs.last().duration < 0
+                    }
                     .observeOn(AndroidSchedulers.mainThread())
             }
             .subscribe(realTimeLegsLiveData::postValue)
@@ -42,7 +45,7 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        diposable.dispose()
+        disposable.dispose()
     }
 
     fun seed(realTimeTrip: RealTimeTrip) = realTimeTripSubject.onNext(realTimeTrip)

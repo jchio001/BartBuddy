@@ -41,21 +41,21 @@ class RealTimeTripViewModel(
                     tripRequestEvent.originAbbreviation,
                     tripRequestEvent.destinationAbbreviation
                 )
-                    .map {
-                        it.root.schedule.request.trips
+                    .map { wrappedDeparturesRoot ->
+                        wrappedDeparturesRoot.root.schedule.request.trips
                             .distinctBy { trip ->
                                 trip.legs
-                                    .map {
-                                        "${it.origin}${it.destination}${it.trainHeadStation}"
+                                    .map { leg ->
+                                        "${leg.origin}${leg.destination}${leg.trainHeadStation}"
                                     }
                                     .reduce { s1, s2 -> "$s1$s2" }
                             }
                     }
-                    .flatMap {
-                        bartService.getEtdsForTrips(stationsManager, tripRequestEvent, it)
-                            .flatMap {
+                    .flatMap { trips ->
+                        bartService.getEtdsForTrips(stationsManager, tripRequestEvent, trips)
+                            .flatMap { realTimeTripsUiModel ->
                                 Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                                    .scan(it) { realTimeTripsUiModel, _ ->
+                                    .scan(realTimeTripsUiModel) { realTimeTripsUiModel, _ ->
                                         realTimeTripsUiModel.copy(
                                             data = realTimeTripsUiModel.data?.decrement()
                                         )
@@ -110,10 +110,9 @@ class RealTimeTripViewModel(
 
                         val firstLeg = trip.legs[0]
                         val realTimeTrip = etdRootWrapper.root.etdStations[0].etds
-                            .filter {
-                                firstLeg.trainHeadStation.contains(it.destination)
+                            .firstOrNull { etd ->
+                                firstLeg.trainHeadStation.contains(etd.destination)
                             }
-                            .firstOrNull()
                             ?.let { etd ->
                                 etd.estimates.map { estimate ->
                                     trip.toRealTimeTrip(etd, estimate, stationNameToAbbreviationMap)

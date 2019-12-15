@@ -18,15 +18,14 @@ import javax.inject.Singleton
 class StationsManager @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val bartService: BartService,
-    private val moshi: Moshi) {
+    private val moshi: Moshi
+) {
 
     val stationsLiveData = MutableLiveData<UiModel<Void, List<Station>>>()
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
-    val stationsListType by lazy {
-        Types.newParameterizedType(List::class.java, Station::class.java)
-    }
+    val stationsListType = Types.newParameterizedType(List::class.java, Station::class.java)
 
     init {
         stationsRequestSubject
@@ -44,11 +43,11 @@ class StationsManager @Inject constructor(
                                 .getStations()
                                 .map { it.root.stations.stations }
                                 .modelToUiModelStream<Void, List<Station>>()
-                                .doOnNext {
+                                .doOnNext { stationsUiModel ->
                                     // Confirmed that this is not happening on the UI thread by logging the current
                                     // thread's name.
-                                    if (it.state == State.DONE) {
-                                        val stations = it.data!!
+                                    if (stationsUiModel.state == State.DONE) {
+                                        val stations = stationsUiModel.data!!
 
                                         sharedPreferences
                                             .edit()
