@@ -23,8 +23,9 @@ class RealTimeLegsCountdownViewModel : ViewModel() {
     init {
         disposable = realTimeTripSubject
             .switchMap { realTimeTrip ->
+                val updateTimeUnitInMillis = BuildConfig.UPDATE_TIME_UNIT.toMillis(1)
                 val delayDurationInMilliSeconds = maxOf(
-                    (System.currentTimeMillis() - realTimeTrip.lastUpdatedTime)
+                    (updateTimeUnitInMillis - (System.currentTimeMillis() - realTimeTrip.lastUpdatedTime))
                         % BuildConfig.UPDATE_TIME_UNIT.toMillis(1),
                     BuildConfig.DELAY_TIME_UNIT.toMillis(BuildConfig.MINIMUM_DELAY)
                 )
