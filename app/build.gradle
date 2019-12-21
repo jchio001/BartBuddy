@@ -7,7 +7,7 @@ android {
 
     def versionMajor = 3
     def versionMinor = 0
-    def versionPatch = 1
+    def versionPatch = 2
 
     androidExtensions {
         experimental = true
