@@ -11,16 +11,10 @@ import com.app.jonathan.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathan.willimissbart.navigation.bottomnav.FragmentFactory
 import com.app.jonathan.willimissbart.navigation.fragment.BackStackConsumingFragment
 
-class RealTimeTripsParentFragment : BackStackConsumingFragment() {
+class RealTimeTripsParentFragment : BackStackConsumingFragment(R.layout.fragment_trip_parent) {
 
     val title: TextView by bind(R.id.title)
     val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_trip_parent, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

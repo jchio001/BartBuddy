@@ -14,7 +14,7 @@ import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
 import javax.inject.Inject
 
-class RealTimeTripInfoActivity : ViewBindableActivity() {
+class RealTimeTripInfoActivity : ViewBindableActivity(R.layout.activity_real_time_trip_info) {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
     val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
@@ -27,7 +27,6 @@ class RealTimeTripInfoActivity : ViewBindableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_real_time_trip_info)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

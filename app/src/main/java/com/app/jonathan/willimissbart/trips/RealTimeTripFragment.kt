@@ -31,7 +31,8 @@ fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
     return realTimeTripFragment
 }
 
-class RealTimeTripFragment : ViewBindableFragment(), RealTimeTripsAdapter.Callbacks {
+class RealTimeTripFragment : ViewBindableFragment(R.layout.fragment_real_time_trips),
+    RealTimeTripsAdapter.Callbacks {
 
     val container: FrameLayout by bind(R.id.container)
 
@@ -44,12 +45,6 @@ class RealTimeTripFragment : ViewBindableFragment(), RealTimeTripsAdapter.Callba
     private val realTimeTripAdapter = RealTimeTripsAdapter()
 
     private var isReturnTrip = false
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(R.layout.fragment_real_time_trips, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

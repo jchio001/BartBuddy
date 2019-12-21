@@ -1,9 +1,10 @@
 package com.app.jonathan.willimissbart.utils.view
 
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class ViewBindableFragment : Fragment() {
+abstract class ViewBindableFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     protected val viewCache = HashMap<Int, View>()
 

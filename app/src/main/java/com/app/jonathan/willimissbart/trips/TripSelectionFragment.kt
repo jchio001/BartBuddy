@@ -18,7 +18,7 @@ import com.app.jonathan.willimissbart.trips.TripManager.TripStationListener
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class TripSelectionFragment : BackStackConsumingFragment() {
+class TripSelectionFragment : BackStackConsumingFragment(R.layout.fragment_trip_selection) {
 
     val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
     val originStationTextView: TextView by bind(R.id.origin_station_textview)
@@ -36,12 +36,6 @@ class TripSelectionFragment : BackStackConsumingFragment() {
             coordinatorContainer.showSnackbar(R.string.stations_duplicate_error)
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(R.layout.fragment_trip_selection, container, false)
 
     override fun onViewCreated(view: View,
                                savedInstanceState: Bundle?) {

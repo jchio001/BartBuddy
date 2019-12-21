@@ -1,9 +1,10 @@
 package com.app.jonathan.willimissbart.utils.view
 
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 
-abstract class ViewBindableActivity : AppCompatActivity() {
+abstract class ViewBindableActivity(@LayoutRes containerLayoutId: Int) : AppCompatActivity(containerLayoutId) {
 
     protected val viewCache = HashMap<Int, View>(5)
 

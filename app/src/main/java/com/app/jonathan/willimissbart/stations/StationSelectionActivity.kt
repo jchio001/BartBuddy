@@ -20,7 +20,7 @@ import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
 import javax.inject.Inject
 
-class StationSelectionActivity : ViewBindableActivity() {
+class StationSelectionActivity : ViewBindableActivity(R.layout.activity_station_selection) {
 
     @Inject lateinit var stationsViewModelFactory: StationsViewModelFactory
 
@@ -34,7 +34,6 @@ class StationSelectionActivity : ViewBindableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_station_selection)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
