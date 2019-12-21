@@ -37,7 +37,7 @@ android {
         applicationId "com.app.jonathan.willimissbart"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 26
+        versionCode 27
         versionName String.format("%d.%d.%d", versionMajor, versionMinor, versionPatch)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
