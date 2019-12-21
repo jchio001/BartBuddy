@@ -12,14 +12,11 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
-import javax.inject.Inject
 
 class RealTimeTripInfoActivity : ViewBindableActivity(R.layout.activity_real_time_trip_info) {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
     val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
-
-    @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
     private lateinit var realTimeTrip: RealTimeTrip
 
@@ -27,7 +24,6 @@ class RealTimeTripInfoActivity : ViewBindableActivity(R.layout.activity_real_tim
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

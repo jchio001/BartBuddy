@@ -20,7 +20,6 @@ interface AppComponent {
     fun inject(tripSelectionFragment: TripSelectionFragment)
 
     fun inject(realTimeTripFragment: RealTimeTripFragment)
-    fun inject(realTimeTripInfoActivity: RealTimeTripInfoActivity)
 
     fun inject(stationSelectionActivity: StationSelectionActivity)
 
