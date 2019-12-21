@@ -8,7 +8,7 @@ abstract class ViewBindableActivity : AppCompatActivity() {
     protected val viewCache = HashMap<Int, View>(5)
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: View> bind(id: Int): Lazy<T> {
+    fun <T : View> bind(id: Int): Lazy<T> {
         if (viewCache[id] != null) {
             return lazyOf(viewCache[id] as T)
         }

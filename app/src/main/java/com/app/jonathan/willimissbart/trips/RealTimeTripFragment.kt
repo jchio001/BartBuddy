@@ -35,8 +35,7 @@ class RealTimeTripFragment : ViewBindableFragment(), RealTimeTripsAdapter.Callba
 
     val container: FrameLayout by bind(R.id.container)
 
-    @Inject
-    lateinit var realTimeTripViewModelFactory: TripViewModelFactory
+    @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
 
     lateinit var tripManager: TripManager
 

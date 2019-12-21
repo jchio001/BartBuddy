@@ -15,7 +15,8 @@ class AppModule(private val appContext: Context) {
     fun providesContext() = appContext
 
     @[Provides Singleton]
-    fun providesNotificationManager(context: Context) = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun providesNotificationManager(context: Context) =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     @[Provides Singleton]
     fun provideSharedPreferences(context: Context) = PreferenceManager.getDefaultSharedPreferences(context)

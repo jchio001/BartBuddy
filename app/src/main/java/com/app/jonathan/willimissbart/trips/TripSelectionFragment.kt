@@ -24,8 +24,7 @@ class TripSelectionFragment : BackStackConsumingFragment() {
     val originStationTextView: TextView by bind(R.id.origin_station_textview)
     val destinationStationTextView: TextView by bind(R.id.destination_station_textview)
 
-    @Inject
-    lateinit var tripManager: TripManager
+    @Inject lateinit var tripManager: TripManager
 
     private val tripUnchangedListener = object : EditCallbacks {
 
