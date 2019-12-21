@@ -3,8 +3,8 @@ package com.app.jonathan.willimissbart.application
 import android.content.Context
 import com.app.jonathan.willimissbart.MainActivity
 import com.app.jonathan.willimissbart.api.BartApiModule
-import com.app.jonathan.willimissbart.timer.TimerService
 import com.app.jonathan.willimissbart.stations.StationSelectionActivity
+import com.app.jonathan.willimissbart.timer.TimerService
 import com.app.jonathan.willimissbart.trips.RealTimeTripFragment
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment

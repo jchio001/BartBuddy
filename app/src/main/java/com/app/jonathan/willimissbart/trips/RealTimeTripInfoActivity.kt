@@ -3,7 +3,6 @@ package com.app.jonathan.willimissbart.trips
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,6 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
-import com.google.android.material.button.MaterialButton
 import javax.inject.Inject
 
 class RealTimeTripInfoActivity : ViewBindableActivity() {
