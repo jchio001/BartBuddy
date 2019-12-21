@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,32 +11,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/real_time_leg_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         />
 
-    <androidx.cardview.widget.CardView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/start_trip_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        app:contentPaddingBottom="8dp"
-        app:contentPaddingLeft="18dp"
-        app:contentPaddingRight="18dp"
-        app:contentPaddingTop="8dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_trip"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            />
-
-    </androidx.cardview.widget.CardView>
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:text="@string/start_trip"
+        android:textSize="18sp"
+        style="@style/PrimaryButtonStyle"
+        />
 
 </LinearLayout>

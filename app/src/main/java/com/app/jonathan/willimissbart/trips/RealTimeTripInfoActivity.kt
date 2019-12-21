@@ -2,7 +2,7 @@ package com.app.jonathan.willimissbart.trips
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.cardview.widget.CardView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,12 +13,13 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
+import com.google.android.material.button.MaterialButton
 import javax.inject.Inject
 
 class RealTimeTripInfoActivity : ViewBindableActivity() {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
-    val startTripButton: CardView by bind(R.id.start_trip_button)
+    val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
 
     @Inject lateinit var tripViewModelFactory: TripViewModelFactory
 
@@ -54,7 +55,6 @@ class RealTimeTripInfoActivity : ViewBindableActivity() {
                 realTimeLegPagerAdapter.submitList(realTimeLegs)
                 if (realTimeLegs.first().duration < 0) {
                     startTripButton.isEnabled = false
-                    startTripButton.setCardBackgroundColor(ContextCompat.getColor(this, R.color.disabled_grey))
                 }
             })
         realTimeLegsCountdownViewModel.seed(realTimeTrip)
