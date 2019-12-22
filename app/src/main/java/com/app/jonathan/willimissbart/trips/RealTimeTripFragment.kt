@@ -18,20 +18,12 @@ import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
-fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
-    val realTimeTripFragment = RealTimeTripFragment()
-    realTimeTripFragment.arguments = Bundle().also {
-        it.putBoolean(RealTimeTripFragment.IS_RETURN_TRIP_KEY, isReturnTrip)
-    }
-    return realTimeTripFragment
-}
-
 class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
     RealTimeTripsAdapter.Callbacks {
 
     @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
 
-    val container: FrameLayout by bind(R.id.container)
+    private val container: FrameLayout by bind(R.id.container)
 
     private val isReturnTrip: Boolean by argument(IS_RETURN_TRIP_KEY)
 
@@ -116,5 +108,9 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
     companion object {
 
         const val IS_RETURN_TRIP_KEY = "is_return_trip"
+
+        fun newInstance(isReturnTrip: Boolean) = RealTimeTripFragment().setArguments {
+            putBoolean(IS_RETURN_TRIP_KEY, isReturnTrip)
+        }
     }
 }

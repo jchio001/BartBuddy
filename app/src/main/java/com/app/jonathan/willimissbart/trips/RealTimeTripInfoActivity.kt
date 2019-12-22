@@ -14,8 +14,8 @@ import com.app.jonathan.willimissbart.utils.view.BaseActivity
 
 class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_info) {
 
-    val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
-    val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
+    private val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
+    private val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
 
     private val realTimeTrip: RealTimeTrip by extra(REAL_TIME_TRIP)
 

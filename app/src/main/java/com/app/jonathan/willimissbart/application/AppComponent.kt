@@ -6,7 +6,6 @@ import com.app.jonathan.willimissbart.api.BartApiModule
 import com.app.jonathan.willimissbart.stations.StationSelectionActivity
 import com.app.jonathan.willimissbart.timer.TimerService
 import com.app.jonathan.willimissbart.trips.RealTimeTripFragment
-import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import dagger.Component
 import javax.inject.Singleton

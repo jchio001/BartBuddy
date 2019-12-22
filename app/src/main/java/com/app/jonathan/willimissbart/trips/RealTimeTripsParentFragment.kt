@@ -12,17 +12,18 @@ import com.app.jonathan.willimissbart.utils.view.BaseFragment
 class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) {
 
     val title: TextView by bind(R.id.title)
-    val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
+    private val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         bindClick(R.id.edit_icon) {
+            val tripSelectionFragment = TripSelectionFragment.newInstance()
             fragmentManager!!
                 .beginTransaction()
                 .hide(this)
-                .add(R.id.parent, TripSelectionFragment())
-                .show(TripSelectionFragment())
+                .add(R.id.parent, tripSelectionFragment)
+                .show(tripSelectionFragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -33,7 +34,7 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
             object : FragmentFactory {
 
                 override fun create(index: Int): Fragment {
-                    return createRealTimeTripFragment(index == 1)
+                    return RealTimeTripFragment.newInstance(index == 1)
                 }
             }
         )
@@ -57,5 +58,7 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
     companion object {
 
         const val BACKSTACK_TAG = "trip_parent_fragment"
+
+        fun newInstance() = RealTimeTripsParentFragment()
     }
 }

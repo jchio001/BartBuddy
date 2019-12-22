@@ -18,9 +18,9 @@ import javax.inject.Inject
 
 class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
 
-    val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
-    val originStationTextView: TextView by bind(R.id.origin_station_textview)
-    val destinationStationTextView: TextView by bind(R.id.destination_station_textview)
+    private val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
+    private val originStationTextView: TextView by bind(R.id.origin_station_textview)
+    private val destinationStationTextView: TextView by bind(R.id.destination_station_textview)
 
     @Inject lateinit var tripManager: TripManager
 
@@ -93,5 +93,7 @@ class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
     companion object {
 
         const val BACKSTACK_TAG = "trip_selection_fragment"
+
+        fun newInstance() = TripSelectionFragment()
     }
 }

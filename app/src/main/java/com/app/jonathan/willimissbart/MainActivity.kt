@@ -24,12 +24,20 @@ class MainActivity : AppCompatActivity() {
             if (tripManager.getOriginAbbreviation() != null && tripManager.getDestinationAbbreviation() != null) {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.parent, RealTimeTripsParentFragment(), RealTimeTripsParentFragment.BACKSTACK_TAG)
+                    .add(
+                        R.id.parent,
+                        RealTimeTripsParentFragment.newInstance(),
+                        RealTimeTripsParentFragment.BACKSTACK_TAG
+                    )
                     .commit()
             } else {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.parent, TripSelectionFragment(), TripSelectionFragment.BACKSTACK_TAG)
+                    .add(
+                        R.id.parent,
+                        TripSelectionFragment.newInstance(),
+                        TripSelectionFragment.BACKSTACK_TAG
+                    )
                     .commit()
             }
         }
