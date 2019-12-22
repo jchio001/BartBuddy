@@ -17,7 +17,7 @@ class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_i
     private val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
     private val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
 
-    private val realTimeTrip: RealTimeTrip by extra(REAL_TIME_TRIP)
+    private val realTimeTrip: RealTimeTrip by extra(EXTRA_REAL_TIME_TRIP)
 
     private lateinit var realTimeLegsCountdownViewModel: RealTimeLegsCountdownViewModel
 
@@ -67,6 +67,6 @@ class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_i
 
     companion object {
 
-        const val REAL_TIME_TRIP = "real_time_trip"
+        const val EXTRA_REAL_TIME_TRIP = "real_time_trip"
     }
 }

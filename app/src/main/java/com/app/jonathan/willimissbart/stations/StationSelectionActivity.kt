@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.TripManager
-import com.app.jonathan.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
+import com.app.jonathan.willimissbart.trips.TripManager.Companion.EXTRA_STATION_SELECTION_TYPE
 import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseActivity
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
     private val refreshTextView: TextView by bind(R.id.refresh_textview)
     private val stationsRecyclerView: RecyclerView by bind(R.id.stations_recylerview)
 
-    private val selectionType: String by extra(STATION_SELECTION_TYPE_KEY)
+    private val selectionType: String by extra(EXTRA_STATION_SELECTION_TYPE)
 
     private val stationsAdapter = StationsAdapter()
 
@@ -70,8 +70,8 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
 
         stationsAdapter.onClickListener = Consumer { station ->
             val intent = Intent()
-            intent.putExtra(STATION_SELECTION_TYPE_KEY, selectionType)
-            intent.putExtra(TripManager.SELECTED_STATION_KEY, station)
+            intent.putExtra(EXTRA_STATION_SELECTION_TYPE, selectionType)
+            intent.putExtra(TripManager.EXTRA_SELECTED_STATION, station)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

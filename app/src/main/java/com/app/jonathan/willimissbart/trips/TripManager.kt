@@ -51,14 +51,14 @@ class TripManager @Inject constructor(
     init {
         sharedPreferences.also {
             previousOriginAbbreviation =
-                it.getString(TRIP_ORIGIN_ABBREVIATION_KEY, null)
+                it.getString(EXTRA_TRIP_ORIGIN_ABBREVIATION, null)
             previousOriginName =
-                it.getString(TRIP_ORIGIN_NAME_KEY, null)
+                it.getString(EXTRA_TRIP_ORIGIN_NAME, null)
 
             previousDestinationAbbreviation =
-                it.getString(TRIP_DESTINATION_ABBREVIATION_KEY, null)
+                it.getString(EXTRA_TRIP_DESTINATION_ABBREVIATION, null)
             previousDestinationName =
-                it.getString(TRIP_DESTINATION_NAME_KEY, null)
+                it.getString(EXTRA_TRIP_DESTINATION_NAME, null)
 
             originAbbreviation = previousOriginAbbreviation
             originName = previousOriginName
@@ -72,7 +72,7 @@ class TripManager @Inject constructor(
 
     fun updateStation(fragment: Fragment, stationType: StationType) {
         val intent = Intent(fragment.context, StationSelectionActivity::class.java)
-        intent.putExtra(STATION_SELECTION_TYPE_KEY, stationType.toString())
+        intent.putExtra(EXTRA_STATION_SELECTION_TYPE, stationType.toString())
         fragment.startActivityForResult(
             intent,
             STATIONS_SELECTION_CODE)
@@ -94,8 +94,8 @@ class TripManager @Inject constructor(
                                  data: Intent?) {
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val stationType = StationType.valueOf(data!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!)
-                data.getParcelableExtra<Station>(SELECTED_STATION_KEY)!!.also {
+                val stationType = StationType.valueOf(data!!.getStringExtra(EXTRA_STATION_SELECTION_TYPE)!!)
+                data.getParcelableExtra<Station>(EXTRA_SELECTED_STATION)!!.also {
                     if (stationType == StationType.ORIGIN) {
                         if (it.abbr == destinationAbbreviation) {
                             editCallbacks?.onDuplicateStationSelection(StationType.ORIGIN)
@@ -135,10 +135,10 @@ class TripManager @Inject constructor(
 
             sharedPreferences
                 .edit()
-                .putString(TRIP_ORIGIN_ABBREVIATION_KEY, originAbbreviation)
-                .putString(TRIP_ORIGIN_NAME_KEY, originName)
-                .putString(TRIP_DESTINATION_ABBREVIATION_KEY, destinationAbbreviation)
-                .putString(TRIP_DESTINATION_NAME_KEY, destinationName)
+                .putString(EXTRA_TRIP_ORIGIN_ABBREVIATION, originAbbreviation)
+                .putString(EXTRA_TRIP_ORIGIN_NAME, originName)
+                .putString(EXTRA_TRIP_DESTINATION_ABBREVIATION, destinationAbbreviation)
+                .putString(EXTRA_TRIP_DESTINATION_NAME, destinationName)
                 .apply()
 
             previousOriginAbbreviation = originAbbreviation
@@ -174,13 +174,13 @@ class TripManager @Inject constructor(
 
         const val STATIONS_SELECTION_CODE = 73
 
-        const val STATION_SELECTION_TYPE_KEY = "station_selection_type"
-        const val SELECTED_STATION_KEY = "selected_station"
+        const val EXTRA_STATION_SELECTION_TYPE = "station_selection_type"
+        const val EXTRA_SELECTED_STATION = "selected_station"
 
-        const val TRIP_ORIGIN_ABBREVIATION_KEY = "trip_origin_abbr"
-        const val TRIP_ORIGIN_NAME_KEY = "trip_origin_name"
+        const val EXTRA_TRIP_ORIGIN_ABBREVIATION = "trip_origin_abbr"
+        const val EXTRA_TRIP_ORIGIN_NAME = "trip_origin_name"
 
-        const val TRIP_DESTINATION_ABBREVIATION_KEY = "trip_destination"
-        const val TRIP_DESTINATION_NAME_KEY = "trip_destination_key"
+        const val EXTRA_TRIP_DESTINATION_ABBREVIATION = "trip_destination"
+        const val EXTRA_TRIP_DESTINATION_NAME = "trip_destination_key"
     }
 }

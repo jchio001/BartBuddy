@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.MainActivity
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.REAL_TIME_TRIP
+import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
@@ -25,7 +25,7 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
 
     private val container: FrameLayout by bind(R.id.container)
 
-    private val isReturnTrip: Boolean by argument(IS_RETURN_TRIP_KEY)
+    private val isReturnTrip: Boolean by argument(ARG_IS_RETURN_TRIP)
 
     lateinit var tripManager: TripManager
 
@@ -87,7 +87,7 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
 
     override fun onRealTimeTripClicked(realTimeTrip: RealTimeTrip) {
         val intent = Intent(context, RealTimeTripInfoActivity::class.java)
-        intent.putExtra(REAL_TIME_TRIP, realTimeTrip)
+        intent.putExtra(EXTRA_REAL_TIME_TRIP, realTimeTrip)
         startActivity(intent)
     }
 
@@ -107,10 +107,10 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
 
     companion object {
 
-        const val IS_RETURN_TRIP_KEY = "is_return_trip"
+        const val ARG_IS_RETURN_TRIP = "is_return_trip"
 
         fun newInstance(isReturnTrip: Boolean) = RealTimeTripFragment().setArguments {
-            putBoolean(IS_RETURN_TRIP_KEY, isReturnTrip)
+            putBoolean(ARG_IS_RETURN_TRIP, isReturnTrip)
         }
     }
 }
