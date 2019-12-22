@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import com.app.jonathan.willimissbart.MainActivity
+import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.TripManager.EditCallbacks
@@ -51,7 +51,7 @@ class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
         bindClick(R.id.swap_icon) { tripManager.swapTripStations() }
         bindClick(R.id.submit_trip_button) { tripManager.displayTripsFragment(this, R.id.parent) }
 
-        tripManager = (activity as MainActivity).tripManager
+        tripManager = (activity as TripActivity).tripManager
         tripManager.tripEditedListener = object : TripStationListener {
 
             override fun onTripStationChanged(originTitle: String?, destinationTitle: String?) {

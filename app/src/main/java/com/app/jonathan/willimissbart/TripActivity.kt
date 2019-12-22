@@ -9,7 +9,7 @@ import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class TripActivity : AppCompatActivity() {
 
     @Inject lateinit var tripManager: TripManager
 

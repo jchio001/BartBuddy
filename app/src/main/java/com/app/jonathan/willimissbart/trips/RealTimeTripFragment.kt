@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.jonathan.willimissbart.MainActivity
+import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
@@ -73,7 +73,7 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
                 }
             })
 
-        tripManager = (activity as MainActivity).tripManager
+        tripManager = (activity as TripActivity).tripManager
         requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
     }
 
