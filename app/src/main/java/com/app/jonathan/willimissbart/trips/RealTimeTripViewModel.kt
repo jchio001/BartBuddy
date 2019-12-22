@@ -67,7 +67,9 @@ class RealTimeTripViewModel(
                     .startWith(
                         UiModel(
                             state = State.PENDING,
-                            query = tripRequestEvent))
+                            query = tripRequestEvent
+                        )
+                    )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }

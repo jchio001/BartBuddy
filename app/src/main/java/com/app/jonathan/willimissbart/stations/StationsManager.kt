@@ -34,7 +34,8 @@ class StationsManager @Inject constructor(
                     Optional(
                         sharedPreferences.getString(
                             CACHED_STATIONS_KEY,
-                            null))
+                            null)
+                    )
                 }
                     .subscribeOn(Schedulers.computation())
                     .flatMap { cachedStations ->
@@ -91,8 +92,8 @@ class StationsManager @Inject constructor(
     }
 
     fun requestStations() {
-        stationsLiveData.value.also {
-            if (it == null || it.state == State.ERROR) {
+        stationsLiveData.value.also { stationsUiModel ->
+            if (stationsUiModel == null || stationsUiModel.state == State.ERROR) {
                 stationsRequestSubject.onNext(Any())
             }
         }
