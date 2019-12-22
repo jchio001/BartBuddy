@@ -170,7 +170,7 @@ class TimerService : Service() {
 
         private fun RealTimeLeg.asAlertTitle() = when (this) {
             is RealTimeLeg.Train -> "Prepare to exit at ${this.destination} now!"
-            is RealTimeLeg.Wait -> "Expect the ${this.nextTrainHeadStation} train soon!"
+            is RealTimeLeg.Wait -> "Prepare to board the ${this.nextTrainHeadStation} train soon!"
         }
 
         private fun List<RealTimeLeg>.toTimerItems(): List<TimerItem> {
