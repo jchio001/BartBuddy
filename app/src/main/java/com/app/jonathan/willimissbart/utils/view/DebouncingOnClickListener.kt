@@ -2,7 +2,7 @@ package com.app.jonathan.willimissbart.utils.view
 
 import android.view.View
 
-abstract class DebouncingOnClickListener : View.OnClickListener {
+class DebouncingOnClickListener(private val doOnClick: (View) -> Unit) : View.OnClickListener {
 
     private var isBeingClicked = false
 
@@ -13,6 +13,4 @@ abstract class DebouncingOnClickListener : View.OnClickListener {
             isBeingClicked = false
         }
     }
-
-    abstract fun doOnClick(view: View)
 }

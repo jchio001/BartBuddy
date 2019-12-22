@@ -40,11 +40,8 @@ class RealTimeTripView(
             if (firstWaitRealTimeLeg.duration != 0) "${firstWaitRealTimeLeg.duration} min"
             else "Leaving..."
         trainColorIndicator.setBackgroundColor(Color.parseColor(item.hexColor))
-        setOnClickListener(object : DebouncingOnClickListener() {
-
-            override fun doOnClick(view: View) {
-                callbacks?.onRealTimeTripClicked(item)
-            }
+        setOnClickListener(DebouncingOnClickListener {
+            callbacks?.onRealTimeTripClicked(item)
         })
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.stations.models.api.Station
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
+import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
 
 class StationViewHolder(itemView: View) : ViewHolder(itemView) {
 
@@ -27,14 +28,9 @@ class StationsAdapter : ListAdapter<Station, StationViewHolder>(BasicDiffCallbac
 
     private lateinit var recyclerView: RecyclerView
 
-    private var isBeingClicked = false
     var onClickListener: Consumer<Station>? = null
-    private val debouncedOnClickListener = View.OnClickListener {
-        if (!isBeingClicked) {
-            isBeingClicked = true
-            onClickListener?.accept(getItem(recyclerView.getChildAdapterPosition(it)))
-            isBeingClicked = false
-        }
+    private val debouncedOnClickListener = DebouncingOnClickListener { view ->
+        onClickListener?.accept(getItem(recyclerView.getChildAdapterPosition(view)))
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

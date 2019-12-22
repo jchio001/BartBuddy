@@ -21,17 +21,12 @@ abstract class ViewBindableActivity(@LayoutRes containerLayoutId: Int) : AppComp
         }
     }
 
-    inline fun bindClick(vararg ids: Int, crossinline doOnClick: (View) -> Unit) {
+    fun bindClick(vararg ids: Int, doOnClick: (View) -> Unit) {
         if (ids.isEmpty()) {
             return
         }
 
-        val debouncingOnClickListener = object : DebouncingOnClickListener() {
-
-            override fun doOnClick(view: View) {
-                doOnClick(view)
-            }
-        }
+        val debouncingOnClickListener = DebouncingOnClickListener(doOnClick)
 
         for (id in ids) {
             if (viewCache[id] != null) {
