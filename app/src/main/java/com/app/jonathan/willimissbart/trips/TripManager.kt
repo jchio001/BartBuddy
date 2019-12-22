@@ -50,15 +50,11 @@ class TripManager @Inject constructor(
 
     init {
         sharedPreferences.also {
-            previousOriginAbbreviation =
-                it.getString(EXTRA_TRIP_ORIGIN_ABBREVIATION, null)
-            previousOriginName =
-                it.getString(EXTRA_TRIP_ORIGIN_NAME, null)
+            previousOriginAbbreviation = it.getString(EXTRA_TRIP_ORIGIN_ABBREVIATION, null)
+            previousOriginName = it.getString(EXTRA_TRIP_ORIGIN_NAME, null)
 
-            previousDestinationAbbreviation =
-                it.getString(EXTRA_TRIP_DESTINATION_ABBREVIATION, null)
-            previousDestinationName =
-                it.getString(EXTRA_TRIP_DESTINATION_NAME, null)
+            previousDestinationAbbreviation = it.getString(EXTRA_TRIP_DESTINATION_ABBREVIATION, null)
+            previousDestinationName = it.getString(EXTRA_TRIP_DESTINATION_NAME, null)
 
             originAbbreviation = previousOriginAbbreviation
             originName = previousOriginName
