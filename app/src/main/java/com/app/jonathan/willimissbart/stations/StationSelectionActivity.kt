@@ -17,10 +17,10 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripManager.Companion.STATION_SELECTION_TYPE_KEY
 import com.app.jonathan.willimissbart.utils.models.State
-import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
+import com.app.jonathan.willimissbart.utils.view.BaseActivity
 import javax.inject.Inject
 
-class StationSelectionActivity : ViewBindableActivity(R.layout.activity_station_selection) {
+class StationSelectionActivity : BaseActivity(R.layout.activity_station_selection) {
 
     @Inject lateinit var stationsViewModelFactory: StationsViewModelFactory
 
@@ -28,17 +28,15 @@ class StationSelectionActivity : ViewBindableActivity(R.layout.activity_station_
     private val refreshTextView: TextView by bind(R.id.refresh_textview)
     private val stationsRecyclerView: RecyclerView by bind(R.id.stations_recylerview)
 
-    private val stationsAdapter = StationsAdapter()
+    private val selectionType: String by extra(STATION_SELECTION_TYPE_KEY)
 
-    private lateinit var selectionType: String
+    private val stationsAdapter = StationsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        selectionType = intent!!.getStringExtra(STATION_SELECTION_TYPE_KEY)!!
 
         val stationsViewModel = ViewModelProviders.of(this, stationsViewModelFactory)
             .get(StationsViewModel::class.java)

@@ -2,9 +2,7 @@ package com.app.jonathan.willimissbart.trips
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -12,13 +10,13 @@ import androidx.core.content.ContextCompat
 import com.app.jonathan.willimissbart.MainActivity
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathan.willimissbart.trips.TripManager.EditCallbacks
 import com.app.jonathan.willimissbart.trips.TripManager.TripStationListener
+import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class TripSelectionFragment : BackStackConsumingFragment(R.layout.fragment_trip_selection) {
+class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
 
     val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
     val originStationTextView: TextView by bind(R.id.origin_station_textview)

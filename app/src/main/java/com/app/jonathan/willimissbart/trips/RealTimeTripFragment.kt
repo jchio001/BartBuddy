@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,27 +15,25 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.models.State
-import com.app.jonathan.willimissbart.utils.view.ViewBindableFragment
+import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
 fun createRealTimeTripFragment(isReturnTrip: Boolean): RealTimeTripFragment {
     val realTimeTripFragment = RealTimeTripFragment()
-
-    if (isReturnTrip) {
-        realTimeTripFragment.arguments = Bundle().also {
-            it.putBoolean(RealTimeTripFragment.IS_RETURN_TRIP_KEY, true)
-        }
+    realTimeTripFragment.arguments = Bundle().also {
+        it.putBoolean(RealTimeTripFragment.IS_RETURN_TRIP_KEY, isReturnTrip)
     }
-
     return realTimeTripFragment
 }
 
-class RealTimeTripFragment : ViewBindableFragment(R.layout.fragment_real_time_trips),
+class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
     RealTimeTripsAdapter.Callbacks {
+
+    @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
 
     val container: FrameLayout by bind(R.id.container)
 
-    @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
+    private val isReturnTrip: Boolean by argument(IS_RETURN_TRIP_KEY)
 
     lateinit var tripManager: TripManager
 
@@ -44,15 +41,9 @@ class RealTimeTripFragment : ViewBindableFragment(R.layout.fragment_real_time_tr
 
     private val realTimeTripAdapter = RealTimeTripsAdapter()
 
-    private var isReturnTrip = false
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().appComponent.inject(this)
-
-        arguments?.also {
-            isReturnTrip = it.getBoolean(IS_RETURN_TRIP_KEY, false)
-        }
 
         realTimeTripAdapter.callbacks = this
 

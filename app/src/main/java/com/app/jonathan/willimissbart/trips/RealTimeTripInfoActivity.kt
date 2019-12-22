@@ -8,17 +8,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathan.willimissbart.utils.view.ViewBindableActivity
+import com.app.jonathan.willimissbart.utils.view.BaseActivity
 
-class RealTimeTripInfoActivity : ViewBindableActivity(R.layout.activity_real_time_trip_info) {
+class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_info) {
 
     val realTimeLegRecyclerView: RecyclerView by bind(R.id.real_time_leg_recyclerview)
     val startTripButton: AppCompatButton by bind(R.id.start_trip_button)
 
-    private lateinit var realTimeTrip: RealTimeTrip
+    private val realTimeTrip: RealTimeTrip by extra(REAL_TIME_TRIP)
 
     private lateinit var realTimeLegsCountdownViewModel: RealTimeLegsCountdownViewModel
 
@@ -26,8 +25,6 @@ class RealTimeTripInfoActivity : ViewBindableActivity(R.layout.activity_real_tim
         super.onCreate(savedInstanceState)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        realTimeTrip = intent.getParcelableExtra(REAL_TIME_TRIP)!!
         val title = "Trip from ${realTimeTrip.originAbbreviation} to ${realTimeTrip.destinationAbbreviation}"
         supportActionBar?.title = title
 

@@ -1,17 +1,15 @@
 package com.app.jonathan.willimissbart.trips
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathan.willimissbart.navigation.bottomnav.FragmentFactory
-import com.app.jonathan.willimissbart.navigation.fragment.BackStackConsumingFragment
+import com.app.jonathan.willimissbart.utils.view.BaseFragment
 
-class RealTimeTripsParentFragment : BackStackConsumingFragment(R.layout.fragment_trip_parent) {
+class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) {
 
     val title: TextView by bind(R.id.title)
     val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)

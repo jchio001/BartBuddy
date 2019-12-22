@@ -3,10 +3,10 @@ package com.app.jonathan.willimissbart
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.navigation.fragment.BackStackConsumingFragment
 import com.app.jonathan.willimissbart.trips.RealTimeTripsParentFragment
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
+import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         for (fragment in supportFragmentManager.fragments) {
             if (fragment.isVisible) {
-                if (!(fragment as BackStackConsumingFragment).onBackPressed()) {
+                if (!(fragment as BaseFragment).onBackPressed()) {
                     if (supportFragmentManager.backStackEntryCount >= 1) {
                         supportFragmentManager.popBackStack()
                     } else {
