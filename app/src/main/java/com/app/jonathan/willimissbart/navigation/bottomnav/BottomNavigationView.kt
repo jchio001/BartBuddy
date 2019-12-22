@@ -18,9 +18,10 @@ interface FragmentFactory {
     fun create(index: Int): Fragment
 }
 
-class BottomNavigationView(context: Context,
-                           attributeSet: AttributeSet) :
-    LinearLayout(context, attributeSet) {
+class BottomNavigationView(
+    context: Context,
+    attributeSet: AttributeSet
+) : LinearLayout(context, attributeSet) {
 
     private var isBeingClicked = false
 
