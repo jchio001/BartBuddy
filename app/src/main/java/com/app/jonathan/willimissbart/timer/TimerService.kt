@@ -120,19 +120,15 @@ class TimerService : Service() {
                 timerSubject.onNext(currentTimerItems[currentIndex])
             }
             ACTION_NEXT_ITEM -> timerSubject.onNext(currentTimerItems[++currentIndex])
-            ACTION_DISMISS -> {
-                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(TIMER_NOTIFICATION_ID)
-                stopService(intent)
-            }
+            ACTION_DISMISS -> stopService(intent)
         }
 
         return START_STICKY
     }
 
     override fun stopService(name: Intent?): Boolean {
-        vibrator.cancel()
-        stopForeground(true)
         compositeDisposable.clear()
+        vibrator.cancel()
         return super.stopService(name)
     }
 
