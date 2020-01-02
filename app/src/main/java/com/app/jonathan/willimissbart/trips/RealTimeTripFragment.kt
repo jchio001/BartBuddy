@@ -2,15 +2,14 @@ package com.app.jonathan.willimissbart.trips
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.R
+import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
@@ -18,12 +17,13 @@ import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
-class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
+class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trip),
     RealTimeTripsAdapter.Callbacks {
 
     @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
 
-    private val container: FrameLayout by bind(R.id.container)
+    private val progressBar: ProgressBar by bind(R.id.progress_bar)
+    private val recyclerView: RecyclerView by bind(R.id.recycler_view)
 
     private val isReturnTrip: Boolean by argument(ARG_IS_RETURN_TRIP)
 
@@ -37,6 +37,10 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
         super.onViewCreated(view, savedInstanceState)
         requireContext().appComponent.inject(this)
 
+        recyclerView.adapter = realTimeTripAdapter
+        recyclerView.itemAnimator = null
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
         realTimeTripAdapter.callbacks = this
 
         realTimeTripViewModel = ViewModelProviders
@@ -45,30 +49,11 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trips),
         realTimeTripViewModel.realTimeTripLiveData
             .observe(viewLifecycleOwner, Observer {
                 if (it.state == State.PENDING) {
-                    if (container.childCount == 0
-                        || container.getChildAt(0).id != R.id.layout_progress_bar
-                    ) {
-                        val progressBar = LayoutInflater.from(context)
-                            .inflate(R.layout.layout_progress_bar, container, false)
-
-                        container.removeAllViews()
-                        container.addView(progressBar)
-                    }
+                    progressBar.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
                 } else if (it.state == State.DONE) {
-                    if (container.childCount == 0
-                        || container.getChildAt(0).id != R.id.recyclerview
-                    ) {
-                        val recyclerView = LayoutInflater.from(context)
-                            .inflate(R.layout.layout_model_recyclerview, container, false)
-                            as RecyclerView
-                        recyclerView.adapter = realTimeTripAdapter
-                        recyclerView.itemAnimator = null
-                        recyclerView.layoutManager = LinearLayoutManager(context)
-
-                        container.removeAllViews()
-                        container.addView(recyclerView)
-                    }
-
+                    progressBar.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
                     realTimeTripAdapter.submitList(it.data!!)
                 }
             })
