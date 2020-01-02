@@ -21,13 +21,12 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trip),
     RealTimeTripsAdapter.Callbacks {
 
     @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
+    @Inject lateinit var tripManager: TripManager
 
     private val progressBar: ProgressBar by bind(R.id.progress_bar)
     private val recyclerView: RecyclerView by bind(R.id.recycler_view)
 
     private val isReturnTrip: Boolean by argument(ARG_IS_RETURN_TRIP)
-
-    lateinit var tripManager: TripManager
 
     lateinit var realTimeTripViewModel: RealTimeTripViewModel
 
@@ -58,7 +57,6 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trip),
                 }
             })
 
-        tripManager = (activity as TripActivity).tripManager
         requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
     }
 
