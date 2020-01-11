@@ -5,7 +5,7 @@ import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.api.BartApiModule
 import com.app.jonathan.willimissbart.stations.StationSelectionActivity
 import com.app.jonathan.willimissbart.timer.TimerService
-import com.app.jonathan.willimissbart.trips.RealTimeTripFragment
+import com.app.jonathan.willimissbart.trips.RealTimeTripsFragment
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -18,7 +18,7 @@ interface AppComponent {
 
     fun inject(tripSelectionFragment: TripSelectionFragment)
 
-    fun inject(realTimeTripFragment: RealTimeTripFragment)
+    fun inject(realTimeTripsFragment: RealTimeTripsFragment)
 
     fun inject(stationSelectionActivity: StationSelectionActivity)
 

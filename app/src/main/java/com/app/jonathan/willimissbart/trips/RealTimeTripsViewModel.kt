@@ -19,7 +19,7 @@ import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-class TripRequestEvent(
+class TripsRequestEvent(
     val originAbbreviation: String,
     val destinationAbbreviation: String
 )
@@ -29,9 +29,9 @@ class RealTimeTripViewModel(
     bartService: BartService
 ) : ViewModel() {
 
-    val realTimeTripLiveData = MutableLiveData<UiModel<TripRequestEvent, List<RealTimeTrip>>>()
+    val realTimeTripLiveData = MutableLiveData<UiModel<TripsRequestEvent, List<RealTimeTrip>>>()
 
-    private val tripEventSubject = PublishSubject.create<TripRequestEvent>()
+    private val tripEventSubject = PublishSubject.create<TripsRequestEvent>()
 
     private val disposable: Disposable
 
@@ -77,23 +77,25 @@ class RealTimeTripViewModel(
             .subscribe(realTimeTripLiveData::postValue)
     }
 
-    fun requestTrip(originAbbreviation: String,
-                    destinationAbbreviation: String) {
+    fun requestTrip(
+        originAbbreviation: String,
+        destinationAbbreviation: String
+    ) {
         realTimeTripLiveData.value.also {
             if (it == null || it.state == State.ERROR
                 || it.query!!.originAbbreviation != originAbbreviation
                 || it.query.destinationAbbreviation != destinationAbbreviation
             ) {
-                tripEventSubject.onNext(TripRequestEvent(originAbbreviation, destinationAbbreviation))
+                tripEventSubject.onNext(TripsRequestEvent(originAbbreviation, destinationAbbreviation))
             }
         }
     }
 
-    fun BartService.getEtdsForTrips(
+    private fun BartService.getEtdsForTrips(
         stationsManager: StationsManager,
-        tripRequestEvent: TripRequestEvent,
+        tripsRequestEvent: TripsRequestEvent,
         trips: List<Trip>
-    ): Observable<UiModel<TripRequestEvent, List<RealTimeTrip>>> {
+    ): Observable<UiModel<TripsRequestEvent, List<RealTimeTrip>>> {
         val etdObservables = trips
             .map { trip ->
                 this.getRealTimeEstimates(trip.legs[0].origin)
@@ -146,7 +148,7 @@ class RealTimeTripViewModel(
                 if (throwables.isEmpty()) {
                     UiModel(
                         state = State.DONE,
-                        query = tripRequestEvent,
+                        query = tripsRequestEvent,
                         data = realTimeTrips as List<RealTimeTrip>
                     )
                 } else {

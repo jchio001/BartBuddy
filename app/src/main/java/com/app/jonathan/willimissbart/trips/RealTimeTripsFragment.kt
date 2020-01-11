@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
@@ -17,7 +16,7 @@ import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import javax.inject.Inject
 
-class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trip),
+class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
     RealTimeTripsAdapter.Callbacks {
 
     @Inject lateinit var realTimeTripViewModelFactory: TripViewModelFactory
@@ -92,7 +91,7 @@ class RealTimeTripFragment : BaseFragment(R.layout.fragment_real_time_trip),
 
         const val ARG_IS_RETURN_TRIP = "is_return_trip"
 
-        fun newInstance(isReturnTrip: Boolean) = RealTimeTripFragment().setArguments {
+        fun newInstance(isReturnTrip: Boolean) = RealTimeTripsFragment().setArguments {
             putBoolean(ARG_IS_RETURN_TRIP, isReturnTrip)
         }
     }

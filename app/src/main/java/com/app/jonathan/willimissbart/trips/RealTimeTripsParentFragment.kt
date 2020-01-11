@@ -34,7 +34,7 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
             object : FragmentFactory {
 
                 override fun create(index: Int): Fragment {
-                    return RealTimeTripFragment.newInstance(index == 1)
+                    return RealTimeTripsFragment.newInstance(index == 1)
                 }
             }
         )
