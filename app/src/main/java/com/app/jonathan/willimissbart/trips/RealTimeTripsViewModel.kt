@@ -4,14 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.BuildConfig
 import com.app.jonathan.willimissbart.api.BartService
+import com.app.jonathan.willimissbart.api.ignoreIfHandledNetworkException
 import com.app.jonathan.willimissbart.api.isHandledNetworkException
 import com.app.jonathan.willimissbart.stations.StationsManager
 import com.app.jonathan.willimissbart.trips.models.api.Trip
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.trips.models.internal.Union
-import com.app.jonathan.willimissbart.utils.models.State
-import com.app.jonathan.willimissbart.utils.models.UiModel
-import com.app.jonathan.willimissbart.utils.models.errorToUiModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,17 +17,12 @@ import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-class TripsRequestEvent(
-    val originAbbreviation: String,
-    val destinationAbbreviation: String
-)
-
 class RealTimeTripViewModel(
     stationsManager: StationsManager,
     bartService: BartService
 ) : ViewModel() {
 
-    val realTimeTripLiveData = MutableLiveData<UiModel<TripsRequestEvent, List<RealTimeTrip>>>()
+    val realTimeTripLiveData = MutableLiveData<RealTimeTripsViewState>()
 
     private val tripEventSubject = PublishSubject.create<TripsRequestEvent>()
 
@@ -37,6 +30,7 @@ class RealTimeTripViewModel(
 
     init {
         disposable = tripEventSubject
+            .distinctUntilChanged()
             .switchMap { tripRequestEvent ->
                 bartService.getDepartures(
                     tripRequestEvent.originAbbreviation,
@@ -53,22 +47,28 @@ class RealTimeTripViewModel(
                             }
                     }
                     .flatMap { trips ->
-                        bartService.getEtdsForTrips(stationsManager, tripRequestEvent, trips)
-                            .flatMap { realTimeTripsUiModel ->
+                        bartService.getEtdsForTrips(stationsManager, trips)
+                            .flatMap { realTimeTripsViewState ->
                                 Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                                    .scan(realTimeTripsUiModel) { realTimeTripsUiModel, _ ->
-                                        realTimeTripsUiModel.copy(
-                                            data = realTimeTripsUiModel.data?.decrement()
+                                    .scan(realTimeTripsViewState) { previousRealTimeTripsViewState, _ ->
+                                        previousRealTimeTripsViewState.copy(
+                                             realTimeTrips = previousRealTimeTripsViewState.realTimeTrips?.decrement()
                                         )
                                     }
-                                    .takeUntil { it.data?.isEmpty() ?: true }
+                                    .takeUntil { it.realTimeTrips?.isEmpty() ?: true }
                             }
                     }
-                    .errorToUiModel()
+                    .onErrorReturn { throwable ->
+                        RealTimeTripsViewState(
+                            showProgressBar = false,
+                            showRecyclerView = false,
+                            throwable = throwable.ignoreIfHandledNetworkException()
+                        )
+                    }
                     .startWith(
-                        UiModel(
-                            state = State.PENDING,
-                            query = tripRequestEvent
+                        RealTimeTripsViewState(
+                            showProgressBar = true,
+                            showRecyclerView = false
                         )
                     )
                     .subscribeOn(Schedulers.io())
@@ -81,21 +81,13 @@ class RealTimeTripViewModel(
         originAbbreviation: String,
         destinationAbbreviation: String
     ) {
-        realTimeTripLiveData.value.also {
-            if (it == null || it.state == State.ERROR
-                || it.query!!.originAbbreviation != originAbbreviation
-                || it.query.destinationAbbreviation != destinationAbbreviation
-            ) {
-                tripEventSubject.onNext(TripsRequestEvent(originAbbreviation, destinationAbbreviation))
-            }
-        }
+        tripEventSubject.onNext(TripsRequestEvent(originAbbreviation, destinationAbbreviation))
     }
 
     private fun BartService.getEtdsForTrips(
         stationsManager: StationsManager,
-        tripsRequestEvent: TripsRequestEvent,
         trips: List<Trip>
-    ): Observable<UiModel<TripsRequestEvent, List<RealTimeTrip>>> {
+    ): Observable<RealTimeTripsViewState> {
         val etdObservables = trips
             .map { trip ->
                 this.getRealTimeEstimates(trip.legs[0].origin)
@@ -146,15 +138,16 @@ class RealTimeTripViewModel(
                 }
 
                 if (throwables.isEmpty()) {
-                    UiModel(
-                        state = State.DONE,
-                        query = tripsRequestEvent,
-                        data = realTimeTrips as List<RealTimeTrip>
+                    RealTimeTripsViewState(
+                        showProgressBar = false,
+                        showRecyclerView = true,
+                        realTimeTrips = realTimeTrips as List<RealTimeTrip>
                     )
                 } else {
-                    UiModel(
-                        state = State.ERROR,
-                        error = CompositeException(throwables)
+                    RealTimeTripsViewState(
+                        showProgressBar = false,
+                        showRecyclerView = false,
+                        throwable = CompositeException(throwables)
                     )
                 }
             }

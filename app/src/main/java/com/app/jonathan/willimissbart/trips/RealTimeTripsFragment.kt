@@ -14,6 +14,7 @@ import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.E
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
+import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject
 
 class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
@@ -45,14 +46,13 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
             .of(this, realTimeTripViewModelFactory)
             .get(RealTimeTripViewModel::class.java)
         realTimeTripViewModel.realTimeTripLiveData
-            .observe(viewLifecycleOwner, Observer {
-                if (it.state == State.PENDING) {
-                    progressBar.visibility = View.VISIBLE
-                    recyclerView.visibility = View.GONE
-                } else if (it.state == State.DONE) {
-                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    realTimeTripAdapter.submitList(it.data!!)
+            .observe(viewLifecycleOwner, Observer { viewState ->
+                progressBar.isVisible = viewState.showProgressBar
+                recyclerView.isVisible = viewState.showRecyclerView
+                realTimeTripAdapter.submitList(viewState.realTimeTrips)
+
+                if (viewState.throwable != null) {
+                    throw viewState.throwable
                 }
             })
 
