@@ -20,5 +20,16 @@
         android:visibility="gone"
         />
 
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/real_time_trips_error"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        />
+
 
 </FrameLayout>

@@ -6,5 +6,6 @@ data class RealTimeTripsViewState constructor(
     val showProgressBar: Boolean,
     val showRecyclerView: Boolean,
     val realTimeTrips: List<RealTimeTrip>? = null,
+    val showErrorText: Boolean,
     val throwable: Throwable? = null
 )

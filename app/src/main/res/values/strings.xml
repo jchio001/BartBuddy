@@ -14,6 +14,7 @@
     <string name="return_trip">Return Trips</string>
 
     <string name="to">&#160;to&#160;</string>
+    <string name="real_time_trips_error">An error has occurred fetching trips. Please try again later.</string>
 
     <string name="start_trip">Start Trip</string>
 

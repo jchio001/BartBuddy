@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,6 @@ import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject
@@ -25,6 +25,7 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
 
     private val progressBar: ProgressBar by bind(R.id.progress_bar)
     private val recyclerView: RecyclerView by bind(R.id.recycler_view)
+    private val errorTextView: TextView by bind(R.id.error_text)
 
     private val isReturnTrip: Boolean by argument(ARG_IS_RETURN_TRIP)
 
@@ -50,6 +51,7 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
                 progressBar.isVisible = viewState.showProgressBar
                 recyclerView.isVisible = viewState.showRecyclerView
                 realTimeTripAdapter.submitList(viewState.realTimeTrips)
+                errorTextView.isVisible = viewState.showErrorText
 
                 if (viewState.throwable != null) {
                     throw viewState.throwable
