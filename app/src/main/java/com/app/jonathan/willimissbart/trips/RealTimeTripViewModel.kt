@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.BuildConfig
 import com.app.jonathan.willimissbart.api.BartService
+import com.app.jonathan.willimissbart.api.isHandledNetworkException
 import com.app.jonathan.willimissbart.stations.StationsManager
 import com.app.jonathan.willimissbart.trips.models.api.Trip
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
@@ -132,7 +133,13 @@ class RealTimeTripViewModel(
                 for (`object` in objects) {
                     when (val union = `object` as Union<List<RealTimeTrip>, Throwable>) {
                         is Union.First -> realTimeTrips.addAll(union.value)
-                        is Union.Second -> throwables.add(union.value)
+                        is Union.Second -> {
+                            if (!union.value.isHandledNetworkException()) {
+                                throw union.value
+                            }
+
+                            throwables.add(union.value)
+                        }
                     }
                 }
 
