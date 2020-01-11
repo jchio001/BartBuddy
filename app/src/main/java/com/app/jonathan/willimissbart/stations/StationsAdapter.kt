@@ -19,7 +19,7 @@ class StationViewHolder(itemView: View) : ViewHolder(itemView) {
     val stationLocationTextView: TextView = itemView.findViewById(R.id.station_location_textview)
 
     fun bind(station: Station) {
-        stationTextView.text = station.name
+        stationTextView.text = "(${station.abbr}) ${station.name}"
         stationLocationTextView.text = "${station.city}, ${station.state}"
     }
 }
