@@ -52,9 +52,10 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
                 recyclerView.isVisible = viewState.showRecyclerView
                 realTimeTripAdapter.submitList(viewState.realTimeTrips)
                 errorTextView.isVisible = viewState.showErrorText
+                errorTextView.text = viewState.getErrorText(resources)
 
-                if (viewState.throwable != null) {
-                    throw viewState.throwable
+                if (viewState.unhandledException != null) {
+                    throw viewState.unhandledException
                 }
             })
 

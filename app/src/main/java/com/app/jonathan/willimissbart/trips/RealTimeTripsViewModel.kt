@@ -62,15 +62,13 @@ class RealTimeTripViewModel(
                         RealTimeTripsViewState(
                             showProgressBar = false,
                             showRecyclerView = false,
-                            showErrorText = true,
-                            throwable = throwable.ignoreIfHandledNetworkException()
+                            throwable = throwable
                         )
                     }
                     .startWith(
                         RealTimeTripsViewState(
                             showProgressBar = true,
-                            showRecyclerView = false,
-                            showErrorText = false
+                            showRecyclerView = false
                         )
                     )
                     .subscribeOn(Schedulers.io())
@@ -143,15 +141,13 @@ class RealTimeTripViewModel(
                     RealTimeTripsViewState(
                         showProgressBar = false,
                         showRecyclerView = true,
-                        realTimeTrips = realTimeTrips as List<RealTimeTrip>,
-                        showErrorText = false
+                        realTimeTrips = realTimeTrips as List<RealTimeTrip>
                     )
                 } else {
                     RealTimeTripsViewState(
                         showProgressBar = false,
                         showRecyclerView = false,
-                        throwable = CompositeException(throwables),
-                        showErrorText = true
+                        throwable = CompositeException(throwables)
                     )
                 }
             }
