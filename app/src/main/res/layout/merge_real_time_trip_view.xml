@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dp"
     tools:parentTag="android.widget.RelativeLayout"
     >
 
     <View
         android:id="@+id/train_color_indicator"
-        android:layout_width="12dp"
+        android:layout_width="10dp"
         android:layout_height="0dp"
         android:layout_alignTop="@+id/destination_textview"
         android:layout_alignBottom="@+id/destination_textview"
@@ -25,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/train_color_indicator"
         android:textColor="@color/text_color"
-        android:textSize="28sp"
+        android:textSize="32sp"
         tools:text="Flavortown"
         />
 

@@ -18,18 +18,6 @@ class RealTimeTripsAdapter :
 
     var callbacks: Callbacks? = null
 
-    private var isClicked = false
-
-    private lateinit var recyclerView: RecyclerView
-
-    private val debouncedOnClickListener = View.OnClickListener {
-        if (!isClicked) {
-            isClicked = true
-            callbacks?.onRealTimeTripClicked(getItem(recyclerView.getChildLayoutPosition(it)))
-            isClicked = false
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GenericViewHolder(RealTimeTripView.inflate(parent))
 
