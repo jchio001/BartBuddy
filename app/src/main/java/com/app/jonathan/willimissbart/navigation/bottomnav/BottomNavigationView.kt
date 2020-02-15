@@ -110,12 +110,12 @@ class BottomNavigationView(
         } else {
             fragmentManager
                 .beginTransaction()
-                .let {
+                .let { fragmentTransaction ->
                     if (!insertionStack.isEmpty()) {
-                        it.hide(fragmentManager.findFragmentByTag(insertionStack.last)!!)
+                        fragmentManager.findFragmentByTag(insertionStack.last)?.let(fragmentTransaction::hide)
                     }
 
-                    it
+                    fragmentTransaction
                 }
                 .show(fragment)
                 .addToBackStack(null)
