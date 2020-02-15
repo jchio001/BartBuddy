@@ -142,7 +142,7 @@ class TripManager @Inject constructor(
             previousDestinationAbbreviation = destinationAbbreviation
             previousDestinationName = destinationName
 
-            fragment.fragmentManager!!.also {
+            fragment.parentFragmentManager.also {
                 val tripParentFragment =
                     it.findFragmentByTag(RealTimeTripsParentFragment.BACKSTACK_TAG) ?: RealTimeTripsParentFragment()
 

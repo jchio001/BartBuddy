@@ -19,7 +19,7 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
 
         bindClick(R.id.edit_icon) {
             val tripSelectionFragment = TripSelectionFragment.newInstance()
-            fragmentManager!!
+            parentFragmentManager
                 .beginTransaction()
                 .hide(this)
                 .add(R.id.parent, tripSelectionFragment)
