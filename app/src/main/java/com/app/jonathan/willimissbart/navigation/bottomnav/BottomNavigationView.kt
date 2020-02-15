@@ -71,9 +71,11 @@ class BottomNavigationView(
         }
     }
 
-    fun setFragmentManager(fragmentManager: FragmentManager,
-                           containerId: Int,
-                           fragmentFactory: FragmentFactory) {
+    fun setFragmentManager(
+        fragmentManager: FragmentManager,
+        containerId: Int,
+        fragmentFactory: FragmentFactory
+    ) {
         this.fragmentManager = fragmentManager
         this.containerId = containerId
         this.fragmentFactory = fragmentFactory
@@ -101,7 +103,8 @@ class BottomNavigationView(
                     sizeMenuItem(
                         insertionStack.removeLast(),
                         baseIconSize,
-                        baseTextSize)
+                        baseTextSize
+                    )
                     hasPopped = true
                 }
 
@@ -125,7 +128,8 @@ class BottomNavigationView(
                 sizeMenuItem(
                     insertionStack.last,
                     baseIconSize,
-                    baseTextSize)
+                    baseTextSize
+                )
             }
 
             insertionStack.add(indexTag)
@@ -134,7 +138,8 @@ class BottomNavigationView(
         sizeMenuItem(
             indexTag,
             focusedIconSize,
-            focusedTextSize)
+            focusedTextSize
+        )
     }
 
     fun onBackPressed(): Boolean {
@@ -146,12 +151,14 @@ class BottomNavigationView(
             sizeMenuItem(
                 insertionStack.removeLast(),
                 baseIconSize,
-                baseTextSize)
+                baseTextSize
+            )
 
             sizeMenuItem(
                 insertionStack.last(),
                 focusedIconSize,
-                focusedTextSize)
+                focusedTextSize
+            )
 
             true
         }
