@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.app.jonathan.willimissbart.R
+import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
 import java.util.*
 
 interface FragmentFactory {
@@ -22,8 +23,6 @@ class BottomNavigationView(
     context: Context,
     attributeSet: AttributeSet
 ) : LinearLayout(context, attributeSet) {
-
-    private var isBeingClicked = false
 
     private lateinit var fragmentManager: FragmentManager
     private lateinit var fragmentFactory: FragmentFactory
@@ -55,12 +54,8 @@ class BottomNavigationView(
             attributes.recycle()
         }
 
-        val debouncedOnClickListener = OnClickListener {
-            if (!isBeingClicked) {
-                isBeingClicked = true
-                setSelection(indexOfChild(it))
-                isBeingClicked = false
-            }
+        val debouncedOnClickListener = DebouncingOnClickListener { view ->
+            setSelection(indexOfChild(view))
         }
 
         for (i in 0 until childCount) {
