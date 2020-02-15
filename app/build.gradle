@@ -7,7 +7,7 @@ android {
 
     def versionMajor = 3
     def versionMinor = 0
-    def versionPatch = 5
+    def versionPatch = 6
 
     androidExtensions {
         experimental = true
@@ -37,7 +37,7 @@ android {
         applicationId "com.app.jonathan.willimissbart"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 31
+        versionCode 32
         versionName String.format("%d.%d.%d", versionMajor, versionMinor, versionPatch)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
