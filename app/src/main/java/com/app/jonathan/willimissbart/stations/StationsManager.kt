@@ -3,7 +3,7 @@ package com.app.jonathan.willimissbart.stations
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.app.jonathan.willimissbart.api.BartService
-import com.app.jonathan.willimissbart.stations.models.api.Station
+import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import com.app.jonathan.willimissbart.utils.models.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -21,11 +21,11 @@ class StationsManager @Inject constructor(
     private val moshi: Moshi
 ) {
 
-    val stationsLiveData = MutableLiveData<UiModel<Void, List<Station>>>()
+    val stationsLiveData = MutableLiveData<UiModel<Void, List<ApiStation>>>()
 
     private val stationsRequestSubject = PublishSubject.create<Any>()
 
-    val stationsListType = Types.newParameterizedType(List::class.java, Station::class.java)
+    val stationsListType = Types.newParameterizedType(List::class.java, ApiStation::class.java)
 
     init {
         stationsRequestSubject
@@ -42,8 +42,8 @@ class StationsManager @Inject constructor(
                         if (cachedStations.value == null) {
                             bartService
                                 .getStations()
-                                .map { it.root.stations.stations }
-                                .modelToUiModelStream<Void, List<Station>>()
+                                .map { it.root.stations.apiStations }
+                                .modelToUiModelStream<Void, List<ApiStation>>()
                                 .doOnNext { stationsUiModel ->
                                     // Confirmed that this is not happening on the UI thread by logging the current
                                     // thread's name.
@@ -55,7 +55,7 @@ class StationsManager @Inject constructor(
                                             .putString(
                                                 CACHED_STATIONS_KEY,
                                                 moshi
-                                                    .adapter<List<Station>>(stationsListType)
+                                                    .adapter<List<ApiStation>>(stationsListType)
                                                     .toJson(stations))
                                             .apply()
                                     }
@@ -65,9 +65,9 @@ class StationsManager @Inject constructor(
                                 .observeOn(AndroidSchedulers.mainThread())
                         } else {
                             Observable.fromCallable {
-                                moshi.adapter<List<Station>>(stationsListType).fromJson(cachedStations.value)!!
+                                moshi.adapter<List<ApiStation>>(stationsListType).fromJson(cachedStations.value)!!
                             }
-                                .modelToUiModelStream<Void, List<Station>>()
+                                .modelToUiModelStream<Void, List<ApiStation>>()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                         }
@@ -76,8 +76,8 @@ class StationsManager @Inject constructor(
             .subscribe(stationsLiveData::postValue)
     }
 
-    fun getStationsFromLocalStorage(): List<Station> {
-        return stationsLiveData.value?.data ?: moshi.adapter<List<Station>>(stationsListType)
+    fun getStationsFromLocalStorage(): List<ApiStation> {
+        return stationsLiveData.value?.data ?: moshi.adapter<List<ApiStation>>(stationsListType)
             .fromJson(
                 sharedPreferences.getString(
                     CACHED_STATIONS_KEY,

@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class Station(
+data class ApiStation(
     @Json(name = "name") val name: String,
     @Json(name = "abbr") var abbr: String,
     @Json(name = "gtfs_latitude") val latitude: Double,
