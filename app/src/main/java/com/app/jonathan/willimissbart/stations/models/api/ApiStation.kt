@@ -17,4 +17,17 @@ data class ApiStation(
     @Json(name = "county") val county: String,
     @Json(name = "state") val state: String,
     @Json(name = "zipcode") val zipCode: Int = 0
-) : Parcelable
+) : Parcelable {
+
+    fun toDbModel() = ApiStation(
+        name = name,
+        abbr = abbr,
+        latitude = latitude,
+        longitude = longitude,
+        address = address,
+        city = city,
+        county = county,
+        state = state,
+        zipCode = zipCode
+    )
+}
