@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathan.willimissbart.R
+import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
 import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
@@ -18,17 +19,17 @@ class StationViewHolder(itemView: View) : ViewHolder(itemView) {
     val stationTextView: TextView = itemView.findViewById(R.id.station_name_textview)
     val stationLocationTextView: TextView = itemView.findViewById(R.id.station_location_textview)
 
-    fun bind(apiStation: ApiStation) {
-        stationTextView.text = "(${apiStation.abbr}) ${apiStation.name}"
-        stationLocationTextView.text = "${apiStation.city}, ${apiStation.state}"
+    fun bind(station: Station) {
+        stationTextView.text = "(${station.abbr}) ${station.name}"
+        stationLocationTextView.text = "${station.city}, ${station.state}"
     }
 }
 
-class StationsAdapter : ListAdapter<ApiStation, StationViewHolder>(BasicDiffCallback<ApiStation>()) {
+class StationsAdapter : ListAdapter<Station, StationViewHolder>(BasicDiffCallback<Station>()) {
 
     private lateinit var recyclerView: RecyclerView
 
-    var onClickListener: Consumer<ApiStation>? = null
+    var onClickListener: Consumer<Station>? = null
     private val debouncedOnClickListener = DebouncingOnClickListener { view ->
         onClickListener?.accept(getItem(recyclerView.getChildAdapterPosition(view)))
     }

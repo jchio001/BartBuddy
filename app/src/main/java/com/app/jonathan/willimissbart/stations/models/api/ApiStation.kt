@@ -1,6 +1,7 @@
 package com.app.jonathan.willimissbart.stations.models.api
 
 import android.os.Parcelable
+import com.app.jonathan.willimissbart.db.Station
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -19,7 +20,7 @@ data class ApiStation(
     @Json(name = "zipcode") val zipCode: Int = 0
 ) : Parcelable {
 
-    fun toDbModel() = ApiStation(
+    fun toDbModel() = Station(
         name = name,
         abbr = abbr,
         latitude = latitude,

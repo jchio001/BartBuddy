@@ -41,7 +41,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
         val stationsViewModel = ViewModelProviders.of(this, stationsViewModelFactory)
             .get(StationsViewModel::class.java)
         stationsViewModel
-            .getStationsLiveData()
+            .stationsLiveData
             .observe(this, Observer {
                 when (it.state) {
                     State.PENDING -> {
@@ -63,8 +63,6 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
                 }
             })
 
-        bindClick(R.id.refresh_textview) { stationsViewModel.requestStations() }
-
         stationsRecyclerView.layoutManager = LinearLayoutManager(this)
         stationsRecyclerView.adapter = stationsAdapter
 
@@ -76,7 +74,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
             finish()
         }
 
-        stationsViewModel.requestStations()
+        stationsViewModel.getStations()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
