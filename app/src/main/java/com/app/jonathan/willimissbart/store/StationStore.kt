@@ -8,6 +8,7 @@ import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.db.StationDao
 import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,30 +20,39 @@ class StationStore @Inject constructor(
 ) {
 
     @SuppressLint("CheckResult")
-    fun poll(refresh: Boolean = false) {
-        bartService.getStations()
-            .map { bartStationsResponse ->
-                bartStationsResponse.root.stations.apiStations
-            }
-            .map { stations ->
-                stations.map(ApiStation::toDbModel)
-            }
-            .run {
-                if (
-                    (System.currentTimeMillis() -
-                        sharedPreferences.getLong(Station::class.java.toString(), 0) >=
-                            (30 * BuildConfig.UPDATE_TIME_UNIT.toMillis(1))) &&
-                    !refresh
-                ) {
-                    this.delay(30, BuildConfig.UPDATE_TIME_UNIT)
-                } else {
-                    this
+    fun refresh(force: Boolean = false) {
+        if (
+            force ||
+            !haveFetchedData() ||
+            (getTimeSinceLastUpdate() >= (BuildConfig.UPDATE_TIME_UNIT.toMillis(60)))
+        ) {
+            bartService.getStations()
+                .map { bartStationsResponse ->
+                    bartStationsResponse.root.stations.apiStations.map(ApiStation::toDbModel)
                 }
-            }
-            .poll(30, BuildConfig.UPDATE_TIME_UNIT)
-            .flatMapCompletable { stations ->
-                stationDao.insertStations(stations)
-            }
+                .subscribeOn(Schedulers.io())
+                .flatMapCompletable { stations ->
+                    sharedPreferences.edit()
+                        .putLong(
+                            Station::class.java.toString(),
+                            System.currentTimeMillis()
+                        )
+                        .apply()
+
+                    stationDao.insertStations(stations)
+                }
+                .subscribe()
+        }
+    }
+
+    private fun haveFetchedData() = sharedPreferences.contains(Station::class.java.toString())
+
+    private fun getTimeSinceLastUpdate(): Long {
+        return System.currentTimeMillis() -
+            sharedPreferences.getLong(
+                Station::class.java.toString(),
+                System.currentTimeMillis()
+            )
     }
 
     fun stream(): Observable<List<Station>> {

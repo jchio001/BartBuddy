@@ -18,8 +18,7 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     fun getStations() {
-        stationStore
-            .poll(false)
+        stationStore.refresh(false)
 
         compositeDisposable.add(
             stationStore
