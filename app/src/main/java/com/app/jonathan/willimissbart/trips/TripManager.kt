@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
+import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.stations.StationSelectionActivity
 import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import javax.inject.Inject
@@ -91,7 +92,7 @@ class TripManager @Inject constructor(
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 val stationType = StationType.valueOf(data!!.getStringExtra(EXTRA_STATION_SELECTION_TYPE)!!)
-                data.getParcelableExtra<ApiStation>(EXTRA_SELECTED_STATION)!!.also {
+                data.getParcelableExtra<Station>(EXTRA_SELECTED_STATION)!!.also {
                     if (stationType == StationType.ORIGIN) {
                         if (it.abbr == destinationAbbreviation) {
                             editCallbacks?.onDuplicateStationSelection(StationType.ORIGIN)
