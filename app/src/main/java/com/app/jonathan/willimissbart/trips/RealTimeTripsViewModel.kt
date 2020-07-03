@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.BuildConfig
 import com.app.jonathan.willimissbart.api.BartService
-import com.app.jonathan.willimissbart.api.ignoreIfHandledNetworkException
 import com.app.jonathan.willimissbart.api.isHandledNetworkException
-import com.app.jonathan.willimissbart.stations.StationsManager
+import com.app.jonathan.willimissbart.db.Station
+import com.app.jonathan.willimissbart.store.StationStore
 import com.app.jonathan.willimissbart.trips.models.api.Trip
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.trips.models.internal.Union
@@ -14,11 +14,12 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.CompositeException
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 class RealTimeTripViewModel(
-    stationsManager: StationsManager,
+    stationStore: StationStore,
     bartService: BartService
 ) : ViewModel() {
 
@@ -32,22 +33,18 @@ class RealTimeTripViewModel(
         disposable = tripEventSubject
             .distinctUntilChanged()
             .switchMap { tripRequestEvent ->
-                bartService.getDepartures(
-                    tripRequestEvent.originAbbreviation,
-                    tripRequestEvent.destinationAbbreviation
-                )
-                    .map { wrappedDeparturesRoot ->
-                        wrappedDeparturesRoot.root.schedule.request.trips
-                            .distinctBy { trip ->
-                                trip.legs
-                                    .map { leg ->
-                                        "${leg.origin}${leg.destination}${leg.trainHeadStation}"
-                                    }
-                                    .reduce { s1, s2 -> "$s1$s2" }
-                            }
-                    }
-                    .flatMap { trips ->
-                        bartService.getEtdsForTrips(stationsManager, trips)
+                Observable
+                    .zip(
+                        bartService.getFilteredDepartures(
+                            originAbbr = tripRequestEvent.originAbbreviation,
+                            destinationAbbr = tripRequestEvent.destinationAbbreviation
+                        ),
+                        stationStore.stream()
+                            .take(1),
+                        BiFunction { trips: List<Trip>, stations: List<Station> -> Pair(trips, stations)}
+                    )
+                    .flatMap { (trips, stations) ->
+                        bartService.getEtdsForTrips(trips, stations)
                             .flatMap { realTimeTripsViewState ->
                                 Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
                                     .scan(realTimeTripsViewState) { previousRealTimeTripsViewState, _ ->
@@ -84,16 +81,35 @@ class RealTimeTripViewModel(
         tripEventSubject.onNext(TripsRequestEvent(originAbbreviation, destinationAbbreviation))
     }
 
+    private fun BartService.getFilteredDepartures(
+        originAbbr: String,
+        destinationAbbr: String
+    ): Observable<List<Trip>> {
+        return this.getDepartures(
+            orig = originAbbr,
+            dest = destinationAbbr
+        )
+            .map { wrappedDeparturesRoot ->
+                wrappedDeparturesRoot.root.schedule.request.trips
+                    .distinctBy { trip ->
+                        trip.legs
+                            .map { leg ->
+                                "${leg.origin}${leg.destination}${leg.trainHeadStation}"
+                            }
+                            .reduce { s1, s2 -> "$s1$s2" }
+                    }
+            }
+    }
+
     private fun BartService.getEtdsForTrips(
-        stationsManager: StationsManager,
-        trips: List<Trip>
+        trips: List<Trip>,
+        stations: List<Station>
     ): Observable<RealTimeTripsViewState> {
         val etdObservables = trips
             .map { trip ->
                 this.getRealTimeEstimates(trip.legs[0].origin)
                     .map { etdRootWrapper ->
                         val stationNameToAbbreviationMap by lazy {
-                            val stations = stationsManager.getStationsFromLocalStorage()
 
                             val trainHeadStations = HashSet<String>(trip.legs.size, 1.0f)
                             for (leg in trip.legs) {
