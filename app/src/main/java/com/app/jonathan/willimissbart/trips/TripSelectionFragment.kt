@@ -7,13 +7,15 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.R
+import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.TripManager.EditCallbacks
 import com.app.jonathan.willimissbart.trips.TripManager.TripStationListener
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
+import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
@@ -21,6 +23,7 @@ class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
     private val coordinatorContainer: CoordinatorLayout by bind(R.id.coordinator_container)
     private val originStationTextView: TextView by bind(R.id.origin_station_textview)
     private val destinationStationTextView: TextView by bind(R.id.destination_station_textview)
+    private val bartMap: PhotoView by bind(R.id.bart_map)
 
     @Inject lateinit var tripManager: TripManager
 
@@ -39,6 +42,10 @@ class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
                                savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().appComponent.inject(this)
+
+        Picasso.get()
+            .load("https://www.bart.gov/sites/default/files/images/basic_page/system-map-weekday.png")
+            .into(bartMap)
 
         bindClick(
             R.id.origin_station_textview,
