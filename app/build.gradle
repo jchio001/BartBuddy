@@ -49,6 +49,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField(
                     "java.util.concurrent.TimeUnit",
@@ -67,7 +68,7 @@ android {
             )
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField(
                     "java.util.concurrent.TimeUnit",
