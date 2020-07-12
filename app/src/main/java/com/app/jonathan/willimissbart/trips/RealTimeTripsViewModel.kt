@@ -10,6 +10,7 @@ import com.app.jonathan.willimissbart.store.StationStore
 import com.app.jonathan.willimissbart.trips.models.api.Trip
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.trips.models.internal.Union
+import com.app.jonathan.willimissbart.trips.models.internal.toRealTimeTrip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
