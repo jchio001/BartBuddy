@@ -38,6 +38,7 @@ class StationStore @Inject constructor(
                 if (failSafelyWithCache) {
                     stationDao.getStations()
                         .subscribeOn(Schedulers.io())
+                        // TODO: Use a map instead?
                         .flatMap { stations ->
                             if (stations.isEmpty()) {
                                 Single.error(throwable)
@@ -63,5 +64,16 @@ class StationStore @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun getStationsWithNamesAndAbbrs(
+        abbrs: List<String>,
+        names: List<String>
+    ): Single<List<Station>> {
+        return stationDao
+            .getStationsWithNamesAndAbbrs(
+                abbrs = abbrs,
+                names = names
+            )
     }
 }

@@ -2,11 +2,14 @@ package com.app.jonathan.willimissbart.db
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
-@Entity
+@Entity(
+    indices = [Index(value = ["name"], unique = true)]
+)
 @Parcelize
 class Station(
     val name: String,

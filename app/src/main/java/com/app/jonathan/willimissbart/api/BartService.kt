@@ -19,7 +19,7 @@ interface BartService {
     fun getDepartures(
         @Query("orig") orig: String,
         @Query("dest") dest: String
-    ): Observable<BartResponseWrapper<DeparturesRoot>>
+    ): Single<BartResponseWrapper<DeparturesRoot>>
 
     @GET("etd.aspx?cmd=etd&json=y&key=${BuildConfig.BART_API_KEY}")
     fun getRealTimeEstimates(@Query("orig") origin: String): Observable<BartResponseWrapper<EtdRoot>>

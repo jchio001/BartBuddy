@@ -12,10 +12,10 @@ import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.trips.models.internal.Union
 import com.app.jonathan.willimissbart.trips.models.internal.toRealTimeTrip
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.CompositeException
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
@@ -34,48 +34,78 @@ class RealTimeTripViewModel(
         disposable = tripEventSubject
             .distinctUntilChanged()
             .switchMap { tripRequestEvent ->
-                Observable
-                    .zip(
-                        bartService.getFilteredDepartures(
-                            originAbbr = tripRequestEvent.originAbbreviation,
-                            destinationAbbr = tripRequestEvent.destinationAbbreviation
-                        ),
-                        stationStore
-                            .getStations(
-                                forceRefresh = false,
-                                failSafelyWithCache = false
-                            )
-                            .toObservable()
-                        ,
-                        BiFunction { trips: List<Trip>, stations: List<Station> -> Pair(trips, stations)}
-                    )
-                    .flatMap { (trips, stations) ->
-                        bartService.getEtdsForTrips(trips, stations)
-                            .flatMap { realTimeTripsViewState ->
-                                Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
-                                    .scan(realTimeTripsViewState) { previousRealTimeTripsViewState, _ ->
-                                        previousRealTimeTripsViewState.copy(
-                                             realTimeTrips = previousRealTimeTripsViewState.realTimeTrips?.decrement()
-                                        )
-                                    }
-                                    .takeUntil { it.realTimeTrips?.isEmpty() ?: true }
-                            }
-                    }
-                    .onErrorReturn { throwable ->
-                        RealTimeTripsViewState(
-                            showProgressBar = false,
-                            showRecyclerView = false,
-                            throwable = throwable
-                        )
-                    }
-                    .startWith(
-                        RealTimeTripsViewState(
-                            showProgressBar = true,
-                            showRecyclerView = false
-                        )
+                bartService
+                    .getFilteredTrips(
+                        originAbbr = tripRequestEvent.originAbbreviation,
+                        destinationAbbr = tripRequestEvent.destinationAbbreviation
                     )
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .flatMapObservable { trips ->
+                        val stationAbbrs = hashSetOf<String>()
+                        val stationNames = hashSetOf<String>()
+                        for (trip in trips) {
+                            for (leg in trip.legs) {
+                                stationAbbrs.add(leg.origin)
+                                stationAbbrs.add(leg.destination)
+                                stationNames.add(leg.trainHeadStation)
+                            }
+                        }
+
+                        stationStore
+                            .getStationsWithNamesAndAbbrs(
+                                abbrs = stationAbbrs.toList(),
+                                names = stationNames.toList()
+                            )
+                            .map { stations ->
+                                var abbrCount = 0
+                                var nameCount = 0
+
+                                for (station in stations) {
+                                    if (station.abbr in stationAbbrs) {
+                                        ++abbrCount
+                                    }
+                                    if (station.name in stationNames) {
+                                        ++nameCount
+                                    }
+                                }
+
+                                check(
+                                    abbrCount == stationAbbrs.count() &&
+                                        nameCount == stationNames.count()) {
+                                    "Stations are stale."
+                                }
+
+                                stations
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .flatMapObservable { stations ->
+                                bartService.getEtdsForTrips(trips, stations)
+                                    .subscribeOn(Schedulers.io())
+                                    .flatMap { realTimeTripsViewState ->
+                                        Observable.interval(1, BuildConfig.UPDATE_TIME_UNIT)
+                                            .scan(realTimeTripsViewState) { previousRealTimeTripsViewState, _ ->
+                                                previousRealTimeTripsViewState.copy(
+                                                    realTimeTrips = previousRealTimeTripsViewState.realTimeTrips?.decrement()
+                                                )
+                                            }
+                                            .takeUntil { it.realTimeTrips?.isEmpty() ?: true }
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                    }
+                            }
+                            .onErrorReturn { throwable ->
+                                RealTimeTripsViewState(
+                                    showProgressBar = false,
+                                    showRecyclerView = false,
+                                    throwable = throwable
+                                )
+                            }
+                            .startWith(
+                                RealTimeTripsViewState(
+                                    showProgressBar = true,
+                                    showRecyclerView = false
+                                )
+                            )
+                    }
             }
             .subscribe(realTimeTripLiveData::postValue)
     }
@@ -87,10 +117,10 @@ class RealTimeTripViewModel(
         tripEventSubject.onNext(TripsRequestEvent(originAbbreviation, destinationAbbreviation))
     }
 
-    private fun BartService.getFilteredDepartures(
+    private fun BartService.getFilteredTrips(
         originAbbr: String,
         destinationAbbr: String
-    ): Observable<List<Trip>> {
+    ): Single<List<Trip>> {
         return this.getDepartures(
             orig = originAbbr,
             dest = destinationAbbr
@@ -113,7 +143,7 @@ class RealTimeTripViewModel(
     ): Observable<RealTimeTripsViewState> {
         val etdObservables = trips
             .map { trip ->
-                this.getRealTimeEstimates(trip.legs[0].origin)
+                this.getRealTimeEstimates(trip.legs.first().origin)
                     .map { etdRootWrapper ->
                         val stationNameToAbbreviationMap by lazy {
 
@@ -127,10 +157,10 @@ class RealTimeTripViewModel(
                                 .toMap()
                         }
 
-                        val firstLeg = trip.legs[0]
-                        val realTimeTrip = etdRootWrapper.root.etdStations[0].etds
+                        val firstLeg = trip.legs.first()
+                        val realTimeTrip = etdRootWrapper.root.etdStations.first().etds
                             .firstOrNull { etd ->
-                                firstLeg.trainHeadStation.contains(etd.destination)
+                                firstLeg.trainHeadStation.contains(etd.correctedDestination)
                             }
                             ?.let { etd ->
                                 etd.estimates.map { estimate ->
