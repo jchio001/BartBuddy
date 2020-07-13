@@ -40,8 +40,13 @@ class RealTimeTripViewModel(
                             originAbbr = tripRequestEvent.originAbbreviation,
                             destinationAbbr = tripRequestEvent.destinationAbbreviation
                         ),
-                        stationStore.stream()
-                            .take(1),
+                        stationStore
+                            .getStations(
+                                forceRefresh = false,
+                                failSafelyWithCache = false
+                            )
+                            .toObservable()
+                        ,
                         BiFunction { trips: List<Trip>, stations: List<Station> -> Pair(trips, stations)}
                     )
                     .flatMap { (trips, stations) ->

@@ -18,14 +18,9 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     fun getStations() {
-        stationStore.refresh(false)
-
         compositeDisposable.add(
             stationStore
-                .stream()
-                .timeout(45, TimeUnit.SECONDS)
-                .filter(List<Station>::isNotEmpty)
-                .takeUntil(List<Station>::isNotEmpty)
+                .getStations()
                 .map { stations ->
                     UiModel<Void, List<Station>>(
                         state = State.DONE,
@@ -38,6 +33,7 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
                         error = throwable
                     )
                 }
+                .toObservable()
                 .startWith(
                     UiModel(
                         state = State.PENDING

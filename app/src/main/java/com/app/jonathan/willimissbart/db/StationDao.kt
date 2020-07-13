@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface StationDao {
@@ -14,5 +15,5 @@ interface StationDao {
     fun insertStations(stations: List<Station>): Completable
 
     @Query("Select * from Station")
-    fun getStations(): Observable<List<Station>>
+    fun getStations(): Single<List<Station>>
 }

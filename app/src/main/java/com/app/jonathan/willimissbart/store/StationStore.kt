@@ -8,6 +8,7 @@ import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.db.StationDao
 import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,48 +16,52 @@ import javax.inject.Singleton
 @Singleton
 class StationStore @Inject constructor(
     private val bartService: BartService,
-    private val stationDao: StationDao,
-    private val sharedPreferences: SharedPreferences
+    private val stationDao: StationDao
 ) {
 
-    @SuppressLint("CheckResult")
-    fun refresh(force: Boolean = false) {
-        if (
-            force ||
-            !haveFetchedData() ||
-            (getTimeSinceLastUpdate() >= (BuildConfig.UPDATE_TIME_UNIT.toMillis(60)))
-        ) {
-            bartService.getStations()
-                .map { bartStationsResponse ->
-                    bartStationsResponse.root.stations.apiStations.map(ApiStation::toDbModel)
+    fun getStations(
+        forceRefresh: Boolean = false,
+        failSafelyWithCache: Boolean = false
+    ): Single<List<Station>> {
+        val fetchAndCacheStationsSingle = bartService.getStations()
+            .map { bartStationsResponse ->
+                bartStationsResponse.root.stations.apiStations.map(ApiStation::toDbModel)
+            }
+            .subscribeOn(Schedulers.io())
+            .flatMap { stations ->
+                stationDao
+                    .insertStations(stations)
+                    .andThen(Single.just(stations))
+                    .subscribeOn(Schedulers.io())
+            }
+            .onErrorResumeNext { throwable ->
+                if (failSafelyWithCache) {
+                    stationDao.getStations()
+                        .subscribeOn(Schedulers.io())
+                        .flatMap { stations ->
+                            if (stations.isEmpty()) {
+                                Single.error(throwable)
+                            } else {
+                                Single.just(stations)
+                            }
+                        }
+                } else {
+                    Single.error(throwable)
                 }
-                .subscribeOn(Schedulers.io())
-                .flatMapCompletable { stations ->
-                    sharedPreferences.edit()
-                        .putLong(
-                            Station::class.java.toString(),
-                            System.currentTimeMillis()
-                        )
-                        .apply()
+            }
 
-                    stationDao.insertStations(stations)
+        return if (forceRefresh) {
+            fetchAndCacheStationsSingle
+        } else {
+            stationDao
+                .getStations()
+                .flatMap { cachedStations ->
+                    if (cachedStations.isEmpty()) {
+                        fetchAndCacheStationsSingle
+                    } else {
+                        Single.just(cachedStations)
+                    }
                 }
-                .subscribe()
         }
-    }
-
-    private fun haveFetchedData() = sharedPreferences.contains(Station::class.java.toString())
-
-    private fun getTimeSinceLastUpdate(): Long {
-        return System.currentTimeMillis() -
-            sharedPreferences.getLong(
-                Station::class.java.toString(),
-                System.currentTimeMillis()
-            )
-    }
-
-    fun stream(): Observable<List<Station>> {
-        return stationDao
-            .getStations()
     }
 }
