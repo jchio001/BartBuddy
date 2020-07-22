@@ -20,13 +20,13 @@ interface StationDao {
         """
         Select * from Station
         where 
-        abbr IN(:abbrs)
+        abbr IN(:stationAbbrs)
         or
-        name IN(:names)
+        name IN(:stationNames)
         """
     )
     fun getStationsWithNamesAndAbbrs(
-        abbrs: List<String>,
-        names: List<String>
+        stationAbbrs: List<String>,
+        stationNames: List<String>
     ): Single<List<Station>>
 }

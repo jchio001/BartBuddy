@@ -37,6 +37,7 @@ class RealTimeTripViewModel(
                     .flatMapObservable { trips ->
                         val stationAbbrs = hashSetOf<String>()
                         val stationNames = hashSetOf<String>()
+
                         for (trip in trips) {
                             for (leg in trip.legs) {
                                 stationAbbrs.add(leg.origin)
@@ -47,31 +48,9 @@ class RealTimeTripViewModel(
 
                         stationStore
                             .getStationsWithNamesAndAbbrs(
-                                abbrs = stationAbbrs.toList(),
-                                names = stationNames.toList()
+                                stationAbbrs = stationAbbrs.toList(),
+                                stationNames = stationNames.toList()
                             )
-                            .map { stations ->
-                                var abbrCount = 0
-                                var nameCount = 0
-
-                                for (station in stations) {
-                                    if (station.abbr in stationAbbrs) {
-                                        ++abbrCount
-                                    }
-                                    if (station.name in stationNames) {
-                                        ++nameCount
-                                    }
-                                }
-
-                                check(
-                                    abbrCount == stationAbbrs.count() &&
-                                        nameCount == stationNames.count()) {
-                                    "Stations are stale."
-                                }
-
-                                stations
-                            }
-                            .subscribeOn(Schedulers.io())
                             .flatMapObservable { stations ->
                                 bartService.getEtdsForTrips(trips, stations)
                                     .subscribeOn(Schedulers.io())

@@ -1,13 +1,10 @@
 package com.app.jonathan.willimissbart.store
 
-import android.annotation.SuppressLint
-import android.content.SharedPreferences
-import com.app.jonathan.willimissbart.BuildConfig
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.db.StationDao
 import com.app.jonathan.willimissbart.stations.models.api.ApiStation
-import io.reactivex.Observable
+import com.app.jonathan.willimissbart.trips.models.internal.MissingStationsException
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -67,13 +64,43 @@ class StationStore @Inject constructor(
     }
 
     fun getStationsWithNamesAndAbbrs(
-        abbrs: List<String>,
-        names: List<String>
+        stationAbbrs: List<String>,
+        stationNames: List<String>
     ): Single<List<Station>> {
         return stationDao
             .getStationsWithNamesAndAbbrs(
-                abbrs = abbrs,
-                names = names
+                stationAbbrs = stationAbbrs,
+                stationNames = stationNames
             )
+            .subscribeOn(Schedulers.io())
+            .flatMap { cachedStations ->
+                if (
+                    cachedStations.containsAllStations(
+                        stationAbbrs = stationAbbrs,
+                        stationNames = stationNames
+                    )
+                ) {
+                    Single.just(cachedStations)
+                } else {
+                    getStations(forceRefresh = true)
+                        .map { updatedStations ->
+                            if (
+                                updatedStations.containsAllStations(
+                                    stationAbbrs = stationAbbrs,
+                                    stationNames = stationNames
+                                )
+                            ) {
+                                updatedStations
+                            } else {
+                                throw MissingStationsException(
+                                    stationAbbrs = stationAbbrs,
+                                    stationNames = stationNames,
+                                    cachedStations = cachedStations,
+                                    updatedStations = updatedStations
+                                )
+                            }
+                        }
+                }
+            }
     }
 }
