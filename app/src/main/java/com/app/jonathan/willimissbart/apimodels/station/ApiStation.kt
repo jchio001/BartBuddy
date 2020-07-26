@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.stations.models.api
+package com.app.jonathan.willimissbart.apimodels.station
 
 import android.os.Parcelable
 import com.app.jonathan.willimissbart.db.Station

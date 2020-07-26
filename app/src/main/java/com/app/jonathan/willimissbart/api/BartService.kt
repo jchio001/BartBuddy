@@ -1,9 +1,9 @@
 package com.app.jonathan.willimissbart.api
 
 import com.app.jonathan.willimissbart.BuildConfig
-import com.app.jonathan.willimissbart.stations.models.api.StationsRoot
-import com.app.jonathan.willimissbart.trips.models.api.DeparturesRoot
-import com.app.jonathan.willimissbart.trips.models.api.EtdRoot
+import com.app.jonathan.willimissbart.apimodels.station.StationsRoot
+import com.app.jonathan.willimissbart.apimodels.trip.TripsRoot
+import com.app.jonathan.willimissbart.apimodels.etd.EtdRoot
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -19,7 +19,7 @@ interface BartService {
     fun getDepartures(
         @Query("orig") orig: String,
         @Query("dest") dest: String
-    ): Single<BartResponseWrapper<DeparturesRoot>>
+    ): Single<BartResponseWrapper<TripsRoot>>
 
     @GET("etd.aspx?cmd=etd&json=y&key=${BuildConfig.BART_API_KEY}")
     fun getRealTimeEstimates(@Query("orig") origin: String): Observable<BartResponseWrapper<EtdRoot>>

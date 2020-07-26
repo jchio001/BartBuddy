@@ -3,13 +3,11 @@ package com.app.jonathan.willimissbart.stations
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.db.Station
-import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import com.app.jonathan.willimissbart.store.StationStore
 import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.models.UiModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
 

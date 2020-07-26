@@ -1,10 +1,7 @@
-package com.app.jonathan.willimissbart.trips.models.api
+package com.app.jonathan.willimissbart.apimodels.trip
 
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class Trip(

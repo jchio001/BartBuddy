@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips.models.api
+package com.app.jonathan.willimissbart.apimodels.etd
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

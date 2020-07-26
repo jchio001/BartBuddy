@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.db.Station
-import com.app.jonathan.willimissbart.stations.models.api.ApiStation
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
 import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
 
