@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class StationSelectionActivity : BaseActivity(R.layout.activity_station_selection) {
 
-    @Inject lateinit var stationsViewModelFactory: StationsViewModelFactory
+    @Inject lateinit var stationsViewModelFactory: StationSelectionViewModelFactory
 
     private val progressBar: ProgressBar by bind(R.id.layout_progress_bar)
     private val errorTextView: TextView by bind(R.id.error_textview)
@@ -38,7 +38,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val stationsViewModel = ViewModelProviders.of(this, stationsViewModelFactory)
-            .get(StationsViewModel::class.java)
+            .get(StationSelectionViewModel::class.java)
         stationsViewModel
             .stationsLiveData
             .observe(this, Observer { stationsViewState ->

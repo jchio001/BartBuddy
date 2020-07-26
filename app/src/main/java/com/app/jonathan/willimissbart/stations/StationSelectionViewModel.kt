@@ -6,9 +6,9 @@ import com.app.jonathan.willimissbart.store.StationStore
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
+class StationSelectionViewModel(private val stationStore: StationStore) : ViewModel() {
 
-    val stationsLiveData = MutableLiveData<StationsViewState>()
+    val stationsLiveData = MutableLiveData<StationSelectionViewState>()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -17,7 +17,7 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
             stationStore
                 .getStations()
                 .map { stations ->
-                    StationsViewState(
+                    StationSelectionViewState(
                         showProgressBar = false,
                         showErrorTextView = false,
                         showStationsRecyclerView = true,
@@ -25,7 +25,7 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
                     )
                 }
                 .onErrorReturn { throwable ->
-                    StationsViewState(
+                    StationSelectionViewState(
                         showProgressBar = false,
                         showErrorTextView = false,
                         showStationsRecyclerView = true,
@@ -34,7 +34,7 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
                 }
                 .toObservable()
                 .startWith(
-                    StationsViewState(
+                    StationSelectionViewState(
                         showProgressBar = true,
                         showErrorTextView = false,
                         showStationsRecyclerView = false
