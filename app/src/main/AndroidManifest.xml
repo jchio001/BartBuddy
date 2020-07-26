@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".trips.RealTimeTripInfoActivity"
+            android:name=".realtimetrip.RealTimeTripInfoActivity"
             android:screenOrientation="portrait"
             />
 
