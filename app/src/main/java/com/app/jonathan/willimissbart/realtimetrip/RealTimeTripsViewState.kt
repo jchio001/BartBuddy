@@ -4,8 +4,6 @@ import android.content.res.Resources
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.api.ignoreIfHandledNetworkException
 import com.app.jonathan.willimissbart.api.isBartApiException
-import com.app.jonathan.willimissbart.api.isHandledNetworkException
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 
 data class RealTimeTripsViewState constructor(
     val showProgressBar: Boolean,

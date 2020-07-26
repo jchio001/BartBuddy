@@ -3,9 +3,6 @@ package com.app.jonathan.willimissbart.realtimetrip
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.BuildConfig
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
-import com.app.jonathan.willimissbart.trips.models.internal.decrement
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

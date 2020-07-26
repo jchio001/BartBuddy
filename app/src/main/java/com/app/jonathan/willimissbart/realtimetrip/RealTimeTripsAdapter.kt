@@ -1,10 +1,7 @@
 package com.app.jonathan.willimissbart.realtimetrip
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
 import com.app.jonathan.willimissbart.utils.view.GenericViewHolder
 

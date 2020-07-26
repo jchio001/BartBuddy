@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
 
 sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

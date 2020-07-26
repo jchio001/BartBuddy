@@ -9,8 +9,8 @@ import android.os.Vibrator
 import androidx.core.app.NotificationCompat
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeLeg
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

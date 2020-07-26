@@ -1,8 +1,10 @@
-package com.app.jonathan.willimissbart.trips.models.internal
+package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.apimodels.etd.Estimate
 import com.app.jonathan.willimissbart.apimodels.etd.Etd
 import com.app.jonathan.willimissbart.apimodels.trip.Trip
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeLeg
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import java.util.ArrayList
 
 fun Trip.toRealTimeTrip(

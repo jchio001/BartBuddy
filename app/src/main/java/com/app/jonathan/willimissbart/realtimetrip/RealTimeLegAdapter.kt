@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
 
 class RealTimeLegAdapter : ListAdapter<RealTimeLeg, RealTimeLegViewHolder<RealTimeLeg>>(

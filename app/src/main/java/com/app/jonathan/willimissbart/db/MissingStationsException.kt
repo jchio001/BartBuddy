@@ -1,6 +1,4 @@
-package com.app.jonathan.willimissbart.trips.models.internal
-
-import com.app.jonathan.willimissbart.db.Station
+package com.app.jonathan.willimissbart.db
 
 class MissingStationsException(
     stationAbbrs: List<String>,

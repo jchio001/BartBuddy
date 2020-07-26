@@ -14,7 +14,6 @@ import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripViewModelFactory
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject

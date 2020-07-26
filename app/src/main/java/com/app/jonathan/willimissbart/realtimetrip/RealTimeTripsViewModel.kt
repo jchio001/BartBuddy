@@ -7,8 +7,8 @@ import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.store.StationStore
 import com.app.jonathan.willimissbart.trips.TripsRequestEvent
 import com.app.jonathan.willimissbart.trips.decrement
-import com.app.jonathan.willimissbart.trips.models.getEtdsForTrips
-import com.app.jonathan.willimissbart.trips.models.getFilteredTrips
+import com.app.jonathan.willimissbart.trips.getEtdsForTrips
+import com.app.jonathan.willimissbart.trips.getFilteredTrips
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

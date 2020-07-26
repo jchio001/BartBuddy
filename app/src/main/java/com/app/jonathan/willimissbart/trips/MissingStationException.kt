@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips.models.internal
+package com.app.jonathan.willimissbart.trips
 
 class MissingStationException(
     stationAbbr: String

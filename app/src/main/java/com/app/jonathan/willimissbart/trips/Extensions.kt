@@ -1,7 +1,7 @@
 package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.BuildConfig
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 
 fun RealTimeTrip.decrement(): RealTimeTrip {
     val firstLegDecremented = realTimeLegs.first().decrement(1)

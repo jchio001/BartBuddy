@@ -8,8 +8,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.util.Consumer
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeLeg
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
 import com.app.jonathan.willimissbart.utils.view.ViewInflater
 

@@ -4,7 +4,7 @@ import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.db.StationDao
 import com.app.jonathan.willimissbart.apimodels.station.ApiStation
-import com.app.jonathan.willimissbart.trips.models.internal.MissingStationsException
+import com.app.jonathan.willimissbart.db.MissingStationsException
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

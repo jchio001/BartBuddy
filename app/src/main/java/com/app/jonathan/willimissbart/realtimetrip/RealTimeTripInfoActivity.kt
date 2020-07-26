@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.timer.TimerService.Companion.startRealTimeTripTimer
-import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.BaseActivity
 
 class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_info) {
