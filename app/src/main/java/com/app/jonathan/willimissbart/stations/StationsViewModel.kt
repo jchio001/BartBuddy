@@ -2,16 +2,13 @@ package com.app.jonathan.willimissbart.stations
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.store.StationStore
-import com.app.jonathan.willimissbart.utils.models.State
-import com.app.jonathan.willimissbart.utils.models.UiModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
 
-    val stationsLiveData = MutableLiveData<UiModel<Void, List<Station>>>()
+    val stationsLiveData = MutableLiveData<StationsViewState>()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -20,21 +17,27 @@ class StationsViewModel(private val stationStore: StationStore) : ViewModel() {
             stationStore
                 .getStations()
                 .map { stations ->
-                    UiModel<Void, List<Station>>(
-                        state = State.DONE,
-                        data = stations
+                    StationsViewState(
+                        showProgressBar = false,
+                        showErrorTextView = false,
+                        showStationsRecyclerView = true,
+                        stations = stations
                     )
                 }
                 .onErrorReturn { throwable ->
-                    UiModel(
-                        state = State.ERROR,
-                        error = throwable
+                    StationsViewState(
+                        showProgressBar = false,
+                        showErrorTextView = false,
+                        showStationsRecyclerView = true,
+                        throwable = throwable
                     )
                 }
                 .toObservable()
                 .startWith(
-                    UiModel(
-                        state = State.PENDING
+                    StationsViewState(
+                        showProgressBar = true,
+                        showErrorTextView = false,
+                        showStationsRecyclerView = false
                     )
                 )
                 .subscribeOn(Schedulers.io())

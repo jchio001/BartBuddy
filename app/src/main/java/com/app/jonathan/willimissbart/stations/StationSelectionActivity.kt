@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.util.Consumer
@@ -16,8 +15,8 @@ import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripManager.Companion.EXTRA_STATION_SELECTION_TYPE
-import com.app.jonathan.willimissbart.utils.models.State
 import com.app.jonathan.willimissbart.utils.view.BaseActivity
+import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject
 
 class StationSelectionActivity : BaseActivity(R.layout.activity_station_selection) {
@@ -25,7 +24,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
     @Inject lateinit var stationsViewModelFactory: StationsViewModelFactory
 
     private val progressBar: ProgressBar by bind(R.id.layout_progress_bar)
-    private val refreshTextView: TextView by bind(R.id.refresh_textview)
+    private val errorTextView: TextView by bind(R.id.error_textview)
     private val stationsRecyclerView: RecyclerView by bind(R.id.stations_recylerview)
 
     private val selectionType: String by extra(EXTRA_STATION_SELECTION_TYPE)
@@ -42,24 +41,13 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
             .get(StationsViewModel::class.java)
         stationsViewModel
             .stationsLiveData
-            .observe(this, Observer {
-                when (it.state) {
-                    State.PENDING -> {
-                        progressBar.visibility = View.VISIBLE
-                        refreshTextView.visibility = View.GONE
-                        stationsRecyclerView.visibility = View.GONE
-                    }
-                    State.DONE -> {
-                        progressBar.visibility = View.GONE
-                        refreshTextView.visibility = View.GONE
-                        stationsRecyclerView.visibility = View.VISIBLE
-                        stationsAdapter.submitList(it.data!!)
-                    }
-                    State.ERROR -> {
-                        progressBar.visibility = View.GONE
-                        refreshTextView.visibility = View.VISIBLE
-                        stationsRecyclerView.visibility = View.GONE
-                    }
+            .observe(this, Observer { stationsViewState ->
+                progressBar.isVisible = stationsViewState.showProgressBar
+                errorTextView.isVisible = stationsViewState.showErrorTextView
+                stationsRecyclerView.isVisible = stationsViewState.showStationsRecyclerView
+
+                if (stationsViewState.showStationsRecyclerView) {
+                    stationsAdapter.submitList(stationsViewState.stations!!)
                 }
             })
 

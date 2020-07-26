@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon_image_view"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="20sp"
         tools:text="Pizza"
         />
@@ -34,7 +34,7 @@
         android:layout_below="@+id/real_time_leg_info_text"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/icon_image_view"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="16sp"
         tools:text="Hut"
         />
