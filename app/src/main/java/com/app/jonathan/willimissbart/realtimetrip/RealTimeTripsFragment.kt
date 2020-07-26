@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.trips.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripInfoActivity.Companion.EXTRA_REAL_TIME_TRIP
+import com.app.jonathan.willimissbart.trips.TripManager
+import com.app.jonathan.willimissbart.trips.TripViewModelFactory
 import com.app.jonathan.willimissbart.trips.models.internal.RealTimeTrip
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.app.jonathan.willimissbart.utils.view.isVisible

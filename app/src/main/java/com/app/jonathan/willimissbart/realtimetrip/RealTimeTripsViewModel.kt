@@ -1,10 +1,12 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.jonathan.willimissbart.BuildConfig
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.store.StationStore
+import com.app.jonathan.willimissbart.trips.TripsRequestEvent
+import com.app.jonathan.willimissbart.trips.decrement
 import com.app.jonathan.willimissbart.trips.models.getEtdsForTrips
 import com.app.jonathan.willimissbart.trips.models.getFilteredTrips
 import io.reactivex.Observable

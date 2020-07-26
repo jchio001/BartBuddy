@@ -3,7 +3,7 @@ package com.app.jonathan.willimissbart
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.jonathan.willimissbart.application.appComponent
-import com.app.jonathan.willimissbart.trips.RealTimeTripsParentFragment
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsParentFragment
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import com.app.jonathan.willimissbart.utils.view.BaseFragment

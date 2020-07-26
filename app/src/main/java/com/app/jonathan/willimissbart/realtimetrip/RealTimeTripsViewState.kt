@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import android.content.res.Resources
 import com.app.jonathan.willimissbart.R

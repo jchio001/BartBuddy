@@ -3,6 +3,7 @@ package com.app.jonathan.willimissbart.trips
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.jonathan.willimissbart.api.BartService
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripViewModel
 import com.app.jonathan.willimissbart.store.StationStore
 import javax.inject.Inject
 import javax.inject.Singleton

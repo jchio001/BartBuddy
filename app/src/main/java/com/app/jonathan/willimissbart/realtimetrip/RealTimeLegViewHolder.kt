@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import android.view.View
 import android.widget.ImageView

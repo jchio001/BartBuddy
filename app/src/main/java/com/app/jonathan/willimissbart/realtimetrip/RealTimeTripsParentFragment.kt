@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import android.os.Bundle
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathan.willimissbart.navigation.bottomnav.FragmentFactory
+import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 
 class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) {

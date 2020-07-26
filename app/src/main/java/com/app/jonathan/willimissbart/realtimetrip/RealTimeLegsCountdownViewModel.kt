@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.trips
+package com.app.jonathan.willimissbart.realtimetrip
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
