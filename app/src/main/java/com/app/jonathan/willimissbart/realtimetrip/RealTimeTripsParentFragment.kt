@@ -39,8 +39,6 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
                 }
             }
         )
-
-        bottomNavigationView.setSelection(0)
     }
 
     override fun onBackPressed(): Boolean {

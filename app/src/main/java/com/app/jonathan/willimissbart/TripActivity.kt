@@ -20,7 +20,7 @@ class TripActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        if (supportFragmentManager.backStackEntryCount == 0) {
+        if (savedInstanceState == null) {
             if (tripManager.getOriginAbbreviation() != null && tripManager.getDestinationAbbreviation() != null) {
                 supportFragmentManager
                     .beginTransaction()

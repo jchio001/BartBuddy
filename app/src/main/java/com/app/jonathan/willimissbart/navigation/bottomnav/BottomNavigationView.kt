@@ -1,10 +1,11 @@
 package com.app.jonathan.willimissbart.navigation.bottomnav
 
 import android.content.Context
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -13,12 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
-import java.util.*
 
 interface FragmentFactory {
     fun create(index: Int): Fragment
 }
 
+@OptIn(kotlin.ExperimentalStdlibApi::class)
 class BottomNavigationView(
     context: Context,
     attributeSet: AttributeSet
@@ -26,7 +27,8 @@ class BottomNavigationView(
 
     private lateinit var fragmentManager: FragmentManager
     private lateinit var fragmentFactory: FragmentFactory
-    private val insertionStack = LinkedList<String>()
+
+    private var insertionStack = ArrayList<String>(2)
 
     private var containerId = 0
 
@@ -66,6 +68,23 @@ class BottomNavigationView(
         }
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        return Bundle().apply {
+            putParcelable(SUPER_STATE, super.onSaveInstanceState())
+            putStringArrayList(INSERTION_STACK, insertionStack)
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val savedStateBundle = state as? Bundle?
+
+        if (savedStateBundle != null) {
+            super.onRestoreInstanceState(savedStateBundle.getParcelable<View.BaseSavedState>(SUPER_STATE))
+        }
+
+        insertionStack = savedStateBundle?.getStringArrayList(INSERTION_STACK) ?: insertionStack
+    }
+
     fun setFragmentManager(
         fragmentManager: FragmentManager,
         containerId: Int,
@@ -74,6 +93,10 @@ class BottomNavigationView(
         this.fragmentManager = fragmentManager
         this.containerId = containerId
         this.fragmentFactory = fragmentFactory
+
+        if (insertionStack.lastOrNull() == null) {
+            setSelection(0)
+        }
     }
 
     fun setSelection(index: Int) {
@@ -92,7 +115,7 @@ class BottomNavigationView(
 
         if (insertionStack.contains(indexTag)) {
             var hasPopped = false
-            while (insertionStack.last != indexTag) {
+            while (insertionStack.last() != indexTag) {
 
                 if (!hasPopped) {
                     sizeMenuItem(
@@ -110,7 +133,7 @@ class BottomNavigationView(
                 .beginTransaction()
                 .let { fragmentTransaction ->
                     if (!insertionStack.isEmpty()) {
-                        fragmentManager.findFragmentByTag(insertionStack.last)?.let(fragmentTransaction::hide)
+                        fragmentManager.findFragmentByTag(insertionStack.last())?.let(fragmentTransaction::hide)
                     }
 
                     fragmentTransaction
@@ -121,7 +144,7 @@ class BottomNavigationView(
 
             if (!insertionStack.isEmpty()) {
                 sizeMenuItem(
-                    insertionStack.last,
+                    insertionStack.last(),
                     baseIconSize,
                     baseTextSize
                 )
@@ -186,5 +209,11 @@ class BottomNavigationView(
 
         (menuItemChild.getChildAt(1) as TextView)
             .setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+    }
+
+    companion object {
+
+        private const val SUPER_STATE = "super_state"
+        private const val INSERTION_STACK = "insertion_stack"
     }
 }

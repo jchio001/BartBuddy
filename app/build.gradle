@@ -44,6 +44,12 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "BART_API_KEY", BART_API_KEY
+
+        kotlinOptions {
+            freeCompilerArgs = [
+                    '-Xopt-in=kotlin.RequiresOptIn'
+            ]
+        }
     }
 
     buildTypes {
