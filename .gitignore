@@ -1,3 +1,5 @@
+*.aab
+*.apk
 *.iml
 .gradle
 .idea/
@@ -6,6 +8,7 @@
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+/app/release/
 .DS_Store
 /build
 /captures
