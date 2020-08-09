@@ -61,21 +61,21 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submit_trip_button"
+        style="@style/InversePrimaryButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="12dp"
         android:layout_marginRight="16dp"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
         android:lineSpacingExtra="-4dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
         android:text="@string/navigate"
         android:textSize="16sp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        style="@style/InversePrimaryButtonStyle"
         >
 
     </androidx.appcompat.widget.AppCompatButton>

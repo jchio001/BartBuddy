@@ -3,9 +3,9 @@ package com.app.jonathan.willimissbart.application
 import android.content.Context
 import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.api.BartApiModule
-import com.app.jonathan.willimissbart.stations.StationSelectionActivity
 import com.app.jonathan.willimissbart.db.DatabaseModule
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsFragment
+import com.app.jonathan.willimissbart.stations.StationSelectionActivity
 import com.app.jonathan.willimissbart.timer.TimerService
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import dagger.Component

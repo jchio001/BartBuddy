@@ -1,7 +1,6 @@
 package com.app.jonathan.willimissbart.realtimetrip
 
 import android.os.Parcelable
-import com.app.jonathan.willimissbart.realtimetrip.RealTimeLeg
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

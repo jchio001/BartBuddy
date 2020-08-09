@@ -2,8 +2,8 @@ package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.api.isHandledNetworkException
-import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.apimodels.trip.Trip
+import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import io.reactivex.Observable
 import io.reactivex.Single

@@ -5,7 +5,7 @@ import com.app.jonathan.willimissbart.apimodels.etd.Etd
 import com.app.jonathan.willimissbart.apimodels.trip.Trip
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeLeg
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
-import java.util.ArrayList
+import java.util.*
 
 fun Trip.toRealTimeTrip(
     etd: Etd,

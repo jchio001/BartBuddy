@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 @Entity(
@@ -21,4 +20,4 @@ class Station(
     val county: String,
     val state: String,
     val zipCode: Int
-): Parcelable
+) : Parcelable

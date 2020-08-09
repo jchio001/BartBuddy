@@ -9,6 +9,7 @@ sealed class Union<FIRST, SECOND> {
     companion object {
         fun <FIRST, SECOND> first(value: FIRST): Union<FIRST, SECOND> =
             First(value)
+
         fun <FIRST, SECOND> second(value: SECOND): Union<FIRST, SECOND> =
             Second(value)
     }
