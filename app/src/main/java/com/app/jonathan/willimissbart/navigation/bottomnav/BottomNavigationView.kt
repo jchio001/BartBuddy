@@ -107,7 +107,7 @@ class BottomNavigationView(
         }
     }
 
-    fun setSelection(index: Int) {
+    private fun setSelection(index: Int) {
         val indexTag = index.toString()
 
         val fragment = fragmentManager.findFragmentByTag(indexTag) ?: let {
@@ -140,7 +140,7 @@ class BottomNavigationView(
             fragmentManager
                 .beginTransaction()
                 .let { fragmentTransaction ->
-                    if (!insertionStack.isEmpty()) {
+                    if (insertionStack.isNotEmpty()) {
                         fragmentManager.findFragmentByTag(insertionStack.last())?.let(fragmentTransaction::hide)
                     }
 
@@ -150,7 +150,7 @@ class BottomNavigationView(
                 .addToBackStack(null)
                 .commit()
 
-            if (!insertionStack.isEmpty()) {
+            if (insertionStack.isNotEmpty()) {
                 sizeMenuItem(
                     insertionStack.last(),
                     baseIconSize,
