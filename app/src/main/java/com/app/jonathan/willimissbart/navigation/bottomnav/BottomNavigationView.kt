@@ -83,6 +83,14 @@ class BottomNavigationView(
         }
 
         insertionStack = savedStateBundle?.getStringArrayList(INSERTION_STACK) ?: insertionStack
+
+        insertionStack.lastOrNull()?.let { lastTag ->
+            sizeMenuItem(
+                lastTag,
+                focusedIconSize,
+                focusedTextSize
+            )
+        }
     }
 
     fun setFragmentManager(
@@ -94,7 +102,7 @@ class BottomNavigationView(
         this.containerId = containerId
         this.fragmentFactory = fragmentFactory
 
-        if (insertionStack.lastOrNull() == null) {
+        if (fragmentManager.fragments.isEmpty()) {
             setSelection(0)
         }
     }
