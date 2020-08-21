@@ -60,7 +60,7 @@ sealed class RealTimeLegViewHolder<T : RealTimeLeg>(itemView: View) : RecyclerVi
                 "At ${realTimeLeg.station}, look for the next train heading towards " +
                     "${realTimeLeg.nextTrainHeadStation}."
             realTimeLegDuration.text = if (realTimeLeg.duration > 0) {
-                "Estimate wait of ${realTimeLeg.duration} minutes."
+                "Estimated wait of ${realTimeLeg.duration} minutes."
             } else if (realTimeLeg.duration == 0) {
                 "The train has arrived!"
             } else {
