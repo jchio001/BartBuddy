@@ -87,4 +87,9 @@ internal fun BartService.getEtdsForTrips(
 
             realTimeTrips
         }
+        .map { realTimeTrips ->
+            realTimeTrips.sortedBy { realTimeTrip ->
+                realTimeTrip.realTimeLegs.first().duration
+            }
+        }
 }
