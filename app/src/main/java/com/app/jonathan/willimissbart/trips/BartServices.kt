@@ -1,7 +1,7 @@
 package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.api.BartService
-import com.app.jonathan.willimissbart.api.isHandledNetworkException
+import com.app.jonathan.willimissbart.api.isHandledException
 import com.app.jonathan.willimissbart.apimodels.trip.Trip
 import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
@@ -72,7 +72,7 @@ internal fun BartService.getEtdsForTrips(
                 when (val union = `object` as Union<List<RealTimeTrip>, Throwable>) {
                     is Union.First -> realTimeTrips.addAll(union.value)
                     is Union.Second -> {
-                        if (!union.value.isHandledNetworkException()) {
+                        if (!union.value.isHandledException()) {
                             throw union.value
                         }
 
