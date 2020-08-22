@@ -125,9 +125,9 @@ class TripManager @Inject constructor(
     }
 
     fun displayTripsFragment(fragment: Fragment, containerId: Int) {
-        if (originAbbreviation != null && destinationAbbreviation != null
-            && (previousOriginAbbreviation != originAbbreviation
-                || previousDestinationAbbreviation != destinationAbbreviation)
+        if (originAbbreviation != null && destinationAbbreviation != null &&
+            (previousOriginAbbreviation != originAbbreviation ||
+                previousDestinationAbbreviation != destinationAbbreviation)
         ) {
 
             sharedPreferences
