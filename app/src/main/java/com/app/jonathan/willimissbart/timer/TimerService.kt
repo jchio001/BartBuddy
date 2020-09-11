@@ -114,7 +114,7 @@ class TimerService : Service() {
                     }
                 }
 
-                val realTimeTrip = intent.getParcelableExtra<RealTimeTrip>(REAL_TIME_TRIP_ARG)
+                val realTimeTrip = intent.getParcelableExtra<RealTimeTrip>(REAL_TIME_TRIP_ARG)!!
                 currentTimerItems = realTimeTrip.realTimeLegs.toTimerItems()
                 currentIndex = 0
                 timerSubject.onNext(currentTimerItems[currentIndex])
