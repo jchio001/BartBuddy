@@ -72,20 +72,21 @@ class RealTimeTripViewModel(
                                         )
                                     }
                             }
-                            .onErrorReturn { throwable ->
-                                RealTimeTripsViewState(
-                                    showProgressBar = false,
-                                    showRecyclerView = false,
-                                    throwable = throwable
-                                )
-                            }
-                            .startWith(
-                                RealTimeTripsViewState(
-                                    showProgressBar = true,
-                                    showRecyclerView = false
-                                )
-                            )
+
                     }
+                    .onErrorReturn { throwable ->
+                        RealTimeTripsViewState(
+                            showProgressBar = false,
+                            showRecyclerView = false,
+                            throwable = throwable
+                        )
+                    }
+                    .startWith(
+                        RealTimeTripsViewState(
+                            showProgressBar = true,
+                            showRecyclerView = false
+                        )
+                    )
             }
             .subscribe(realTimeTripLiveData::postValue)
     }
