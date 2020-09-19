@@ -30,7 +30,7 @@ class TripSelectionFragment : BaseFragment(R.layout.fragment_trip_selection) {
     private val tripUnchangedListener = object : EditCallbacks {
 
         override fun onTripUnchanged() {
-            coordinatorContainer.showSnackbar(R.string.stations_unchanged_error)
+            parentFragmentManager.popBackStackImmediate()
         }
 
         override fun onDuplicateStationSelection(stationType: StationType) {
