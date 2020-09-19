@@ -1,7 +1,7 @@
 package com.app.jonathan.willimissbart.api
 
 import com.app.jonathan.willimissbart.moshi.BartIntegerAdapter
-import com.app.jonathan.willimissbart.moshi.BartResponseConverterFactory
+import com.app.jonathan.willimissbart.retrofit.BartResponseConverterFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi
 import dagger.Module

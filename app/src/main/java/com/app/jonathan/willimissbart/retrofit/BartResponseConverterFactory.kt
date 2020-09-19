@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.moshi
+package com.app.jonathan.willimissbart.retrofit
 
 import com.app.jonathan.willimissbart.api.BartResponseWrapper
 import com.squareup.moshi.Types
