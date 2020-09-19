@@ -86,9 +86,11 @@ class TripManager @Inject constructor(
         invokeTripEditedListener()
     }
 
-    fun onStationSelectionResult(requestCode: Int,
-                                 resultCode: Int,
-                                 data: Intent?) {
+    fun onStationSelectionResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         if (requestCode == STATIONS_SELECTION_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 val stationType = StationType.valueOf(data!!.getStringExtra(EXTRA_STATION_SELECTION_TYPE)!!)
@@ -164,7 +166,8 @@ class TripManager @Inject constructor(
     private fun invokeTripEditedListener() {
         tripEditedListener?.onTripStationChanged(
             if (originAbbreviation != null) "($originAbbreviation) $originName" else null,
-            if (destinationAbbreviation != null) "($destinationAbbreviation) $destinationName" else null)
+            if (destinationAbbreviation != null) "($destinationAbbreviation) $destinationName" else null
+        )
     }
 
     companion object {
