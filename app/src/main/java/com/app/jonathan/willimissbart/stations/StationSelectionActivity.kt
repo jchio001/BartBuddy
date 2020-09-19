@@ -41,7 +41,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
             .get(StationSelectionViewModel::class.java)
         stationsViewModel
             .stationsLiveData
-            .observe(this, Observer { stationsViewState ->
+            .observe(this) { stationsViewState ->
                 progressBar.isVisible = stationsViewState.showProgressBar
                 errorTextView.isVisible = stationsViewState.showErrorTextView
                 stationsRecyclerView.isVisible = stationsViewState.showStationsRecyclerView
@@ -49,7 +49,7 @@ class StationSelectionActivity : BaseActivity(R.layout.activity_station_selectio
                 if (stationsViewState.showStationsRecyclerView) {
                     stationsAdapter.submitList(stationsViewState.stations!!)
                 }
-            })
+            }
 
         stationsRecyclerView.layoutManager = LinearLayoutManager(this)
         stationsRecyclerView.adapter = stationsAdapter

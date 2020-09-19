@@ -48,7 +48,7 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
             .of(this, realTimeTripViewModelFactory)
             .get(RealTimeTripViewModel::class.java)
         realTimeTripViewModel.realTimeTripLiveData
-            .observe(viewLifecycleOwner, Observer { viewState ->
+            .observe(viewLifecycleOwner) { viewState ->
                 progressBar.isVisible = viewState.showProgressBar
                 recyclerView.isVisible = viewState.showRecyclerView
                 realTimeTripAdapter.submitList(viewState.realTimeTrips)
@@ -58,7 +58,7 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
                 if (viewState.unhandledException != null) {
                     throw viewState.unhandledException
                 }
-            })
+            }
 
         requestTrip(tripManager.getOriginAbbreviation()!!, tripManager.getDestinationAbbreviation()!!)
     }

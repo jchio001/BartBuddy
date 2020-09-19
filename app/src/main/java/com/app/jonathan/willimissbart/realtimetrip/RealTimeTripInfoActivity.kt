@@ -46,12 +46,12 @@ class RealTimeTripInfoActivity : BaseActivity(R.layout.activity_real_time_trip_i
         realTimeLegsCountdownViewModel = ViewModelProviders.of(this)
             .get(RealTimeLegsCountdownViewModel::class.java)
         realTimeLegsCountdownViewModel.realTimeLegsLiveData
-            .observe(this, Observer { realTimeLegs ->
+            .observe(this) { realTimeLegs ->
                 realTimeLegPagerAdapter.submitList(realTimeLegs)
                 if (realTimeLegs.first().duration < 0) {
                     startTripButton.isEnabled = false
                 }
-            })
+            }
         realTimeLegsCountdownViewModel.seed(realTimeTrip)
     }
 
