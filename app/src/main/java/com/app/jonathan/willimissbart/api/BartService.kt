@@ -1,6 +1,7 @@
 package com.app.jonathan.willimissbart.api
 
 import com.app.jonathan.willimissbart.BuildConfig
+import com.app.jonathan.willimissbart.apimodels.bsa.ApiBsaRoot
 import com.app.jonathan.willimissbart.apimodels.etd.EtdRoot
 import com.app.jonathan.willimissbart.apimodels.station.StationsRoot
 import com.app.jonathan.willimissbart.apimodels.trip.TripsRoot
@@ -23,4 +24,7 @@ interface BartService {
 
     @GET("etd.aspx?cmd=etd&json=y&key=${BuildConfig.BART_API_KEY}")
     fun getRealTimeEstimates(@Query("orig") origin: String): Observable<EtdRoot>
+
+    @GET("bsa.aspx?cmd=bsa&json=y&key=${BuildConfig.BART_API_KEY}")
+    fun getBsas() : Single<ApiBsaRoot>
 }

@@ -5,9 +5,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.app.jonathan.willimissbart.R
+import com.app.jonathan.willimissbart.bsa.BsasFragment
 import com.app.jonathan.willimissbart.navigation.bottomnav.BottomNavigationView
 import com.app.jonathan.willimissbart.navigation.bottomnav.FragmentFactory
-import com.app.jonathan.willimissbart.notifications.NotificationsFragment
 import com.app.jonathan.willimissbart.trips.TripSelectionFragment
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 
@@ -39,7 +39,7 @@ class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) 
                     return if (index <= 1) {
                         RealTimeTripsFragment.newInstance(index == 1)
                     } else {
-                        NotificationsFragment()
+                        BsasFragment()
                     }
                 }
             }

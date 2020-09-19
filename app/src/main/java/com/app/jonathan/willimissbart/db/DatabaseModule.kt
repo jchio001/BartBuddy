@@ -18,7 +18,16 @@ object DatabaseModule {
             BartBuddyDatabase::class.java,
             "bart_buddy_database"
         )
+            .addMigrations(*Migrations.get())
+            .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @[JvmStatic Provides Singleton]
+    fun provideBsaDao(
+        bartBuddyDatabase: BartBuddyDatabase
+    ): BsaDao {
+        return bartBuddyDatabase.bsaDao()
     }
 
     @[JvmStatic Provides Singleton]

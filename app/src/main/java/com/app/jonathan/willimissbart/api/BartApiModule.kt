@@ -1,6 +1,7 @@
 package com.app.jonathan.willimissbart.api
 
 import com.app.jonathan.willimissbart.moshi.BartIntegerAdapter
+import com.app.jonathan.willimissbart.moshi.DateAdapter
 import com.app.jonathan.willimissbart.retrofit.BartResponseConverterFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -19,6 +20,7 @@ object BartApiModule {
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(BartIntegerAdapter())
+            .add(DateAdapter())
             .add(SingleToListFactory())
             .build()
     }

@@ -3,6 +3,7 @@ package com.app.jonathan.willimissbart.application
 import android.content.Context
 import com.app.jonathan.willimissbart.TripActivity
 import com.app.jonathan.willimissbart.api.BartApiModule
+import com.app.jonathan.willimissbart.bsa.BsasFragment
 import com.app.jonathan.willimissbart.db.DatabaseModule
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsFragment
 import com.app.jonathan.willimissbart.stations.StationSelectionActivity
@@ -24,6 +25,8 @@ interface AppComponent {
     fun inject(stationSelectionActivity: StationSelectionActivity)
 
     fun inject(realTimeTripNotificationService: TimerService)
+
+    fun inject(bsasFragment: BsasFragment)
 
     companion object : ComponentDelegate<AppComponent>() {
 
