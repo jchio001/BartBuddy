@@ -22,7 +22,7 @@ class StationStore @Inject constructor(
     ): Single<List<Station>> {
         val fetchAndCacheStationsSingle = bartService.getStations()
             .map { bartStationsResponse ->
-                bartStationsResponse.root.stations.apiStations.map(ApiStation::toDbModel)
+                bartStationsResponse.stations.apiStations.map(ApiStation::toDbModel)
             }
             .subscribeOn(Schedulers.io())
             .flatMap { stations ->

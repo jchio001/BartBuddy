@@ -18,7 +18,7 @@ internal fun BartService.getFilteredTrips(
         dest = destinationAbbr
     )
         .map { wrappedDeparturesRoot ->
-            wrappedDeparturesRoot.root.schedule.request.trips
+            wrappedDeparturesRoot.schedule.request.trips
                 .distinctBy { trip ->
                     trip.legs
                         .map { leg ->
@@ -36,7 +36,7 @@ internal fun BartService.getEtdsForTrips(
     val etdObservables = trips
         .map { trip ->
             this.getRealTimeEstimates(trip.legs.first().origin)
-                .map { etdRootWrapper ->
+                .map { etdRoot ->
                     val stationNameToAbbreviationMap by lazy {
 
                         val trainHeadStations = HashSet<String>(trip.legs.size, 1.0f)
@@ -50,7 +50,7 @@ internal fun BartService.getEtdsForTrips(
                     }
 
                     val firstLeg = trip.legs.first()
-                    val realTimeTrip = etdRootWrapper.root.etdStations.first().etds
+                    val realTimeTrip = etdRoot.etdStations.first().etds
                         .firstOrNull { etd ->
                             firstLeg.trainHeadStation.contains(etd.correctedDestination)
                         }

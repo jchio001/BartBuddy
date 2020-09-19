@@ -1,5 +1,6 @@
 package com.app.jonathan.willimissbart.api
 
+import com.app.jonathan.willimissbart.moshi.BartResponseConverterFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
@@ -45,6 +46,7 @@ object BartApiModule {
         return Retrofit.Builder()
             .baseUrl("https://api.bart.gov/api/")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(BartResponseConverterFactory())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(
                 OkHttpClient.Builder()

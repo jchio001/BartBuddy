@@ -12,15 +12,15 @@ import retrofit2.http.Query
 interface BartService {
 
     @GET("stn.aspx?cmd=stns&json=y&key=${BuildConfig.BART_API_KEY}")
-    fun getStations(): Single<BartResponseWrapper<StationsRoot>>
+    fun getStations(): Single<StationsRoot>
 
     // Link to the documentation since this endpoint's a mess: https://api.bart.gov/docs/sched/depart.aspx
     @GET("sched.aspx?cmd=depart&date=now&b=0&a=2&json=y&key=${BuildConfig.BART_API_KEY}")
     fun getDepartures(
         @Query("orig") orig: String,
         @Query("dest") dest: String
-    ): Single<BartResponseWrapper<TripsRoot>>
+    ): Single<TripsRoot>
 
     @GET("etd.aspx?cmd=etd&json=y&key=${BuildConfig.BART_API_KEY}")
-    fun getRealTimeEstimates(@Query("orig") origin: String): Observable<BartResponseWrapper<EtdRoot>>
+    fun getRealTimeEstimates(@Query("orig") origin: String): Observable<EtdRoot>
 }
