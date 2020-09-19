@@ -122,18 +122,12 @@ class BottomNavigationView(
         }
 
         if (insertionStack.contains(indexTag)) {
-            var hasPopped = false
             while (insertionStack.last() != indexTag) {
-
-                if (!hasPopped) {
-                    sizeMenuItem(
-                        insertionStack.removeLast(),
-                        baseIconSize,
-                        baseTextSize
-                    )
-                    hasPopped = true
-                }
-
+                sizeMenuItem(
+                    insertionStack.removeLast(),
+                    baseIconSize,
+                    baseTextSize
+                )
                 fragmentManager.popBackStack()
             }
         } else {
