@@ -1,10 +1,9 @@
 package com.app.jonathan.willimissbart.api
 
+import com.app.jonathan.willimissbart.moshi.BartIntegerAdapter
 import com.app.jonathan.willimissbart.moshi.BartResponseConverterFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.ToJson
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -12,23 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
-
-class BartIntegerAdapter {
-
-    @FromJson
-    fun fromJson(value: String): Int {
-        return try {
-            Integer.parseInt(value)
-        } catch (e: NumberFormatException) {
-            0
-        }
-    }
-
-    @ToJson
-    fun toJson(value: Int): String {
-        return value.toString()
-    }
-}
 
 @Module
 object BartApiModule {
