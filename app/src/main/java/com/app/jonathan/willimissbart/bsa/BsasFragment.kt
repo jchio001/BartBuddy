@@ -8,9 +8,7 @@ import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsParentFragment
 import com.app.jonathan.willimissbart.store.BsaStore
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.app.jonathan.willimissbart.utils.view.changeVisibilityAndEnable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class BsasFragment : BaseFragment(R.layout.fragment_bsa) {

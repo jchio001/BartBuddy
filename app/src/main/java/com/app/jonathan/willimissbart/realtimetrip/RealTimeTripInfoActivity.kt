@@ -3,7 +3,6 @@ package com.app.jonathan.willimissbart.realtimetrip
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.AppCompatButton
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.util.Consumer
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
