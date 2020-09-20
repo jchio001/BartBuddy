@@ -1,4 +1,6 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathan.willimissbart.store
+
+import com.app.jonathanchiou.willimissbart.db.models.Station
 
 class MissingStationsException(
     stationAbbrs: List<String>,

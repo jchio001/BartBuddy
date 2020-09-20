@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathanchiou.willimissbart.db.converters
 
 import androidx.room.TypeConverter
 import java.util.*

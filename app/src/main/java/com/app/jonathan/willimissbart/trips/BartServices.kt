@@ -3,8 +3,8 @@ package com.app.jonathan.willimissbart.trips
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.api.isHandledException
 import com.app.jonathan.willimissbart.apimodels.trip.ApiTrip
-import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
+import com.app.jonathanchiou.willimissbart.db.models.Station
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException

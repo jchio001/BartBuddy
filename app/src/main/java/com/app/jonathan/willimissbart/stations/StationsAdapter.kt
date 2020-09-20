@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.app.jonathan.willimissbart.R
-import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.utils.BasicDiffCallback
 import com.app.jonathan.willimissbart.utils.view.DebouncingOnClickListener
+import com.app.jonathanchiou.willimissbart.db.models.Station
 
 class StationViewHolder(itemView: View) : ViewHolder(itemView) {
 

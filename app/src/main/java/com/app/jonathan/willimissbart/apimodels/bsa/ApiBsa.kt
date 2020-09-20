@@ -1,6 +1,6 @@
 package com.app.jonathan.willimissbart.apimodels.bsa
 
-import com.app.jonathan.willimissbart.db.Bsa
+import com.app.jonathanchiou.willimissbart.db.models.Bsa
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.*

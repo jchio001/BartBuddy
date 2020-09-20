@@ -2,9 +2,8 @@ package com.app.jonathan.willimissbart.store
 
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.apimodels.station.ApiStation
-import com.app.jonathan.willimissbart.db.MissingStationsException
-import com.app.jonathan.willimissbart.db.Station
-import com.app.jonathan.willimissbart.db.StationDao
+import com.app.jonathanchiou.willimissbart.db.dao.StationDao
+import com.app.jonathanchiou.willimissbart.db.models.Station
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

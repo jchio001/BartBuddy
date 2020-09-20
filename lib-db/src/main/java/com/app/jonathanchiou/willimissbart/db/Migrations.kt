@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathanchiou.willimissbart.db
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

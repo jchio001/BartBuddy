@@ -1,9 +1,10 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathanchiou.willimissbart.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.app.jonathanchiou.willimissbart.db.models.Station
 import io.reactivex.Completable
 import io.reactivex.Single
 

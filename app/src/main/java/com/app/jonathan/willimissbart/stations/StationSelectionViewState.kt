@@ -1,6 +1,6 @@
 package com.app.jonathan.willimissbart.stations
 
-import com.app.jonathan.willimissbart.db.Station
+import com.app.jonathanchiou.willimissbart.db.models.Station
 
 class StationSelectionViewState(
     val showProgressBar: Boolean,

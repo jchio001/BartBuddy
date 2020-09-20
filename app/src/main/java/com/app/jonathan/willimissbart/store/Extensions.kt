@@ -1,6 +1,6 @@
 package com.app.jonathan.willimissbart.store
 
-import com.app.jonathan.willimissbart.db.Station
+import com.app.jonathanchiou.willimissbart.db.models.Station
 
 fun List<Station>.containsAllStations(
     stationAbbrs: List<String>,

@@ -1,7 +1,9 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathanchiou.willimissbart.db
 
 import android.content.Context
 import androidx.room.Room
+import com.app.jonathanchiou.willimissbart.db.dao.BsaDao
+import com.app.jonathanchiou.willimissbart.db.dao.StationDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

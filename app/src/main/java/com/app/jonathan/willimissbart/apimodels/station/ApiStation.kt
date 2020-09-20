@@ -1,7 +1,7 @@
 package com.app.jonathan.willimissbart.apimodels.station
 
 import android.os.Parcelable
-import com.app.jonathan.willimissbart.db.Station
+import com.app.jonathanchiou.willimissbart.db.models.Station
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize

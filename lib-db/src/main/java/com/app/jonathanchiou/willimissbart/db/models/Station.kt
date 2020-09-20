@@ -1,4 +1,4 @@
-package com.app.jonathan.willimissbart.db
+package com.app.jonathanchiou.willimissbart.db.models
 
 import android.os.Parcelable
 import androidx.room.Entity
