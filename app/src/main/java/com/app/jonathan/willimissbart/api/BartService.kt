@@ -26,5 +26,5 @@ interface BartService {
     fun getRealTimeEstimates(@Query("orig") origin: String): Observable<ApiEtdRoot>
 
     @GET("bsa.aspx?cmd=bsa&json=y&key=${BuildConfig.BART_API_KEY}")
-    fun getBsas() : Single<ApiBsaRoot>
+    fun getBsas() : Observable<ApiBsaRoot>
 }

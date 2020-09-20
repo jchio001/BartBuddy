@@ -25,9 +25,10 @@ class BsasFragment : BaseFragment(R.layout.fragment_bsa) {
 
         configureToolbar()
 
-        compositeDisposable.add(
-            bsaStore.getBsas()
-                .observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.addAll(
+            bsaStore.poll()
+                .subscribe(),
+            bsaStore.stream()
                 .subscribe()
         )
     }
