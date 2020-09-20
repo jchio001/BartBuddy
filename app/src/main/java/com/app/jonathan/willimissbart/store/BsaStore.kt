@@ -17,6 +17,7 @@ class BsaStore @Inject constructor(
     private val bartService: BartService,
     private val bsaDao: BsaDao
 ) {
+
     fun poll(): Completable {
         return bartService.getBsas()
             .map(ApiBsaRoot::bsa)

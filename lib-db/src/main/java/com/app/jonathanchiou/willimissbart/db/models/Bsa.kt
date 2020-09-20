@@ -8,7 +8,7 @@ import java.util.*
 @Entity(
     indices = [Index(value = ["id"], unique = true)]
 )
-class Bsa(
+data class Bsa(
     @PrimaryKey val id: String,
     val description: String,
     val postedDate: Date,

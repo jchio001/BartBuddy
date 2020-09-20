@@ -2,20 +2,26 @@ package com.app.jonathan.willimissbart.bsa
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsParentFragment
-import com.app.jonathan.willimissbart.store.BsaStore
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
 import com.app.jonathan.willimissbart.utils.view.changeVisibilityAndEnable
-import io.reactivex.disposables.CompositeDisposable
+import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject
 
 class BsasFragment : BaseFragment(R.layout.fragment_bsa) {
 
-    @Inject lateinit var bsaStore: BsaStore
+    @Inject lateinit var bsasViewModelFactory: BsasViewModelFactory
 
-    private val compositeDisposable = CompositeDisposable()
+    private val bsasAdapter = BsasAdapter()
+
+    private val progressBar: ProgressBar by bind(R.id.progress_bar)
+    private val recyclerView: RecyclerView by bind(R.id.recycler_view)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,12 +29,23 @@ class BsasFragment : BaseFragment(R.layout.fragment_bsa) {
 
         configureToolbar()
 
-        compositeDisposable.addAll(
-            bsaStore.poll()
-                .subscribe(),
-            bsaStore.stream()
-                .subscribe()
-        )
+        recyclerView.adapter = bsasAdapter
+        recyclerView.itemAnimator = null
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        val bsasViewModel = ViewModelProviders.of(this, bsasViewModelFactory)
+            .get(BsasViewModel::class.java)
+        bsasViewModel
+            .bsaLiveData
+            .observe(viewLifecycleOwner) { viewState ->
+                progressBar.isVisible = viewState.showProgressBar
+                recyclerView.isVisible = viewState.showRecyclerView
+                bsasAdapter.submitList(viewState.bsas)
+
+                if (viewState.unhandledException != null) {
+                    throw viewState.unhandledException
+                }
+            }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -44,11 +61,6 @@ class BsasFragment : BaseFragment(R.layout.fragment_bsa) {
             it.editIcon.changeVisibilityAndEnable(false)
             it.title.setText(R.string.notifications)
         }
-    }
-
-    override fun onDestroyView() {
-        compositeDisposable.dispose()
-        super.onDestroyView()
     }
 
     companion object {
