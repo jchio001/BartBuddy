@@ -1,10 +1,10 @@
 package com.app.jonathan.willimissbart.api
 
 import com.app.jonathan.willimissbart.BuildConfig
-import com.app.jonathan.willimissbart.apimodels.bsa.ApiBsaRoot
-import com.app.jonathan.willimissbart.apimodels.etd.ApiEtdRoot
-import com.app.jonathan.willimissbart.apimodels.station.ApiStationsRoot
-import com.app.jonathan.willimissbart.apimodels.trip.ApiTripsRoot
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsaRoot
+import com.app.jonathanchiou.willimissbart.api.models.etd.ApiEtdRoot
+import com.app.jonathanchiou.willimissbart.api.models.station.ApiStationsRoot
+import com.app.jonathanchiou.willimissbart.api.models.trip.ApiTripsRoot
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET

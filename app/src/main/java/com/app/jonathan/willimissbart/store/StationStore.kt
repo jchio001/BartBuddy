@@ -1,7 +1,7 @@
 package com.app.jonathan.willimissbart.store
 
 import com.app.jonathan.willimissbart.api.BartService
-import com.app.jonathan.willimissbart.apimodels.station.ApiStation
+import com.app.jonathanchiou.willimissbart.api.models.station.ApiStation
 import com.app.jonathanchiou.willimissbart.db.dao.StationDao
 import com.app.jonathanchiou.willimissbart.db.models.Station
 import io.reactivex.Single

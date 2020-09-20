@@ -2,7 +2,7 @@ package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.api.isHandledException
-import com.app.jonathan.willimissbart.apimodels.trip.ApiTrip
+import com.app.jonathanchiou.willimissbart.api.models.trip.ApiTrip
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import com.app.jonathanchiou.willimissbart.db.models.Station
 import io.reactivex.Observable

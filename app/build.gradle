@@ -118,6 +118,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-rc03'
 
     implementation project(':lib-db')
+    implementation project(':lib-api-models')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 

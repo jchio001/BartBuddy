@@ -1,8 +1,8 @@
 package com.app.jonathan.willimissbart.trips
 
-import com.app.jonathan.willimissbart.apimodels.etd.ApiEstimate
-import com.app.jonathan.willimissbart.apimodels.etd.ApiEtd
-import com.app.jonathan.willimissbart.apimodels.trip.ApiTrip
+import com.app.jonathanchiou.willimissbart.api.models.etd.ApiEstimate
+import com.app.jonathanchiou.willimissbart.api.models.etd.ApiEtd
+import com.app.jonathanchiou.willimissbart.api.models.trip.ApiTrip
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeLeg
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import java.util.*

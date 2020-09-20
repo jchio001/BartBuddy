@@ -3,6 +3,7 @@ package com.app.jonathan.willimissbart.api
 import com.app.jonathan.willimissbart.moshi.BartIntegerAdapter
 import com.app.jonathan.willimissbart.moshi.DateAdapter
 import com.app.jonathan.willimissbart.retrofit.BartResponseConverterFactory
+import com.app.jonathanchiou.willimissbart.api.models.SingleToListFactory
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi
 import dagger.Module

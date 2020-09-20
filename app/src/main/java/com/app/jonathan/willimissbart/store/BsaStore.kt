@@ -1,8 +1,8 @@
 package com.app.jonathan.willimissbart.store
 
 import com.app.jonathan.willimissbart.api.BartService
-import com.app.jonathan.willimissbart.apimodels.bsa.ApiBsa
-import com.app.jonathan.willimissbart.apimodels.bsa.ApiBsaRoot
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsa
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsaRoot
 import com.app.jonathanchiou.willimissbart.db.dao.BsaDao
 import com.app.jonathanchiou.willimissbart.db.models.Bsa
 import io.reactivex.Completable
