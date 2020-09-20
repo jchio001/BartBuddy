@@ -8,11 +8,11 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class Etd(
+data class ApiEtd(
     @Json(name = "destination") val destination: String,
     @Json(name = "abbreviation") val abbreviation: String,
     // Even though the JSON name is singular, it can return multiple estimates.
-    @Json(name = "estimate") val estimates: List<Estimate>
+    @Json(name = "estimate") val apiEstimates: List<ApiEstimate>
 ) : Parcelable {
 
     @IgnoredOnParcel

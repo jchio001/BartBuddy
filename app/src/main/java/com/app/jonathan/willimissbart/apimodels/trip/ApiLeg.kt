@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class Leg(
+data class ApiLeg(
     @Json(name = "@origin") val origin: String,
     @Json(name = "@destination") val destination: String,
     @Json(name = "@trainHeadStation") val trainHeadStation: String,

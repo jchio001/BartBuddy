@@ -6,11 +6,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class EtdRoot(
+data class ApiEtdRoot(
     @Json(name = "date") val date: String,
     @Json(name = "time") val time: String,
     // For some reason, this is always a list of 1.
-    @Json(name = "station") val etdStations: List<EtdStation>
+    @Json(name = "station") val apiEtdStations: List<ApiEtdStation>
 ) {
 
     val queryTimeInEpoch: Long

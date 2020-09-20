@@ -2,7 +2,7 @@ package com.app.jonathan.willimissbart.trips
 
 import com.app.jonathan.willimissbart.api.BartService
 import com.app.jonathan.willimissbart.api.isHandledException
-import com.app.jonathan.willimissbart.apimodels.trip.Trip
+import com.app.jonathan.willimissbart.apimodels.trip.ApiTrip
 import com.app.jonathan.willimissbart.db.Station
 import com.app.jonathan.willimissbart.realtimetrip.RealTimeTrip
 import io.reactivex.Observable
@@ -12,7 +12,7 @@ import io.reactivex.exceptions.CompositeException
 internal fun BartService.getFilteredTrips(
     originAbbr: String,
     destinationAbbr: String
-): Single<List<Trip>> {
+): Single<List<ApiTrip>> {
     return this.getDepartures(
         orig = originAbbr,
         dest = destinationAbbr
@@ -30,7 +30,7 @@ internal fun BartService.getFilteredTrips(
 }
 
 internal fun BartService.getEtdsForTrips(
-    trips: List<Trip>,
+    trips: List<ApiTrip>,
     stations: List<Station>
 ): Observable<List<RealTimeTrip>> {
     val etdObservables = trips
@@ -50,12 +50,12 @@ internal fun BartService.getEtdsForTrips(
                     }
 
                     val firstLeg = trip.legs.first()
-                    val realTimeTrip = etdRoot.etdStations.first().etds
+                    val realTimeTrip = etdRoot.apiEtdStations.first().apiEtds
                         .firstOrNull { etd ->
                             firstLeg.trainHeadStation.contains(etd.correctedDestination)
                         }
                         ?.let { etd ->
-                            etd.estimates.map { estimate ->
+                            etd.apiEstimates.map { estimate ->
                                 trip.toRealTimeTrip(etd, estimate, stationNameToAbbreviationMap)
                             }
                         } as MutableList? ?: mutableListOf()

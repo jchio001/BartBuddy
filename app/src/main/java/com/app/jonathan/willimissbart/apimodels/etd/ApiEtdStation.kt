@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class EtdStation(
+data class ApiEtdStation(
     @Json(name = "name") val name: String,
     @Json(name = "abbr") val abbr: String,
-    @Json(name = "etd") val etds: List<Etd> = ArrayList()
+    @Json(name = "etd") val apiEtds: List<ApiEtd> = ArrayList()
 )

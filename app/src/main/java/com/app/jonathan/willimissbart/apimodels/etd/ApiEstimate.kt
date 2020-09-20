@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class Estimate(
+data class ApiEstimate(
     @Json(name = "minutes") val minutes: Int,
     @Json(name = "platform") val platform: Int,
     @Json(name = "hexcolor") val hexColor: String

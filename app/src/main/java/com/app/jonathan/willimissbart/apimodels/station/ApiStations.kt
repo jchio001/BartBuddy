@@ -4,6 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class StationsRoot(
-    @Json(name = "stations") val stations: Stations
+data class ApiStations(
+    @Json(name = "station") val apiStations: List<ApiStation>
 )
