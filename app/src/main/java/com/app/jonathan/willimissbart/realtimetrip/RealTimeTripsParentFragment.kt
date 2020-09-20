@@ -2,6 +2,7 @@ package com.app.jonathan.willimissbart.realtimetrip
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.app.jonathan.willimissbart.R
@@ -13,6 +14,7 @@ import com.app.jonathan.willimissbart.utils.view.BaseFragment
 
 class RealTimeTripsParentFragment : BaseFragment(R.layout.fragment_trip_parent) {
 
+    val editIcon: ImageView by bind(R.id.edit_icon)
     val title: TextView by bind(R.id.title)
     private val bottomNavigationView: BottomNavigationView by bind(R.id.bottom_navigationview)
 

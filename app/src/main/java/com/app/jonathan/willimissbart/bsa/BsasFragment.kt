@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.application.appComponent
+import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripsParentFragment
 import com.app.jonathan.willimissbart.store.BsaStore
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
+import com.app.jonathan.willimissbart.utils.view.changeVisibilityAndEnable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,11 +23,28 @@ class BsasFragment : BaseFragment(R.layout.fragment_bsa) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().appComponent.inject(this)
 
+        configureToolbar()
+
         compositeDisposable.add(
             bsaStore.getBsas()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         )
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+
+        if (!hidden) {
+            configureToolbar()
+        }
+    }
+
+    private fun configureToolbar() {
+        (parentFragment as RealTimeTripsParentFragment?)?.also {
+            it.editIcon.changeVisibilityAndEnable(false)
+            it.title.setText(R.string.notifications)
+        }
     }
 
     override fun onDestroyView() {

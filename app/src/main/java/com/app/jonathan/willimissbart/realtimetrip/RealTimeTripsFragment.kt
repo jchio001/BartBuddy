@@ -15,6 +15,7 @@ import com.app.jonathan.willimissbart.realtimetrip.RealTimeTripInfoActivity.Comp
 import com.app.jonathan.willimissbart.trips.TripManager
 import com.app.jonathan.willimissbart.trips.TripViewModelFactory
 import com.app.jonathan.willimissbart.utils.view.BaseFragment
+import com.app.jonathan.willimissbart.utils.view.changeVisibilityAndEnable
 import com.app.jonathan.willimissbart.utils.view.isVisible
 import javax.inject.Inject
 
@@ -85,6 +86,7 @@ class RealTimeTripsFragment : BaseFragment(R.layout.fragment_real_time_trips),
         val actualDestinationAbbreviation = if (!isReturnTrip) destinationAbbreviation else originAbbreviation
 
         (parentFragment as RealTimeTripsParentFragment?)?.also {
+            it.editIcon.changeVisibilityAndEnable(true)
             it.title.text = "$actualOriginAbbreviation to $actualDestinationAbbreviation"
         }
 
