@@ -39,7 +39,7 @@ class StationsAdapter : ListAdapter<Station, StationViewHolder>(BasicDiffCallbac
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.cell_station_view, parent, false)
+            .inflate(R.layout.layout_station_view, parent, false)
         view.setOnClickListener(debouncedOnClickListener)
         return StationViewHolder(view)
     }
