@@ -1,13 +1,13 @@
 package com.app.jonathan.willimissbart.bsa
 
 import com.app.jonathan.willimissbart.api.ignoreIfHandledException
-import com.app.jonathanchiou.willimissbart.db.models.Bsa
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsa
 
 class BsaViewState(
     val showProgressBar: Boolean,
     val showRecyclerView: Boolean,
-    val bsas: List<Bsa>? = null,
-    private val throwable: Throwable? = null
+    val bsas: List<ApiBsa>? = null,
+    throwable: Throwable? = null
 ) {
 
     val unhandledException = throwable?.ignoreIfHandledException()

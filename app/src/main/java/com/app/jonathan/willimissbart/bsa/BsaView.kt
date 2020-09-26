@@ -7,14 +7,14 @@ import android.widget.TextView
 import androidx.core.util.Consumer
 import com.app.jonathan.willimissbart.R
 import com.app.jonathan.willimissbart.utils.view.ViewInflater
-import com.app.jonathanchiou.willimissbart.db.models.Bsa
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsa
 import java.text.SimpleDateFormat
 import java.util.*
 
 class BsaView(
     context: Context,
     attributeSet: AttributeSet
-) : LinearLayout(context, attributeSet), Consumer<Bsa> {
+) : LinearLayout(context, attributeSet), Consumer<ApiBsa> {
 
     init {
         inflate(context, R.layout.merge_bsa_view, this)
@@ -23,9 +23,9 @@ class BsaView(
     private val expirationDate: TextView = findViewById(R.id.expiration_date)
     private val description: TextView = findViewById(R.id.description)
 
-    override fun accept(t: Bsa) {
-        expirationDate.text = DATE_FORMATTER.format(t.expirationDate)
-        description.text = t.description
+    override fun accept(t: ApiBsa) {
+        expirationDate.text = DATE_FORMATTER.format(t.expires!!)
+        description.text = t.description.cDataSection
     }
 
     companion object : ViewInflater(R.layout.bsa_view) {

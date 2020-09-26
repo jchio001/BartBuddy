@@ -24,9 +24,6 @@ class BsasViewModel(
 
         compositeDisposable.addAll(
             bsaStore
-                .poll()
-                .subscribe(),
-            bsaStore
                 .stream()
                 .subscribe(
                     { bsas ->

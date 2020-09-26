@@ -3,9 +3,9 @@ package com.app.jonathan.willimissbart.bsa
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.app.jonathan.willimissbart.utils.view.GenericViewHolder
-import com.app.jonathanchiou.willimissbart.db.models.Bsa
+import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsa
 
-class BsasAdapter : ListAdapter<Bsa, GenericViewHolder>(
+class BsasAdapter : ListAdapter<ApiBsa, GenericViewHolder>(
     BsasDiffCallback()
 ) {
 

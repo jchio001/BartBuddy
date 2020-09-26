@@ -2,7 +2,6 @@ package com.app.jonathanchiou.willimissbart.db
 
 import android.content.Context
 import androidx.room.Room
-import com.app.jonathanchiou.willimissbart.db.dao.BsaDao
 import com.app.jonathanchiou.willimissbart.db.dao.StationDao
 import dagger.Module
 import dagger.Provides
@@ -20,16 +19,8 @@ object DatabaseModule {
             BartBuddyDatabase::class.java,
             "bart_buddy_database"
         )
-            .addMigrations(*Migrations.get())
             .fallbackToDestructiveMigration()
             .build()
-    }
-
-    @[JvmStatic Provides Singleton]
-    fun provideBsaDao(
-        bartBuddyDatabase: BartBuddyDatabase
-    ): BsaDao {
-        return bartBuddyDatabase.bsaDao()
     }
 
     @[JvmStatic Provides Singleton]
