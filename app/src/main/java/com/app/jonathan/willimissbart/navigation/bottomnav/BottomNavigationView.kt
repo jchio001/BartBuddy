@@ -90,6 +90,9 @@ class BottomNavigationView(
                 focusedIconSize,
                 focusedTextSize
             )
+
+            fragmentManager.findFragmentByTag(lastTag)!!
+                .onHiddenChanged(false)
         }
     }
 
