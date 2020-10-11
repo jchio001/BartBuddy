@@ -1,15 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
-    ext.kotlin_version = '1.4.10'
-
     repositories {
         google()
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -22,6 +19,24 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
     }
+
+    def daggerVersion = "2.25.2"
+    def moshiVersion = "1.11.0"
+    def retrofitVersion = "2.9.0"
+    def roomVersion = "2.2.5"
+
+    ext.libraries = [
+            dagger: "com.google.dagger:dagger:$daggerVersion",
+            daggerKapt: "com.google.dagger:dagger-compiler:$daggerVersion",
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            moshi: "com.squareup.moshi:moshi-kotlin:$moshiVersion",
+            moshiKapt: "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion",
+            retrofit: "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            retrofitMoshi: "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
+            roomRuntime: "androidx.room:room-runtime:$roomVersion",
+            roomRxJava2: "androidx.room:room-rxjava2:$roomVersion",
+            roomKapt: "androidx.room:room-compiler:$roomVersion"
+    ]
 }
 
 task clean(type: Delete) {
