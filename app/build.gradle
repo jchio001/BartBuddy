@@ -6,8 +6,8 @@ apply plugin: 'kotlin-kapt'
 android {
 
     def versionMajor = 3
-    def versionMinor = 0
-    def versionPatch = 10
+    def versionMinor = 1
+    def versionPatch = 0
 
     def baseApplicationId = "com.app.jonathan.willimissbart"
 
@@ -39,7 +39,7 @@ android {
         applicationId baseApplicationId
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 36
+        versionCode 37
         versionName String.format("%d.%d.%d", versionMajor, versionMinor, versionPatch)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
