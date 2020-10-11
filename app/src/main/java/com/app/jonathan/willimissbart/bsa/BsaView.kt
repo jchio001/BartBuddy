@@ -20,11 +20,11 @@ class BsaView(
         inflate(context, R.layout.merge_bsa_view, this)
     }
 
-    private val expirationDate: TextView = findViewById(R.id.expiration_date)
+    private val postedDate: TextView = findViewById(R.id.posted_date)
     private val description: TextView = findViewById(R.id.description)
 
     override fun accept(t: ApiBsa) {
-        expirationDate.text = DATE_FORMATTER.format(t.expires!!)
+        postedDate.text = DATE_FORMATTER.format(t.posted!!)
         description.text = t.description.cDataSection
     }
 
