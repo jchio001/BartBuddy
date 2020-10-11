@@ -20,6 +20,11 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 
+    ext.sdkVersions = [
+            min: 16,
+            target: 30
+    ]
+
     def daggerVersion = "2.25.2"
     def moshiVersion = "1.11.0"
     def retrofitVersion = "2.9.0"
