@@ -15,7 +15,7 @@ android {
         experimental = true
     }
 
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -38,7 +38,7 @@ android {
     defaultConfig {
         applicationId baseApplicationId
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 36
         versionName String.format("%d.%d.%d", versionMajor, versionMinor, versionPatch)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
