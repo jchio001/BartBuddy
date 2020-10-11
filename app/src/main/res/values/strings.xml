@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Bart Buddy</string>
 
     <string name="origin_station">Origin Station</string>

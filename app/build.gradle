@@ -9,6 +9,8 @@ android {
     def versionMinor = 0
     def versionPatch = 10
 
+    def baseApplicationId = "com.app.jonathan.willimissbart"
+
     androidExtensions {
         experimental = true
     }
@@ -34,7 +36,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.app.jonathan.willimissbart"
+        applicationId baseApplicationId
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 36
@@ -54,6 +56,7 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
             minifyEnabled false
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
