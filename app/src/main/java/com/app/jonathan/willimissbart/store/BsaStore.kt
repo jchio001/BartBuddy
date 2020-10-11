@@ -6,6 +6,7 @@ import com.app.jonathanchiou.willimissbart.api.models.bsa.ApiBsaRoot
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +25,13 @@ class BsaStore @Inject constructor(
                 error.delay(15, TimeUnit.SECONDS)
             }
             .map { apiBsas ->
-                apiBsas.bsa.filter { apiBsa -> apiBsa.id != null }
+                apiBsas.bsa.map { apiBsa ->
+                    if (apiBsa.posted == null) {
+                        apiBsa.copy(posted = Date())
+                    } else {
+                        apiBsa
+                    }
+                }
             }
             .subscribeOn(Schedulers.io())
     }
