@@ -98,6 +98,15 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        if (variant.buildType.isDebuggable()) {
+            variant.outputs.each { output ->
+                output.versionCodeOverride = -1
+                output.versionNameOverride = "DEBUG"
+            }
+        }
+    }
+
     kapt {
         arguments {
             arg("room.schemaLocation", "$projectDir/roomSchemas".toString())
