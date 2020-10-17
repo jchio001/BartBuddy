@@ -101,5 +101,13 @@ class StationStore @Inject constructor(
                         }
                 }
             }
+            .onErrorResumeNext { throwable ->
+                if (throwable is MissingStationsException) {
+                    stationDao.deleteAll()
+                        .andThen(Single.error(throwable))
+                } else {
+                    Single.error(throwable)
+                }
+            }
     }
 }

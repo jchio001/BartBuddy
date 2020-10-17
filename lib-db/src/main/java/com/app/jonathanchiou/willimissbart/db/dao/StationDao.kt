@@ -30,4 +30,7 @@ interface StationDao {
         stationAbbrs: List<String>,
         stationNames: List<String>
     ): Single<List<Station>>
+
+    @Query("DELETE from Station")
+    fun deleteAll(): Completable
 }
