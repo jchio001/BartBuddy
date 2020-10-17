@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Test Date"
         />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:textColor="@color/text_grey"
-        android:textSize="14sp"
+        android:textSize="16sp"
         tools:text="Some notification from BART about trains being delayed for the 42069th time."
         />
 
