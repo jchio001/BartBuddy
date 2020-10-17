@@ -8,7 +8,7 @@ fun RealTimeTrip.decrement(): RealTimeTrip {
     return copy(
         lastUpdatedTime = lastUpdatedTime + BuildConfig.UPDATE_TIME_UNIT.toMillis(1),
         realTimeLegs = mutableListOf(firstLegDecremented)
-            .apply { realTimeLegs.subList(1, realTimeLegs.size) }
+            .apply { addAll(realTimeLegs.subList(1, realTimeLegs.size)) }
     )
 }
 
