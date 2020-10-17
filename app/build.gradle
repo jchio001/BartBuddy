@@ -107,12 +107,6 @@ android {
         }
     }
 
-    kapt {
-        arguments {
-            arg("room.schemaLocation", "$projectDir/roomSchemas".toString())
-        }
-    }
-
     sourceSets {
         debug {
             java.srcDirs += 'src/debug/java'
