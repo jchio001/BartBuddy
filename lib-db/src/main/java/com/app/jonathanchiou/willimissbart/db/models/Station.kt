@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
     indices = [Index(value = ["name"], unique = true)]
 )
 @Parcelize
-class Station(
+data class Station(
     val name: String,
     @PrimaryKey val abbr: String,
     val latitude: Double,
