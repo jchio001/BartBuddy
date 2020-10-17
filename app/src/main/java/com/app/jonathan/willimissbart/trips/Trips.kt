@@ -17,7 +17,7 @@ fun ApiTrip.toRealTimeTrip(
     realTimeLegs.add(
         RealTimeLeg.Wait(
             station = firstLeg.origin,
-            nextTrainHeadStation = nameToAbbreviationMap.fullNameFromAbbr(firstLeg.trainHeadStation),
+            nextTrainHeadStation = nameToAbbreviationMap.fullNameFromAbbr(firstLeg.correctedTrainHeadStation),
             duration = apiEstimate.minutes
         )
     )
@@ -33,7 +33,7 @@ fun ApiTrip.toRealTimeTrip(
     var previousDestinationTimeMinutesEpoch = firstLeg.destinationTimeMinutesEpoch
     for (i in 1 until legs.size) {
         val leg = legs[i]
-        val legTrainHeadStation = nameToAbbreviationMap.fullNameFromAbbr(leg.trainHeadStation)
+        val legTrainHeadStation = nameToAbbreviationMap.fullNameFromAbbr(leg.correctedTrainHeadStation)
 
         val waitTime = (leg.originTimeMinutesEpoch - previousDestinationTimeMinutesEpoch).toInt()
         realTimeLegs.add(

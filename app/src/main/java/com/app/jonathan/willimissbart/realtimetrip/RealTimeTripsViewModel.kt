@@ -44,7 +44,7 @@ class RealTimeTripViewModel(
                             for (leg in trip.legs) {
                                 stationAbbrs.add(leg.origin)
                                 stationAbbrs.add(leg.destination)
-                                stationNames.add(leg.trainHeadStation)
+                                stationNames.add(leg.correctedTrainHeadStation)
                             }
                         }
 

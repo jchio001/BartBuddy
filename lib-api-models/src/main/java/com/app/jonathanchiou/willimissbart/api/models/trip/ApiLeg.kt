@@ -9,12 +9,21 @@ import java.util.*
 data class ApiLeg(
     @Json(name = "@origin") val origin: String,
     @Json(name = "@destination") val destination: String,
-    @Json(name = "@trainHeadStation") val trainHeadStation: String,
+    @Json(name = "@trainHeadStation") internal val trainHeadStation: String,
     @Json(name = "@origTimeDate") val originDate: String,
     @Json(name = "@origTimeMin") val originDateMinutes: String,
     @Json(name = "@destTimeDate") val destinationDate: String,
     @Json(name = "@destTimeMin") val destinationDateMinutes: String
 ) {
+
+    // This is because BART is sometimes returning "Millbrae (Caltrain Transfer Platform)" instead of "Millbrae"
+    val correctedTrainHeadStation =
+        if (trainHeadStation == "Millbrae (Caltrain Transfer Platform)") {
+            "Millbrae"
+        } else {
+            trainHeadStation
+        }
+
     val originTimeMinutesEpoch =
         ((DATE_FORMATTER.parse("${originDate} ${originDateMinutes}").time / 60000))
 

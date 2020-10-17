@@ -22,7 +22,7 @@ internal fun BartService.getFilteredTrips(
                 .distinctBy { trip ->
                     trip.legs
                         .map { leg ->
-                            "${leg.origin}${leg.destination}${leg.trainHeadStation}"
+                            "${leg.origin}${leg.destination}${leg.correctedTrainHeadStation}"
                         }
                         .reduce { s1, s2 -> "$s1$s2" }
                 }
@@ -41,7 +41,7 @@ internal fun BartService.getEtdsForTrips(
 
                         val trainHeadStations = HashSet<String>(trip.legs.size, 1.0f)
                         for (leg in trip.legs) {
-                            trainHeadStations.add(leg.trainHeadStation)
+                            trainHeadStations.add(leg.correctedTrainHeadStation)
                         }
 
                         stations.filter { station -> trainHeadStations.contains(station.name) }
@@ -52,7 +52,7 @@ internal fun BartService.getEtdsForTrips(
                     val firstLeg = trip.legs.first()
                     val realTimeTrip = etdRoot.apiEtdStations.first().apiEtds
                         .firstOrNull { etd ->
-                            firstLeg.trainHeadStation.contains(etd.correctedDestination)
+                            firstLeg.correctedTrainHeadStation.contains(etd.correctedDestination)
                         }
                         ?.let { etd ->
                             etd.apiEstimates.map { estimate ->
